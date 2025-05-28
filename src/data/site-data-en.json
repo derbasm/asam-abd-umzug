@@ -1,0 +1,174 @@
+{
+  "company": {
+    "name": "Modern Moving",
+    "slogan": "Your Partner for Stress-Free Moving",
+    "description": "Professional Moving Services with a Modern Approach",
+    "phone": "+49 (0) 123 456789",
+    "email": "info@modern-moving.de",
+    "address": {
+      "street": "Sample Street 123",
+      "city": "Berlin",
+      "zip": "10115",
+      "country": "Germany"
+    },
+    "social": {
+      "facebook": "https://facebook.com/modernmoving",
+      "instagram": "https://instagram.com/modernmoving"
+    }
+  },
+  "hero": {
+    "title": "Your Partner for Stress-Free Moving",
+    "subtitle": "We make your move a seamless experience. With our experienced team and state-of-the-art equipment, we ensure professional and efficient moving services.",
+    "cta": {
+      "primary": {
+        "text": "Request Quote",
+        "link": "#contact"
+      },
+      "secondary": {
+        "text": "Our Services",
+        "link": "#services"
+      }
+    }
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "We offer a wide range of moving services",
+    "items": [
+      {
+        "title": "Residential Moving",
+        "description": "From small apartments to large houses - we transport your belongings safely and reliably.",
+        "icon": "HomeIcon"
+      },
+      {
+        "title": "Office Moving",
+        "description": "Professional planning and execution of office relocations with minimal downtime.",
+        "icon": "BuildingOfficeIcon"
+      },
+      {
+        "title": "Furniture Assembly",
+        "description": "Professional disassembly and assembly of your furniture by our trained staff.",
+        "icon": "WrenchIcon"
+      },
+      {
+        "title": "Packing Service",
+        "description": "Professional packing of your items with high-quality materials.",
+        "icon": "ArchiveBoxIcon"
+      }
+    ]
+  },
+  "pricing": {
+    "title": "Our Prices",
+    "subtitle": "Transparent and Fair Pricing",
+    "plans": [
+      {
+        "name": "Basic",
+        "price": "from €399",
+        "description": "Ideal for small apartments",
+        "features": [
+          "Transport up to 20km",
+          "2 professional movers",
+          "3.5t van",
+          "Basic insurance",
+          "Basic furniture assembly"
+        ]
+      },
+      {
+        "name": "Premium",
+        "price": "from €699",
+        "description": "Perfect for medium households",
+        "features": [
+          "Transport up to 50km",
+          "3 professional movers",
+          "7.5t truck",
+          "Extended insurance",
+          "Complete furniture assembly",
+          "Packing materials",
+          "Disposal service"
+        ]
+      },
+      {
+        "name": "Business",
+        "price": "On Request",
+        "description": "Tailored for businesses",
+        "features": [
+          "Unlimited transport",
+          "Team as needed",
+          "Fleet as needed",
+          "Full insurance",
+          "Project management",
+          "IT relocation service",
+          "24/7 support"
+        ]
+      }
+    ]
+  },
+  "reviews": {
+    "title": "What Our Customers Say",
+    "subtitle": "Testimonials from satisfied customers",
+    "items": [
+      {
+        "name": "Anna Smith",
+        "role": "Private Customer",
+        "comment": "Very professional service. Everything was carefully packed and transported. Highly recommended!",
+        "rating": 5
+      },
+      {
+        "name": "Michael Weber",
+        "role": "CEO",
+        "comment": "Our office relocation was perfectly planned and executed. Minimal downtime and very competent team.",
+        "rating": 5
+      },
+      {
+        "name": "Laura Meyer",
+        "role": "Private Customer",
+        "comment": "Fast, reliable, and friendly. The prices are fair and transparent. Would use again!",
+        "rating": 5
+      }
+    ]
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We're happy to provide personal consultation",
+    "form": {
+      "fields": [
+        {
+          "name": "name",
+          "label": "Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "email",
+          "label": "Email",
+          "type": "email",
+          "required": true
+        },
+        {
+          "name": "phone",
+          "label": "Phone",
+          "type": "tel",
+          "required": false
+        },
+        {
+          "name": "service",
+          "label": "Desired Service",
+          "type": "select",
+          "options": [
+            "Residential Moving",
+            "Office Moving",
+            "Furniture Assembly",
+            "Packing Service",
+            "Other"
+          ],
+          "required": true
+        },
+        {
+          "name": "message",
+          "label": "Your Message",
+          "type": "textarea",
+          "required": true
+        }
+      ]
+    }
+  }
+} 
