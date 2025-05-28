@@ -1,11 +1,12 @@
 import { useLanguage } from '@/contexts/LanguageContext';
 import deData from '@/data/site-data.json';
 import enData from '@/data/site-data-en.json';
+import type { SiteData } from '@/types/site-data';
 
 export function useTranslations() {
   const { language } = useLanguage();
   
-  const data = language === 'de' ? deData : enData;
+  const data = language === 'de' ? (deData as SiteData) : (enData as SiteData);
   
   return {
     data,

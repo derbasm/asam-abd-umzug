@@ -2,53 +2,12 @@
 
 import { motion } from 'framer-motion';
 import { StarIcon } from '@heroicons/react/24/solid';
-
-const reviews = [
-  {
-    id: 1,
-    name: 'Sarah M.',
-    rating: 5,
-    location: 'Berlin',
-    text: 'Absolut professioneller Service! Das Team war pünktlich, freundlich und sehr vorsichtig mit unseren Möbeln. Der Umzug verlief reibungslos und schneller als erwartet.',
-  },
-  {
-    id: 2,
-    name: 'Thomas K.',
-    rating: 5,
-    location: 'Hamburg',
-    text: 'Hervorragende Arbeit! Die Preisgestaltung war transparent, und das Team hat alle unsere Erwartungen übertroffen. Besonders die Möbelmontage war erstklassig.',
-  },
-  {
-    id: 3,
-    name: 'Lisa B.',
-    rating: 5,
-    location: 'München',
-    text: 'Ein großes Lob an das gesamte Team! Die Kommunikation war ausgezeichnet, und selbst kurzfristige Änderungen wurden problemlos umgesetzt.',
-  },
-  {
-    id: 4,
-    name: 'Michael H.',
-    rating: 5,
-    location: 'Frankfurt',
-    text: 'Sehr zufrieden mit dem Service. Das Team war hochprofessionell und hat unseren Firmenumzug perfekt koordiniert. Alle Termine wurden eingehalten.',
-  },
-  {
-    id: 5,
-    name: 'Julia W.',
-    rating: 5,
-    location: 'Köln',
-    text: 'Fantastischer Service von Anfang bis Ende. Die Berater waren sehr kompetent und haben uns optimal bei der Planung unterstützt. Gerne wieder!',
-  },
-  {
-    id: 6,
-    name: 'Andreas P.',
-    rating: 5,
-    location: 'Stuttgart',
-    text: 'Bester Umzugsservice, den ich je hatte! Das Team war nicht nur effizient, sondern auch sehr freundlich und hilfsbereit. Absolut empfehlenswert.',
-  },
-];
+import { useTranslations } from '@/hooks/useTranslations';
 
 export default function Reviews() {
+  const { data } = useTranslations();
+  const { reviews } = data;
+
   return (
     <div className="py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -60,7 +19,7 @@ export default function Reviews() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            Bewertungen
+            {reviews.subtitle}
           </motion.h2>
           <motion.p
             className="mt-2 text-3xl font-bold tracking-tight text-accent-900 sm:text-4xl font-heading"
@@ -69,7 +28,7 @@ export default function Reviews() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Was unsere Kunden sagen
+            {reviews.title}
           </motion.p>
           <motion.p
             className="mt-6 text-lg leading-8 text-accent-600"
@@ -78,11 +37,11 @@ export default function Reviews() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Erfahren Sie, warum unsere Kunden uns vertrauen und weiterempfehlen.
+            {reviews.description}
           </motion.p>
         </div>
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-8 sm:mt-20 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-          {reviews.map((review, index) => (
+          {reviews.items.map((review, index) => (
             <motion.article
               key={review.id}
               className="flex flex-col justify-between rounded-2xl bg-white p-8 ring-1 ring-accent-200 hover:shadow-lg transition-shadow duration-300"

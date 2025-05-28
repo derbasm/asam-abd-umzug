@@ -3,8 +3,9 @@
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { PhoneIcon, EnvelopeIcon, MapPinIcon } from '@heroicons/react/24/outline';
+import { useTranslations } from '@/hooks/useTranslations';
 
-type FormData = {
+interface FormData {
   name: string;
   email: string;
   phone: string;
@@ -12,18 +13,39 @@ type FormData = {
   fromAddress: string;
   toAddress: string;
   message: string;
-};
+}
+
+type FormFields = keyof FormData;
 
 export default function Contact() {
+  const { data } = useTranslations();
+  const { contact } = data;
+  
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
 
-  const onSubmit = (data: FormData) => {
-    // Here you would typically send the data to your backend
-    console.log(data);
+  const onSubmit = async (data: FormData) => {
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+
+      // Handle success (e.g., show success message, reset form)
+    } catch (error) {
+      // Handle error (e.g., show error message)
+      console.error('Error sending message:', error);
+    }
   };
 
   return (
@@ -37,7 +59,7 @@ export default function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            Kontaktieren Sie uns
+            {contact.title}
           </motion.h2>
           <motion.p
             className="mt-6 text-lg leading-8 text-accent-600"
@@ -46,7 +68,7 @@ export default function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Lassen Sie uns Ihren Umzug gemeinsam planen. Kontaktieren Sie uns für ein unverbindliches Angebot.
+            {contact.description}
           </motion.p>
         </div>
         <motion.div
@@ -64,9 +86,9 @@ export default function Contact() {
                     <PhoneIcon className="h-6 w-6 text-white" aria-hidden="true" />
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-accent-900">Telefon</h3>
-                    <p className="mt-2 leading-7 text-accent-600">+49 (0) 123 456789</p>
-                    <p className="mt-2 leading-7 text-accent-600">Mo-Fr: 08:00 - 18:00 Uhr</p>
+                    <h3 className="text-base font-semibold text-accent-900">{contact.contactInfo.phone.title}</h3>
+                    <p className="mt-2 leading-7 text-accent-600">{contact.contactInfo.phone.value}</p>
+                    <p className="mt-2 leading-7 text-accent-600">{contact.contactInfo.phone.hours}</p>
                   </div>
                 </div>
                 <div className="flex gap-x-6">
@@ -74,8 +96,8 @@ export default function Contact() {
                     <EnvelopeIcon className="h-6 w-6 text-white" aria-hidden="true" />
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-accent-900">E-Mail</h3>
-                    <p className="mt-2 leading-7 text-accent-600">info@modern-umzug.de</p>
+                    <h3 className="text-base font-semibold text-accent-900">{contact.contactInfo.email.title}</h3>
+                    <p className="mt-2 leading-7 text-accent-600">{contact.contactInfo.email.value}</p>
                   </div>
                 </div>
                 <div className="flex gap-x-6">
@@ -83,9 +105,9 @@ export default function Contact() {
                     <MapPinIcon className="h-6 w-6 text-white" aria-hidden="true" />
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-accent-900">Standort</h3>
-                    <p className="mt-2 leading-7 text-accent-600">Musterstraße 123</p>
-                    <p className="leading-7 text-accent-600">12345 Berlin</p>
+                    <h3 className="text-base font-semibold text-accent-900">{contact.contactInfo.address.title}</h3>
+                    <p className="mt-2 leading-7 text-accent-600">{contact.contactInfo.address.street}</p>
+                    <p className="leading-7 text-accent-600">{contact.contactInfo.address.city}</p>
                   </div>
                 </div>
               </div>
@@ -94,103 +116,38 @@ export default function Contact() {
 
           <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-xl lg:mx-0">
             <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
-              <div className="sm:col-span-2">
-                <label htmlFor="name" className="block text-sm font-semibold leading-6 text-accent-900">
-                  Name
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    type="text"
-                    {...register('name', { required: true })}
-                    className="block w-full rounded-md border-0 px-3.5 py-2 text-accent-900 shadow-sm ring-1 ring-inset ring-accent-300 placeholder:text-accent-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
-                  />
-                  {errors.name && <p className="mt-1 text-sm text-red-600">Name ist erforderlich</p>}
+              {contact.form.fields.map((field) => (
+                <div key={field.name} className={field.name === 'message' ? 'sm:col-span-2' : field.type === 'text' ? 'sm:col-span-2' : ''}>
+                  <label htmlFor={field.name} className="block text-sm font-semibold leading-6 text-accent-900">
+                    {field.label}
+                  </label>
+                  <div className="mt-2.5">
+                    {field.type === 'textarea' ? (
+                      <textarea
+                        {...register(field.name as FormFields, { required: field.required })}
+                        rows={4}
+                        className="block w-full rounded-md border-0 px-3.5 py-2 text-accent-900 shadow-sm ring-1 ring-inset ring-accent-300 placeholder:text-accent-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
+                      />
+                    ) : (
+                      <input
+                        type={field.type}
+                        {...register(field.name as FormFields, { required: field.required })}
+                        className="block w-full rounded-md border-0 px-3.5 py-2 text-accent-900 shadow-sm ring-1 ring-inset ring-accent-300 placeholder:text-accent-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
+                      />
+                    )}
+                    {errors[field.name as FormFields] && (
+                      <p className="mt-1 text-sm text-red-600">{field.error}</p>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-semibold leading-6 text-accent-900">
-                  E-Mail
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    type="email"
-                    {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
-                    className="block w-full rounded-md border-0 px-3.5 py-2 text-accent-900 shadow-sm ring-1 ring-inset ring-accent-300 placeholder:text-accent-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
-                  />
-                  {errors.email && <p className="mt-1 text-sm text-red-600">Gültige E-Mail erforderlich</p>}
-                </div>
-              </div>
-              <div>
-                <label htmlFor="phone" className="block text-sm font-semibold leading-6 text-accent-900">
-                  Telefon
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    type="tel"
-                    {...register('phone', { required: true })}
-                    className="block w-full rounded-md border-0 px-3.5 py-2 text-accent-900 shadow-sm ring-1 ring-inset ring-accent-300 placeholder:text-accent-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
-                  />
-                  {errors.phone && <p className="mt-1 text-sm text-red-600">Telefonnummer ist erforderlich</p>}
-                </div>
-              </div>
-              <div>
-                <label htmlFor="moveDate" className="block text-sm font-semibold leading-6 text-accent-900">
-                  Umzugstermin
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    type="date"
-                    {...register('moveDate', { required: true })}
-                    className="block w-full rounded-md border-0 px-3.5 py-2 text-accent-900 shadow-sm ring-1 ring-inset ring-accent-300 placeholder:text-accent-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
-                  />
-                  {errors.moveDate && <p className="mt-1 text-sm text-red-600">Umzugstermin ist erforderlich</p>}
-                </div>
-              </div>
-              <div className="sm:col-span-2">
-                <label htmlFor="fromAddress" className="block text-sm font-semibold leading-6 text-accent-900">
-                  Von (Adresse)
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    type="text"
-                    {...register('fromAddress', { required: true })}
-                    className="block w-full rounded-md border-0 px-3.5 py-2 text-accent-900 shadow-sm ring-1 ring-inset ring-accent-300 placeholder:text-accent-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
-                  />
-                  {errors.fromAddress && <p className="mt-1 text-sm text-red-600">Startadresse ist erforderlich</p>}
-                </div>
-              </div>
-              <div className="sm:col-span-2">
-                <label htmlFor="toAddress" className="block text-sm font-semibold leading-6 text-accent-900">
-                  Nach (Adresse)
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    type="text"
-                    {...register('toAddress', { required: true })}
-                    className="block w-full rounded-md border-0 px-3.5 py-2 text-accent-900 shadow-sm ring-1 ring-inset ring-accent-300 placeholder:text-accent-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
-                  />
-                  {errors.toAddress && <p className="mt-1 text-sm text-red-600">Zieladresse ist erforderlich</p>}
-                </div>
-              </div>
-              <div className="sm:col-span-2">
-                <label htmlFor="message" className="block text-sm font-semibold leading-6 text-accent-900">
-                  Nachricht
-                </label>
-                <div className="mt-2.5">
-                  <textarea
-                    {...register('message')}
-                    rows={4}
-                    className="block w-full rounded-md border-0 px-3.5 py-2 text-accent-900 shadow-sm ring-1 ring-inset ring-accent-300 placeholder:text-accent-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
+              ))}
             </div>
             <div className="mt-8">
               <button
                 type="submit"
                 className="block w-full rounded-md bg-primary-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
               >
-                Anfrage senden
+                {contact.form.submitButton}
               </button>
             </div>
           </form>

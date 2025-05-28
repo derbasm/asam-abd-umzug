@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
-import { LanguageProvider } from "@/contexts/LanguageContext";
+import Providers from "@/components/Providers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -41,11 +41,11 @@ export default function RootLayout({
   return (
     <html lang="de" className={`${inter.variable} ${poppins.variable}`}>
       <body className="min-h-screen bg-white font-sans antialiased">
-        <LanguageProvider>
+        <Providers>
           <main className="flex min-h-screen flex-col">
             {children}
           </main>
-        </LanguageProvider>
+        </Providers>
       </body>
     </html>
   );

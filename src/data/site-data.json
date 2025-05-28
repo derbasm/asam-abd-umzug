@@ -14,7 +14,8 @@
     "social": {
       "facebook": "https://facebook.com/modernumzug",
       "instagram": "https://instagram.com/modernumzug"
-    }
+    },
+    "workingHours": "Mo-Fr: 08:00 - 18:00 Uhr"
   },
   "hero": {
     "title": "Ihr Partner für stressfreie Umzüge",
@@ -28,11 +29,29 @@
         "text": "Unsere Leistungen",
         "link": "#services"
       }
+    },
+    "consultation": {
+      "text": "Kostenlose Beratung",
+      "link": "#contact"
     }
   },
+  "about": {
+    "subtitle": "Über uns",
+    "title": "Ihr vertrauenswürdiger Partner für Umzüge",
+    "description": "Mit über 10 Jahren Erfahrung in der Umzugsbranche stehen wir für Qualität, Zuverlässigkeit und erstklassigen Service. Unser Ziel ist es, Ihren Umzug so angenehm und stressfrei wie möglich zu gestalten.",
+    "features": [
+      "Professionelles und erfahrenes Team",
+      "Moderne und sichere Transportfahrzeuge",
+      "Umfassende Versicherung für Ihre Güter",
+      "Flexible Terminplanung",
+      "Transparente Preisgestaltung",
+      "Persönliche Beratung"
+    ]
+  },
   "services": {
-    "title": "Unsere Leistungen",
-    "subtitle": "Wir bieten eine breite Palette an Umzugsdienstleistungen",
+    "subtitle": "Unsere Dienstleistungen",
+    "title": "Professionelle Umzugslösungen",
+    "description": "Wir bieten Ihnen ein umfassendes Angebot an Umzugsdienstleistungen, maßgeschneidert auf Ihre individuellen Bedürfnisse.",
     "items": [
       {
         "title": "Privatumzüge",
@@ -57,118 +76,187 @@
     ]
   },
   "pricing": {
-    "title": "Unsere Preise",
-    "subtitle": "Transparente und faire Preisgestaltung",
-    "plans": [
+    "subtitle": "Preise",
+    "title": "Die richtige Lösung für jeden Umzug",
+    "description": "Wählen Sie das passende Paket für Ihre Bedürfnisse. Alle Preise sind Richtwerte und können nach individueller Beratung angepasst werden.",
+    "cta": "Jetzt anfragen",
+    "tiers": [
       {
-        "name": "Basic",
+        "name": "Basis",
+        "id": "tier-basic",
+        "href": "#contact",
         "price": "ab 399€",
-        "description": "Ideal für kleine Wohnungen",
+        "description": "Der perfekte Einstieg für kleine Umzüge.",
         "features": [
-          "Transport bis 20km",
-          "2 professionelle Umzugshelfer",
+          "Transport Ihrer Möbel und Kartons",
+          "2 erfahrene Umzugshelfer",
           "3,5t Transporter",
           "Basis-Versicherung",
-          "Grundlegende Möbelmontage"
+          "Grundlegende Möbelmontage",
+          "Standardmäßige Umzugsdecken"
         ]
       },
       {
         "name": "Premium",
+        "id": "tier-premium",
+        "href": "#contact",
         "price": "ab 699€",
-        "description": "Perfekt für mittlere Haushalte",
+        "description": "Die optimale Lösung für mittlere bis große Umzüge.",
         "features": [
-          "Transport bis 50km",
-          "3 professionelle Umzugshelfer",
-          "7,5t LKW",
+          "Alles vom Basis-Paket",
+          "3-4 erfahrene Umzugshelfer",
+          "7,5t LKW mit Hebebühne",
           "Erweiterte Versicherung",
           "Komplette Möbelmontage",
-          "Verpackungsmaterial",
-          "Entsorgungsservice"
-        ]
+          "Professionelles Verpackungsmaterial",
+          "Einlagerungsmöglichkeit (1 Monat)",
+          "Entsorgung von Verpackungsmaterial"
+        ],
+        "featured": true
       },
       {
         "name": "Business",
-        "price": "Nach Anfrage",
-        "description": "Maßgeschneidert für Unternehmen",
+        "id": "tier-business",
+        "href": "#contact",
+        "price": "Individuell",
+        "description": "Maßgeschneiderte Lösungen für Firmenumzüge.",
         "features": [
-          "Unbegrenzter Transport",
-          "Team nach Bedarf",
-          "Fuhrpark nach Bedarf",
-          "Vollkasko-Versicherung",
-          "Projektmanagement",
-          "IT-Umzugsservice",
-          "24/7 Support"
+          "Alles vom Premium-Paket",
+          "Unbegrenzte Anzahl an Helfern",
+          "Mehrere LKWs nach Bedarf",
+          "Spezial-Versicherung",
+          "IT-Equipment Handling",
+          "Wochenend-Service",
+          "Projektmanager vor Ort",
+          "Express-Service möglich"
         ]
       }
     ]
   },
   "reviews": {
-    "title": "Das sagen unsere Kunden",
-    "subtitle": "Erfahrungsberichte zufriedener Kunden",
+    "subtitle": "Bewertungen",
+    "title": "Was unsere Kunden sagen",
+    "description": "Erfahren Sie, warum unsere Kunden uns vertrauen und weiterempfehlen.",
     "items": [
       {
-        "name": "Anna Schmidt",
-        "role": "Privatkundin",
-        "comment": "Sehr professioneller Service. Alles wurde sorgfältig verpackt und transportiert. Absolut empfehlenswert!",
-        "rating": 5
+        "id": 1,
+        "name": "Sarah M.",
+        "rating": 5,
+        "location": "Berlin",
+        "text": "Absolut professioneller Service! Das Team war pünktlich, freundlich und sehr vorsichtig mit unseren Möbeln. Der Umzug verlief reibungslos und schneller als erwartet."
       },
       {
-        "name": "Michael Weber",
-        "role": "Geschäftsführer",
-        "comment": "Unser Büroumzug wurde perfekt geplant und ausgeführt. Minimale Ausfallzeit und sehr kompetentes Team.",
-        "rating": 5
+        "id": 2,
+        "name": "Thomas K.",
+        "rating": 5,
+        "location": "Hamburg",
+        "text": "Hervorragende Arbeit! Die Preisgestaltung war transparent, und das Team hat alle unsere Erwartungen übertroffen. Besonders die Möbelmontage war erstklassig."
       },
       {
-        "name": "Laura Meyer",
-        "role": "Privatkundin",
-        "comment": "Schnell, zuverlässig und freundlich. Die Preise sind fair und transparent. Gerne wieder!",
-        "rating": 5
+        "id": 3,
+        "name": "Lisa B.",
+        "rating": 5,
+        "location": "München",
+        "text": "Ein großes Lob an das gesamte Team! Die Kommunikation war ausgezeichnet, und selbst kurzfristige Änderungen wurden problemlos umgesetzt."
+      },
+      {
+        "id": 4,
+        "name": "Michael H.",
+        "rating": 5,
+        "location": "Frankfurt",
+        "text": "Sehr zufrieden mit dem Service. Das Team war hochprofessionell und hat unseren Firmenumzug perfekt koordiniert. Alle Termine wurden eingehalten."
+      },
+      {
+        "id": 5,
+        "name": "Julia W.",
+        "rating": 5,
+        "location": "Köln",
+        "text": "Fantastischer Service von Anfang bis Ende. Die Berater waren sehr kompetent und haben uns optimal bei der Planung unterstützt. Gerne wieder!"
+      },
+      {
+        "id": 6,
+        "name": "Andreas P.",
+        "rating": 5,
+        "location": "Stuttgart",
+        "text": "Bester Umzugsservice, den ich je hatte! Das Team war nicht nur effizient, sondern auch sehr freundlich und hilfsbereit. Absolut empfehlenswert."
       }
     ]
   },
   "contact": {
     "title": "Kontaktieren Sie uns",
     "subtitle": "Wir beraten Sie gerne persönlich",
+    "description": "Lassen Sie uns Ihren Umzug gemeinsam planen. Kontaktieren Sie uns für ein unverbindliches Angebot.",
     "form": {
       "fields": [
         {
           "name": "name",
           "label": "Name",
           "type": "text",
-          "required": true
+          "required": true,
+          "error": "Name ist erforderlich"
         },
         {
           "name": "email",
           "label": "E-Mail",
           "type": "email",
-          "required": true
+          "required": true,
+          "error": "Gültige E-Mail erforderlich"
         },
         {
           "name": "phone",
           "label": "Telefon",
           "type": "tel",
-          "required": false
+          "required": true,
+          "error": "Telefonnummer ist erforderlich"
         },
         {
-          "name": "service",
-          "label": "Gewünschter Service",
-          "type": "select",
-          "options": [
-            "Privatumzug",
-            "Büroumzug",
-            "Möbelmontage",
-            "Verpackungsservice",
-            "Sonstiges"
-          ],
-          "required": true
+          "name": "moveDate",
+          "label": "Umzugstermin",
+          "type": "date",
+          "required": true,
+          "error": "Umzugstermin ist erforderlich"
+        },
+        {
+          "name": "fromAddress",
+          "label": "Von (Adresse)",
+          "type": "text",
+          "required": true,
+          "error": "Startadresse ist erforderlich"
+        },
+        {
+          "name": "toAddress",
+          "label": "Nach (Adresse)",
+          "type": "text",
+          "required": true,
+          "error": "Zieladresse ist erforderlich"
         },
         {
           "name": "message",
-          "label": "Ihre Nachricht",
+          "label": "Nachricht",
           "type": "textarea",
-          "required": true
+          "required": false
         }
-      ]
+      ],
+      "submitButton": "Anfrage senden"
+    },
+    "contactInfo": {
+      "phone": {
+        "title": "Telefon",
+        "value": "+49 (0) 123 456789",
+        "hours": "Mo-Fr: 08:00 - 18:00 Uhr"
+      },
+      "email": {
+        "title": "E-Mail",
+        "value": "info@modern-umzug.de"
+      },
+      "address": {
+        "title": "Standort",
+        "street": "Musterstraße 123",
+        "city": "12345 Berlin"
+      }
     }
+  },
+  "footer": {
+    "copyright": "© {year} Modern Umzug. Alle Rechte vorbehalten."
   }
 } 

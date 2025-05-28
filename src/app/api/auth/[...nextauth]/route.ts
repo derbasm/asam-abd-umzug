@@ -15,8 +15,12 @@ const handler = NextAuth({
           throw new Error('Invalid credentials');
         }
 
-        const adminEmail = process.env.ADMIN_USERNAME;
+        const adminEmail = process.env.ADMIN_EMAIL;
         const adminPassword = process.env.ADMIN_PASSWORD;
+
+        if (!adminEmail || !adminPassword) {
+          throw new Error('Admin credentials not configured');
+        }
 
         if (credentials.email !== adminEmail) {
           throw new Error('Invalid credentials');
