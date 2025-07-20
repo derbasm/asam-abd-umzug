@@ -1,27 +1,91 @@
-import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth/next';
-import dbConnect from '@/lib/db';
-import { Contact } from '@/models/Contact';
+import { NextRequest, NextResponse } from 'next/server';
+import prisma from '@/lib/db';
+import { verifyToken } from '@/lib/auth';
 
-export async function GET() {
+async function checkAuth(request: NextRequest) {
+  const token = request.cookies.get('admin-token')?.value;
+  
+  if (!token) {
+    return null;
+  }
+  
+  return verifyToken(token);
+}
+
+export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession();
+    const admin = await checkAuth(request);
     
-    if (!session) {
+    if (!admin) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    await dbConnect();
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '10');
+    const status = searchParams.get('status');
     
-    const contacts = await Contact.find({})
-      .sort({ createdAt: -1 })
-      .limit(100);
+    const skip = (page - 1) * limit;
     
-    return NextResponse.json(contacts);
+    const where = status ? { status: status as any } : {};
+    
+    const [contacts, total] = await Promise.all([
+      prisma.contact.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+      }),
+      prisma.contact.count({ where })
+    ]);
+
+    return NextResponse.json({
+      contacts,
+      pagination: {
+        page,
+        limit,
+        total,
+        pages: Math.ceil(total / limit)
+      }
+    });
+
   } catch (error) {
-    console.error('Error fetching contacts:', error);
+    console.error('Contacts API error:', error);
     return NextResponse.json(
-      { error: 'Internal Server Error' },
+      { error: 'Ein Fehler ist aufgetreten' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const admin = await checkAuth(request);
+    
+    if (!admin) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { id, status } = await request.json();
+
+    if (!id || !status) {
+      return NextResponse.json(
+        { error: 'ID und Status sind erforderlich' },
+        { status: 400 }
+      );
+    }
+
+    const contact = await prisma.contact.update({
+      where: { id: parseInt(id) },
+      data: { status }
+    });
+
+    return NextResponse.json(contact);
+
+  } catch (error) {
+    console.error('Contact update error:', error);
+    return NextResponse.json(
+      { error: 'Ein Fehler ist aufgetreten' },
       { status: 500 }
     );
   }

@@ -15,6 +15,10 @@ const Pricing = dynamic(() => import('@/components/Pricing'), {
   loading: () => <div>Loading...</div>
 });
 
+const ImageSwiper = dynamic(() => import('@/components/ImageSwiper'), {
+  loading: () => <div>Loading...</div>
+});
+
 const Reviews = dynamic(() => import('@/components/Reviews'), {
   loading: () => <div>Loading...</div>
 });
@@ -45,8 +49,8 @@ export default function Home() {
         <Pricing />
       </section>
 
-      <section id="reviews" className="scroll-mt-16">
-        <Reviews />
+      <section id="gallery" className="scroll-mt-16">
+        <ImageSwiper />
       </section>
 
       <section id="contact" className="scroll-mt-16">

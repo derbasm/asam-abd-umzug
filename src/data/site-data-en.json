@@ -1,19 +1,32 @@
 {
   "company": {
-    "name": "Modern Moving",
+    "name": "Asam Abd",
     "slogan": "Your Partner for Stress-Free Moving",
     "description": "Professional Moving Services with a Modern Approach",
-    "phone": "+49 (0) 123 456789",
-    "email": "info@modern-moving.de",
+    "phone": "+49 176 80248293",
+    "email": "ma9495232@gmail.com",
     "address": {
-      "street": "Sample Street 123",
-      "city": "Berlin",
-      "zip": "10115",
+      "street": "Fangstraße 72",
+      "city": "Hamm",
+      "zip": "59077",
       "country": "Germany"
+    }
+  },
+  "navigation": [
+    { "name": "Home", "href": "#" },
+    { "name": "Services", "href": "#services" },
+    { "name": "About", "href": "#about" },
+    { "name": "Pricing", "href": "#pricing" },
+    { "name": "Gallery", "href": "#gallery" },
+    { "name": "Contact", "href": "#contact" }
+  ],
+  "ui": {
+    "navigation": {
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu"
     },
-    "social": {
-      "facebook": "https://facebook.com/modernmoving",
-      "instagram": "https://instagram.com/modernmoving"
+    "pricing": {
+      "featured": "Popular"
     }
   },
   "hero": {
@@ -28,6 +41,15 @@
         "text": "Our Services",
         "link": "#services"
       }
+    }
+  },
+  "gallery": {
+    "subtitle": "Gallery",
+    "title": "Our Work in Pictures",
+    "description": "Discover Asam Abd in action. Here you can see impressions of our professional moving services.",
+    "cta": {
+      "description": "Convinced by our work? Contact us for your individual quote.",
+      "callButton": "📞 Call now"
     }
   },
   "services": {
@@ -168,7 +190,24 @@
           "type": "textarea",
           "required": true
         }
-      ]
+      ],
+      "submitButton": "Send Request"
+    },
+    "contactInfo": {
+      "phone": {
+        "title": "Phone",
+        "value": "+49 176 80248293",
+        "hours": "Mon-Fri: 08:00 - 18:00"
+      },
+      "email": {
+        "title": "Email",
+        "value": "ma9495232@gmail.com"
+      },
+      "address": {
+        "title": "Location",
+        "street": "Fangstraße 72",
+        "city": "59077 Hamm"
+      }
     }
   }
 } 

@@ -1,41 +1,19 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
-
-  // Protect admin routes
+  
+  // Nur Admin-Routen prüfen, aber erstmal ohne Token-Verifikation
   if (path.startsWith('/admin') && path !== '/admin/login') {
-    const token = await getToken({
-      req: request,
-      secret: process.env.JWT_SECRET,
-    });
-
+    const token = request.cookies.get('admin-token')?.value;
+    
     if (!token) {
-      const url = new URL('/admin/login', request.url);
-      url.searchParams.set('callbackUrl', path);
-      return NextResponse.redirect(url);
+      console.log('No admin token found for path:', path);
+      return NextResponse.redirect(new URL('/admin/login', request.url));
     }
-  }
-
-  // Track visitors (except for admin routes and API routes)
-  if (!path.startsWith('/admin') && !path.startsWith('/api')) {
-    try {
-      await fetch('/api/track-visit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          path,
-          userAgent: request.headers.get('user-agent'),
-          ip: request.ip || request.headers.get('x-forwarded-for'),
-        }),
-      });
-    } catch (error) {
-      console.error('Error tracking visit:', error);
-    }
+    
+    console.log('Admin token found for path:', path);
   }
 
   return NextResponse.next();
@@ -43,7 +21,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/admin/:path*',
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    // Nur Admin-Routen überwachen
+    '/admin/:path*'
   ],
-}; 
+}

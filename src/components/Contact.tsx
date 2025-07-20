@@ -9,9 +9,6 @@ interface FormData {
   name: string;
   email: string;
   phone: string;
-  moveDate: string;
-  fromAddress: string;
-  toAddress: string;
   message: string;
 }
 
@@ -49,11 +46,11 @@ export default function Contact() {
   };
 
   return (
-    <div className="relative isolate bg-white py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+    <div className="relative isolate bg-accent-50 section-spacing" id="contact">
+      <div className="container-custom">
         <div className="mx-auto max-w-2xl text-center">
           <motion.h2
-            className="text-3xl font-bold tracking-tight text-accent-900 sm:text-4xl font-heading"
+            className="mobile-heading lg:text-4xl xl:text-5xl font-heading gradient-text text-balance"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -62,7 +59,7 @@ export default function Contact() {
             {contact.title}
           </motion.h2>
           <motion.p
-            className="mt-6 text-lg leading-8 text-accent-600"
+            className="mt-6 text-lg leading-8 text-accent-600 text-balance"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -71,86 +68,168 @@ export default function Contact() {
             {contact.description}
           </motion.p>
         </div>
+        
         <motion.div
-          className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-x-8 gap-y-16 lg:grid-cols-2"
+          className="mx-auto mt-12 sm:mt-16 lg:mt-20 grid max-w-4xl grid-cols-1 gap-8 lg:gap-12 xl:gap-16 lg:grid-cols-2"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <div>
+          {/* Contact Information */}
+          <div className="order-2 lg:order-1">
             <div className="mx-auto max-w-xl lg:mx-0">
-              <div className="grid grid-cols-1 gap-8">
-                <div className="flex gap-x-6">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-600">
-                    <PhoneIcon className="h-6 w-6 text-white" aria-hidden="true" />
+              <div className="grid grid-cols-1 gap-6 sm:gap-8">
+                <motion.div 
+                  className="flex gap-4 sm:gap-6 p-4 sm:p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.3 }}
+                >
+                  <div className="icon-box bg-primary-600 text-white group-hover:bg-secondary-600">
+                    <PhoneIcon className="h-6 w-6" aria-hidden="true" />
                   </div>
-                  <div>
-                    <h3 className="text-base font-semibold text-accent-900">{contact.contactInfo.phone.title}</h3>
-                    <p className="mt-2 leading-7 text-accent-600">{contact.contactInfo.phone.value}</p>
-                    <p className="mt-2 leading-7 text-accent-600">{contact.contactInfo.phone.hours}</p>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg font-semibold text-accent-900 group-hover:text-primary-600 transition-colors">
+                      {contact.contactInfo.phone.title}
+                    </h3>
+                    <p className="mt-2 text-accent-600 font-medium">
+                      <a href={`tel:${data.company.phone}`} className="hover:text-primary-600 transition-colors">
+                        {contact.contactInfo.phone.value}
+                      </a>
+                    </p>
+                    <p className="mt-1 text-sm text-accent-500">{contact.contactInfo.phone.hours}</p>
                   </div>
-                </div>
-                <div className="flex gap-x-6">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-600">
-                    <EnvelopeIcon className="h-6 w-6 text-white" aria-hidden="true" />
+                </motion.div>
+                
+                <motion.div 
+                  className="flex gap-4 sm:gap-6 p-4 sm:p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.4 }}
+                >
+                  <div className="icon-box bg-primary-600 text-white group-hover:bg-secondary-600">
+                    <EnvelopeIcon className="h-6 w-6" aria-hidden="true" />
                   </div>
-                  <div>
-                    <h3 className="text-base font-semibold text-accent-900">{contact.contactInfo.email.title}</h3>
-                    <p className="mt-2 leading-7 text-accent-600">{contact.contactInfo.email.value}</p>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg font-semibold text-accent-900 group-hover:text-primary-600 transition-colors">
+                      {contact.contactInfo.email.title}
+                    </h3>
+                    <p className="mt-2 text-accent-600 font-medium break-all">
+                      <a href={`mailto:${contact.contactInfo.email.value}`} className="hover:text-primary-600 transition-colors">
+                        {contact.contactInfo.email.value}
+                      </a>
+                    </p>
                   </div>
-                </div>
-                <div className="flex gap-x-6">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-600">
-                    <MapPinIcon className="h-6 w-6 text-white" aria-hidden="true" />
+                </motion.div>
+                
+                <motion.div 
+                  className="flex gap-4 sm:gap-6 p-4 sm:p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.5 }}
+                >
+                  <div className="icon-box bg-primary-600 text-white group-hover:bg-secondary-600">
+                    <MapPinIcon className="h-6 w-6" aria-hidden="true" />
                   </div>
-                  <div>
-                    <h3 className="text-base font-semibold text-accent-900">{contact.contactInfo.address.title}</h3>
-                    <p className="mt-2 leading-7 text-accent-600">{contact.contactInfo.address.street}</p>
-                    <p className="leading-7 text-accent-600">{contact.contactInfo.address.city}</p>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg font-semibold text-accent-900 group-hover:text-primary-600 transition-colors">
+                      {contact.contactInfo.address.title}
+                    </h3>
+                    <p className="mt-2 text-accent-600">{contact.contactInfo.address.street}</p>
+                    <p className="text-accent-600">{contact.contactInfo.address.city}</p>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-xl lg:mx-0">
-            <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
-              {contact.form.fields.map((field) => (
-                <div key={field.name} className={field.name === 'message' ? 'sm:col-span-2' : field.type === 'text' ? 'sm:col-span-2' : ''}>
-                  <label htmlFor={field.name} className="block text-sm font-semibold leading-6 text-accent-900">
-                    {field.label}
-                  </label>
-                  <div className="mt-2.5">
-                    {field.type === 'textarea' ? (
-                      <textarea
-                        {...register(field.name as FormFields, { required: field.required })}
-                        rows={4}
-                        className="block w-full rounded-md border-0 px-3.5 py-2 text-accent-900 shadow-sm ring-1 ring-inset ring-accent-300 placeholder:text-accent-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
-                      />
-                    ) : (
-                      <input
-                        type={field.type}
-                        {...register(field.name as FormFields, { required: field.required })}
-                        className="block w-full rounded-md border-0 px-3.5 py-2 text-accent-900 shadow-sm ring-1 ring-inset ring-accent-300 placeholder:text-accent-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
-                      />
-                    )}
-                    {errors[field.name as FormFields] && (
-                      <p className="mt-1 text-sm text-red-600">{field.error}</p>
-                    )}
-                  </div>
+          {/* Contact Form */}
+          <motion.div
+            className="order-1 lg:order-2"
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 sm:p-10">
+              <div className="mb-8 text-center">
+                <h3 className="text-2xl font-bold text-accent-900 mb-2">Kostenlose Beratung</h3>
+                <p className="text-accent-600">Schreiben Sie uns eine Nachricht</p>
+              </div>
+              
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                {contact.form.fields.map((field, index) => (
+                  <motion.div 
+                    key={field.name} 
+                    className="w-full"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }}
+                  >
+                    <label htmlFor={field.name} className="block text-sm font-medium text-accent-700 mb-3">
+                      {field.label}
+                      {field.required && <span className="text-red-500 ml-1">*</span>}
+                    </label>
+                    <div className="relative">
+                      {field.type === 'textarea' ? (
+                        <textarea
+                          {...register(field.name as FormFields, { required: field.required })}
+                          rows={5}
+                          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 resize-none text-accent-900 placeholder-accent-400"
+                          placeholder={`${field.label} eingeben...`}
+                        />
+                      ) : (
+                        <input
+                          type={field.type}
+                          {...register(field.name as FormFields, { required: field.required })}
+                          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 text-accent-900 placeholder-accent-400"
+                          placeholder={`${field.label} eingeben...`}
+                        />
+                      )}
+                      {errors[field.name as FormFields] && (
+                        <motion.p 
+                          className="mt-2 text-sm text-red-600 flex items-center gap-2"
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <span className="text-red-500">⚠️</span>
+                          {field.error}
+                        </motion.p>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+                
+                <motion.div 
+                  className="pt-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.8 }}
+                >
+                  <button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-primary-600 to-secondary-600 text-white font-semibold py-4 px-6 rounded-xl hover:from-primary-700 hover:to-secondary-700 focus:ring-4 focus:ring-primary-200 transition-all duration-300 transform hover:scale-[1.02] shadow-lg"
+                  >
+                    {contact.form.submitButton}
+                  </button>
+                </motion.div>
+                
+                {/* Form info */}
+                <div className="text-center pt-4">
+                  <p className="text-xs text-accent-500">
+                    🔒 Ihre Daten werden sicher übertragen und nicht an Dritte weitergegeben
+                  </p>
                 </div>
-              ))}
+              </form>
             </div>
-            <div className="mt-8">
-              <button
-                type="submit"
-                className="block w-full rounded-md bg-primary-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
-              >
-                {contact.form.submitButton}
-              </button>
-            </div>
-          </form>
+          </motion.div>
         </motion.div>
       </div>
     </div>

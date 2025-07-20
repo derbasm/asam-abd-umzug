@@ -1,0 +1,16 @@
+{
+  "name": "Asam Abd Umzugsservice",
+  "short_name": "Asam Abd",
+  "description": "Professioneller Umzugsservice in München",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3B82F6",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ]
+}

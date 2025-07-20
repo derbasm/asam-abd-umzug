@@ -1,197 +1,125 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { format } from 'date-fns';
-import { de } from 'date-fns/locale';
-
-interface Contact {
-  _id: string;
-  name: string;
-  email: string;
-  phone: string;
-  service: string;
-  message: string;
-  createdAt: string;
-  status: 'new' | 'in_progress' | 'completed';
-}
-
-interface VisitorStats {
-  total: number;
-  today: number;
-  thisWeek: number;
-  thisMonth: number;
-}
-
-interface LocationStats {
-  [key: string]: number;
-}
 
 export default function AdminDashboard() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-  const [contacts, setContacts] = useState<Contact[]>([]);
-  const [visitorStats, setVisitorStats] = useState<VisitorStats>({
-    total: 0,
-    today: 0,
-    thisWeek: 0,
-    thisMonth: 0,
-  });
-  const [locationStats, setLocationStats] = useState<LocationStats>({});
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const router = useRouter();
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/admin/login');
-    }
-  }, [status, router]);
-
-  useEffect(() => {
-    const fetchData = async () => {
+    // Simple test to see if we can access the dashboard
+    const checkAuth = async () => {
       try {
-        // Fetch contacts
-        const contactsRes = await fetch('/api/admin/contacts');
-        const contactsData = await contactsRes.json();
-        setContacts(contactsData);
-
-        // Fetch visitor stats
-        const statsRes = await fetch('/api/admin/stats');
-        const statsData = await statsRes.json();
-        setVisitorStats(statsData.visitors);
-        setLocationStats(statsData.locations);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
+        console.log('🔍 Checking dashboard access...');
         setLoading(false);
+      } catch (error) {
+        console.error('Dashboard error:', error);
+        setError('Zugriff verweigert');
       }
     };
 
-    if (session) {
-      fetchData();
-    }
-  }, [session]);
+    checkAuth();
+  }, []);
 
-  const updateContactStatus = async (id: string, status: Contact['status']) => {
+  const handleLogout = async () => {
     try {
-      const res = await fetch(`/api/admin/contacts/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ status }),
-      });
-
-      if (res.ok) {
-        setContacts(contacts.map(contact => 
-          contact._id === id ? { ...contact, status } : contact
-        ));
-      }
+      await fetch('/api/admin/logout', { method: 'POST' });
+      window.location.href = '/admin/login';
     } catch (error) {
-      console.error('Error updating contact:', error);
+      console.error('Logout error:', error);
     }
   };
 
   if (loading) {
-    return <div>Wird geladen...</div>;
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-red-600 text-center">
+          <p>{error}</p>
+          <button 
+            onClick={() => router.push('/admin/login')}
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Zurück zum Login
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="py-10">
-        <header>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold leading-tight text-gray-900">
-              Admin Dashboard
-            </h1>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white shadow">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-6">
+            <h1 className="text-3xl font-bold text-gray-900">🎉 Admin Dashboard</h1>
+            <button
+              onClick={handleLogout}
+              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+            >
+              Abmelden
+            </button>
           </div>
-        </header>
-        <main>
-          <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            {/* Visitor Stats */}
-            <div className="mt-8">
-              <h2 className="text-lg font-medium text-gray-900">Besucher Statistiken</h2>
-              <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                <div className="bg-white overflow-hidden shadow rounded-lg">
-                  <div className="px-4 py-5 sm:p-6">
-                    <dt className="text-sm font-medium text-gray-500 truncate">
-                      Gesamt Besucher
-                    </dt>
-                    <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                      {visitorStats.total}
-                    </dd>
-                  </div>
-                </div>
-                <div className="bg-white overflow-hidden shadow rounded-lg">
-                  <div className="px-4 py-5 sm:p-6">
-                    <dt className="text-sm font-medium text-gray-500 truncate">
-                      Heute
-                    </dt>
-                    <dd className="mt-1 text-3xl font-semibold text-gray-900">
-                      {visitorStats.today}
-                    </dd>
-                  </div>
-                </div>
-                {/* Add more stat boxes as needed */}
-              </div>
-            </div>
+        </div>
+      </div>
 
-            {/* Location Stats */}
-            <div className="mt-8">
-              <h2 className="text-lg font-medium text-gray-900">Besucher nach Standort</h2>
-              <div className="mt-4 bg-white shadow overflow-hidden sm:rounded-lg">
-                <ul className="divide-y divide-gray-200">
-                  {Object.entries(locationStats).map(([location, count]) => (
-                    <li key={location} className="px-4 py-4 sm:px-6">
-                      <div className="flex items-center justify-between">
-                        <div className="text-sm font-medium text-gray-900">{location}</div>
-                        <div className="text-sm text-gray-500">{count} Besucher</div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div className="bg-white shadow rounded-lg p-6">
+          <h2 className="text-2xl font-bold text-green-600 mb-4">
+            ✅ Login erfolgreich!
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Sie haben sich erfolgreich im Admin-Bereich angemeldet.
+          </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-blue-50 p-4 rounded-lg">
+              <h3 className="font-semibold text-blue-800">📊 Dashboard Features</h3>
+              <ul className="mt-2 text-blue-600 text-sm">
+                <li>• Besucherstatistiken</li>
+                <li>• Kontaktanfragen verwalten</li>
+                <li>• Zeitdiagramme</li>
+                <li>• PostgreSQL Integration</li>
+              </ul>
             </div>
-
-            {/* Contact Requests */}
-            <div className="mt-8">
-              <h2 className="text-lg font-medium text-gray-900">Kontaktanfragen</h2>
-              <div className="mt-4 bg-white shadow overflow-hidden sm:rounded-lg">
-                <ul className="divide-y divide-gray-200">
-                  {contacts.map((contact) => (
-                    <li key={contact._id} className="px-4 py-4 sm:px-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="text-sm font-medium text-gray-900">
-                            {contact.name}
-                          </div>
-                          <div className="text-sm text-gray-500">
-                            {contact.email} • {contact.service}
-                          </div>
-                          <div className="mt-2 text-sm text-gray-500">
-                            {format(new Date(contact.createdAt), 'PPP', { locale: de })}
-                          </div>
-                        </div>
-                        <div>
-                          <select
-                            value={contact.status}
-                            onChange={(e) => updateContactStatus(contact._id, e.target.value as Contact['status'])}
-                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md"
-                          >
-                            <option value="new">Neu</option>
-                            <option value="in_progress">In Bearbeitung</option>
-                            <option value="completed">Abgeschlossen</option>
-                          </select>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            
+            <div className="bg-green-50 p-4 rounded-lg">
+              <h3 className="font-semibold text-green-800">🔧 Nächste Schritte</h3>
+              <ul className="mt-2 text-green-600 text-sm">
+                <li>• Charts installieren</li>
+                <li>• Visitor Tracking aktivieren</li>
+                <li>• Statistiken implementieren</li>
+                <li>• Kontakte-Seite testen</li>
+              </ul>
             </div>
           </div>
-        </main>
+
+          <div className="mt-6 space-y-3">
+            <button
+              onClick={() => alert('Kontakte-Seite kommt bald!')}
+              className="w-full text-left px-4 py-3 bg-blue-50 hover:bg-blue-100 rounded-md text-blue-700 font-medium border border-blue-200"
+            >
+              📝 Kontakte verwalten
+            </button>
+            <button
+              onClick={() => alert('Besucher-Statistiken kommen bald!')}
+              className="w-full text-left px-4 py-3 bg-green-50 hover:bg-green-100 rounded-md text-green-700 font-medium border border-green-200"
+            >
+              👥 Besucherstatistiken
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
-} 
+}

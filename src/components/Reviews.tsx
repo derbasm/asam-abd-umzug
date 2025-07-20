@@ -9,8 +9,8 @@ export default function Reviews() {
   const { reviews } = data;
 
   return (
-    <div className="py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+    <div className="bg-gradient-to-b from-white to-accent-50 section-spacing" id="reviews">
+      <div className="container-custom">
         <div className="mx-auto max-w-2xl text-center">
           <motion.h2
             className="text-base font-semibold leading-7 text-primary-600"
@@ -21,17 +21,17 @@ export default function Reviews() {
           >
             {reviews.subtitle}
           </motion.h2>
-          <motion.p
-            className="mt-2 text-3xl font-bold tracking-tight text-accent-900 sm:text-4xl font-heading"
+          <motion.h2
+            className="mt-2 mobile-heading lg:text-4xl xl:text-5xl font-heading gradient-text text-balance"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             {reviews.title}
-          </motion.p>
+          </motion.h2>
           <motion.p
-            className="mt-6 text-lg leading-8 text-accent-600"
+            className="mt-6 text-lg leading-8 text-accent-600 text-balance"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -40,43 +40,84 @@ export default function Reviews() {
             {reviews.description}
           </motion.p>
         </div>
-        <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-8 sm:mt-20 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+        
+        <div className="mx-auto mt-12 sm:mt-16 lg:mt-20 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
           {reviews.items.map((review, index) => (
             <motion.article
               key={review.id}
-              className="flex flex-col justify-between rounded-2xl bg-white p-8 ring-1 ring-accent-200 hover:shadow-lg transition-shadow duration-300"
-              initial={{ opacity: 0, y: 20 }}
+              className="card-interactive group h-full"
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              whileHover={{ scale: 1.02 }}
             >
-              <div>
-                <div className="flex items-center gap-x-4">
+              <div className="flex flex-col h-full">
+                {/* Header */}
+                <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
-                    <h3 className="font-semibold leading-7 text-accent-900">
+                    <h3 className="font-semibold text-lg text-accent-900 group-hover:text-primary-600 transition-colors duration-200">
                       {review.name}
                     </h3>
-                    <p className="text-sm leading-6 text-accent-600">
-                      {review.location}
+                    <p className="text-sm text-accent-500 mt-1">
+                      📍 {review.location}
                     </p>
                   </div>
-                  <div className="flex items-center">
+                  
+                  {/* Star rating */}
+                  <div className="flex items-center gap-1 bg-yellow-50 px-3 py-1 rounded-full">
                     {[...Array(review.rating)].map((_, i) => (
                       <StarIcon
                         key={i}
-                        className="h-5 w-5 text-yellow-400"
+                        className="h-4 w-4 text-yellow-400"
                         aria-hidden="true"
                       />
                     ))}
+                    <span className="text-sm font-medium text-yellow-600 ml-1">
+                      {review.rating}.0
+                    </span>
                   </div>
                 </div>
-                <p className="mt-4 text-base leading-6 text-accent-600">
-                  {review.text}
-                </p>
+                
+                {/* Review text */}
+                <div className="flex-1">
+                  <blockquote className="text-accent-600 leading-relaxed italic">
+                    "{review.text}"
+                  </blockquote>
+                </div>
+                
+                {/* Bottom border indicator */}
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-600 to-secondary-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full" />
               </div>
             </motion.article>
           ))}
         </div>
+        
+        {/* CTA section */}
+        <motion.div
+          className="mt-12 sm:mt-16 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+        >
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-white/20">
+            <p className="text-lg font-semibold text-accent-900 mb-2">
+              ⭐ Über 500 zufriedene Kunden
+            </p>
+            <p className="text-accent-600 mb-6">
+              Werden Sie Teil unserer wachsenden Familie zufriedener Kunden
+            </p>
+            <motion.a
+              href="#contact"
+              className="btn-primary btn-mobile inline-flex items-center"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Jetzt Bewertung lesen
+            </motion.a>
+          </div>
+        </motion.div>
       </div>
     </div>
   );

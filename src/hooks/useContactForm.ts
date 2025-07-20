@@ -3,9 +3,8 @@ import { useState } from 'react';
 interface ContactFormData {
   name: string;
   email: string;
-  phone?: string;
-  service: string;
-  message: string;
+  phone: string;
+  message?: string;
 }
 
 interface ContactFormState {

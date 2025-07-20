@@ -76,7 +76,6 @@ export default function Services() {
                       className="inline-flex items-center text-primary-600 hover:text-primary-500 font-medium group/link"
                     >
                       Mehr erfahren
-                      <span className="ml-1 group-hover/link:translate-x-1 transition-transform duration-200">→</span>
                     </Link>
                   </div>
                 </div>

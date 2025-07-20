@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: umzug_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: umzug_db
+      POSTGRES_USER: umzug_user
+      POSTGRES_PASSWORD: umzug_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U umzug_user -d umzug_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: umzug_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "postgresql://umzug_user:umzug_password@postgres:5432/umzug_db"
+      NEXTAUTH_SECRET: "your-secret-key-here"
+      NEXTAUTH_URL: "http://localhost:3000"
+      ADMIN_USERNAME: "admin"
+      ADMIN_PASSWORD: "admin123"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+
+volumes:
+  postgres_data:

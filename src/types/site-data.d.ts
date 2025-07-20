@@ -10,11 +10,22 @@ interface Company {
     zip: string;
     country: string;
   };
-  social: {
-    facebook: string;
-    instagram: string;
-  };
   workingHours: string;
+}
+
+interface NavigationItem {
+  name: string;
+  href: string;
+}
+
+interface UI {
+  navigation: {
+    openMenu: string;
+    closeMenu: string;
+  };
+  pricing: {
+    featured: string;
+  };
 }
 
 interface Hero {
@@ -54,6 +65,16 @@ interface Services {
   title: string;
   description: string;
   items: Service[];
+}
+
+interface Gallery {
+  subtitle: string;
+  title: string;
+  description: string;
+  cta: {
+    description: string;
+    callButton: string;
+  };
 }
 
 interface PricingTier {
@@ -132,9 +153,12 @@ interface Footer {
 
 export interface SiteData {
   company: Company;
+  navigation: NavigationItem[];
+  ui: UI;
   hero: Hero;
   about: About;
   services: Services;
+  gallery: Gallery;
   pricing: Pricing;
   reviews: Reviews;
   contact: Contact;

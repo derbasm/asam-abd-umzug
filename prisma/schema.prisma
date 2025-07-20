@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Contact {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  phone     String?
+  service   String?
+  message   String?
+  status    ContactStatus @default(NEW)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("contacts")
+}
+
+model Visitor {
+  id          Int      @id @default(autoincrement())
+  ip          String
+  userAgent   String?  @map("user_agent")
+  country     String?
+  city        String?
+  region      String?
+  timezone    String?
+  firstVisit  DateTime @default(now()) @map("first_visit")
+  lastVisit   DateTime @default(now()) @map("last_visit")
+  visits      Int      @default(1)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  pages       VisitorPage[]
+
+  @@map("visitors")
+}
+
+model VisitorPage {
+  id        Int      @id @default(autoincrement())
+  visitorId Int      @map("visitor_id")
+  path      String
+  timestamp DateTime @default(now())
+  
+  visitor   Visitor  @relation(fields: [visitorId], references: [id], onDelete: Cascade)
+
+  @@map("visitor_pages")
+}
+
+model AdminUser {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("admin_users")
+}
+
+enum ContactStatus {
+  NEW         @map("new")
+  IN_PROGRESS @map("in_progress")
+  COMPLETED   @map("completed")
+}

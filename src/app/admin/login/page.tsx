@@ -1,36 +1,48 @@
 'use client';
 
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 export default function AdminLogin() {
-  const router = useRouter();
-  const [error, setError] = useState('');
+  const [credentials, setCredentials] = useState({
+    username: '',
+    password: ''
+  });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
-
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
+    setError('');
 
     try {
-      const result = await signIn('credentials', {
-        redirect: false,
-        email,
-        password,
+      console.log('🔐 Attempting login with:', credentials.username);
+      
+      const response = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
       });
 
-      if (result?.error) {
-        setError('Ungültige Anmeldedaten');
+      const data = await response.json();
+      console.log('📡 Login response:', response.status, data);
+
+      if (response.ok) {
+        console.log('✅ Login successful, redirecting...');
+        // Small delay to ensure cookie is set
+        setTimeout(() => {
+          window.location.href = '/admin/dashboard';
+        }, 100);
       } else {
-        router.push('/admin/dashboard');
+        console.log('❌ Login failed:', data.error);
+        setError(data.error || 'Anmeldung fehlgeschlagen');
       }
     } catch (error) {
+      console.error('💥 Login error:', error);
       setError('Ein Fehler ist aufgetreten');
     } finally {
       setLoading(false);
@@ -48,16 +60,18 @@ export default function AdminLogin() {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="email" className="sr-only">
-                Email
+              <label htmlFor="username" className="sr-only">
+                Benutzername
               </label>
               <input
                 id="email"
-                name="email"
-                type="email"
+                name="username"
+                type="text"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
-                placeholder="Email"
+                placeholder="Benutzername"
+                value={credentials.username}
+                onChange={(e) => setCredentials(prev => ({ ...prev, username: e.target.value }))}
               />
             </div>
             <div>
@@ -71,6 +85,8 @@ export default function AdminLogin() {
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
                 placeholder="Passwort"
+                value={credentials.password}
+                onChange={(e) => setCredentials(prev => ({ ...prev, password: e.target.value }))}
               />
             </div>
           </div>

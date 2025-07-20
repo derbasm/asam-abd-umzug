@@ -3,7 +3,7 @@ export const IMAGES = {
     main: '/assets/images/hero-image.jpg',
   },
   about: {
-    team: '/assets/images/about-image.jpg',
+    team: '/images/about-us.jpg',
   },
   services: {
     moving: '/assets/images/services/moving.jpg',

@@ -1,21 +1,34 @@
 {
   "company": {
-    "name": "Modern Umzug",
+    "name": "Asam Abd",
     "slogan": "Ihr Partner für stressfreie Umzüge",
     "description": "Professionelle Umzugsdienstleistungen mit modernem Ansatz",
-    "phone": "+49 (0) 123 456789",
-    "email": "info@modern-umzug.de",
+    "phone": "+49 176 80248293",
+    "email": "ma9495232@gmail.com",
     "address": {
-      "street": "Musterstraße 123",
-      "city": "Berlin",
-      "zip": "10115",
+      "street": "Fangstraße 72",
+      "city": "Hamm",
+      "zip": "59077",
       "country": "Deutschland"
     },
-    "social": {
-      "facebook": "https://facebook.com/modernumzug",
-      "instagram": "https://instagram.com/modernumzug"
-    },
     "workingHours": "Mo-Fr: 08:00 - 18:00 Uhr"
+  },
+  "navigation": [
+    { "name": "Start", "href": "#" },
+    { "name": "Leistungen", "href": "#services" },
+    { "name": "Über uns", "href": "#about" },
+    { "name": "Preise", "href": "#pricing" },
+    { "name": "Galerie", "href": "#gallery" },
+    { "name": "Kontakt", "href": "#contact" }
+  ],
+  "ui": {
+    "navigation": {
+      "openMenu": "Menü öffnen",
+      "closeMenu": "Menü schließen"
+    },
+    "pricing": {
+      "featured": "Beliebt"
+    }
   },
   "hero": {
     "title": "Ihr Partner für stressfreie Umzüge",
@@ -42,7 +55,6 @@
     "features": [
       "Professionelles und erfahrenes Team",
       "Moderne und sichere Transportfahrzeuge",
-      "Umfassende Versicherung für Ihre Güter",
       "Flexible Terminplanung",
       "Transparente Preisgestaltung",
       "Persönliche Beratung"
@@ -91,7 +103,6 @@
           "Transport Ihrer Möbel und Kartons",
           "2 erfahrene Umzugshelfer",
           "3,5t Transporter",
-          "Basis-Versicherung",
           "Grundlegende Möbelmontage",
           "Standardmäßige Umzugsdecken"
         ]
@@ -106,7 +117,6 @@
           "Alles vom Basis-Paket",
           "3-4 erfahrene Umzugshelfer",
           "7,5t LKW mit Hebebühne",
-          "Erweiterte Versicherung",
           "Komplette Möbelmontage",
           "Professionelles Verpackungsmaterial",
           "Einlagerungsmöglichkeit (1 Monat)",
@@ -124,7 +134,6 @@
           "Alles vom Premium-Paket",
           "Unbegrenzte Anzahl an Helfern",
           "Mehrere LKWs nach Bedarf",
-          "Spezial-Versicherung",
           "IT-Equipment Handling",
           "Wochenend-Service",
           "Projektmanager vor Ort",
@@ -132,6 +141,15 @@
         ]
       }
     ]
+  },
+  "gallery": {
+    "subtitle": "Galerie",
+    "title": "Unsere Arbeit in Bildern",
+    "description": "Entdecken Sie Asam Abd in Aktion. Hier sehen Sie Eindrücke unserer professionellen Umzugsdienstleistungen.",
+    "cta": {
+      "description": "Überzeugt von unserer Arbeit? Kontaktieren Sie uns für Ihr individuelles Angebot.",
+      "callButton": "📞 Jetzt anrufen"
+    }
   },
   "reviews": {
     "subtitle": "Bewertungen",
@@ -210,27 +228,6 @@
           "error": "Telefonnummer ist erforderlich"
         },
         {
-          "name": "moveDate",
-          "label": "Umzugstermin",
-          "type": "date",
-          "required": true,
-          "error": "Umzugstermin ist erforderlich"
-        },
-        {
-          "name": "fromAddress",
-          "label": "Von (Adresse)",
-          "type": "text",
-          "required": true,
-          "error": "Startadresse ist erforderlich"
-        },
-        {
-          "name": "toAddress",
-          "label": "Nach (Adresse)",
-          "type": "text",
-          "required": true,
-          "error": "Zieladresse ist erforderlich"
-        },
-        {
           "name": "message",
           "label": "Nachricht",
           "type": "textarea",
@@ -242,21 +239,21 @@
     "contactInfo": {
       "phone": {
         "title": "Telefon",
-        "value": "+49 (0) 123 456789",
+        "value": "+49 176 80248293",
         "hours": "Mo-Fr: 08:00 - 18:00 Uhr"
       },
       "email": {
         "title": "E-Mail",
-        "value": "info@modern-umzug.de"
+        "value": "ma9495232@gmail.com"
       },
       "address": {
         "title": "Standort",
-        "street": "Musterstraße 123",
-        "city": "12345 Berlin"
+        "street": "Fangstraße 72",
+        "city": "59077 Hamm"
       }
     }
   },
   "footer": {
-    "copyright": "© {year} Modern Umzug. Alle Rechte vorbehalten."
+    "copyright": "© {year} Asam Abd. Alle Rechte vorbehalten."
   }
 } 

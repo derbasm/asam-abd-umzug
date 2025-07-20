@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
+import deData from '@/data/site-data.json';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -17,10 +18,10 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Modern Umzug - Professional Moving Services",
-  description: "Professional moving services with a modern approach. Stress-free moving with our experienced team. ✓ Fair prices ✓ Expert consultation ✓ Reliable service",
+  title: `${deData.company.name} - ${deData.company.description}`,
+  description: deData.hero.subtitle,
   keywords: [
-    "Modern Moving",
+    deData.company.name,
     "Moving Service",
     "Professional Moving",
     "Moving Company",
@@ -31,6 +32,17 @@ export const metadata: Metadata = {
     "Residential Moving",
     "Furniture Assembly"
   ],
+  icons: {
+    icon: [
+      { url: '/favicon.png', sizes: '1024x1024', type: 'image/png' },
+      { url: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' }
+    ],
+    apple: [
+      { url: '/favicon.png', sizes: '1024x1024', type: 'image/png' }
+    ],
+    shortcut: '/favicon.png',
+  },
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
