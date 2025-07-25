@@ -22,6 +22,7 @@
     "bcryptjs": "^3.0.2",
     "chart.js": "^4.4.0",
     "chartjs-adapter-date-fns": "^3.0.0",
+    "critters": "^0.0.25",
     "date-fns": "^4.1.0",
     "framer-motion": "^11.0.8",
     "jsonwebtoken": "^9.0.2",
