@@ -6,7 +6,7 @@ import type { SiteData } from '@/types/site-data';
 export function useTranslations() {
   const { language } = useLanguage();
   
-  const data = language === 'de' ? (deData as SiteData) : (enData as SiteData);
+  const data = language === 'de' ? deData : enData;
   
   return {
     data,

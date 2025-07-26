@@ -84,6 +84,16 @@
         "title": "Verpackungsservice",
         "description": "Professionelles Verpacken Ihrer Gegenstände mit hochwertigen Materialien.",
         "icon": "ArchiveBoxIcon"
+      },
+      {
+        "title": "Transport",
+        "description": "Einfach Transport von A nach B - sicher und zuverlässig für alle Ihre Transportbedürfnisse.",
+        "icon": "TruckIcon"
+      },
+      {
+        "title": "Haushaltsauflösung",
+        "description": "Professionelle Entrümpelung und Entsorgung einzelner oder mehrerer Möbel und Haushaltsgegenstände.",
+        "icon": "TrashIcon"
       }
     ]
   },
@@ -97,13 +107,11 @@
         "name": "Basis",
         "id": "tier-basic",
         "href": "#contact",
-        "price": "ab 399€",
+        "price": "60€ pro Stunde",
         "description": "Der perfekte Einstieg für kleine Umzüge.",
         "features": [
-          "Transport Ihrer Möbel und Kartons",
-          "2 erfahrene Umzugshelfer",
-          "3,5t Transporter",
-          "Grundlegende Möbelmontage",
+          "Transporter 3,5t mit Fahrer",
+          "1 erfahrene Umzugshelfer",
           "Standardmäßige Umzugsdecken"
         ]
       },
@@ -111,16 +119,14 @@
         "name": "Premium",
         "id": "tier-premium",
         "href": "#contact",
-        "price": "ab 699€",
+        "price": "80€ pro Stunde",
         "description": "Die optimale Lösung für mittlere bis große Umzüge.",
         "features": [
-          "Alles vom Basis-Paket",
-          "3-4 erfahrene Umzugshelfer",
-          "7,5t LKW mit Hebebühne",
-          "Komplette Möbelmontage",
-          "Professionelles Verpackungsmaterial",
-          "Einlagerungsmöglichkeit (1 Monat)",
-          "Entsorgung von Verpackungsmaterial"
+          "Transporter 3,5t mit Fahrer",
+          "2 erfahrene Umzugshelfer",
+          "Standardmäßige Umzugsdecken",
+          "Möbelmontage inklusive",
+          "Verpackungsmaterial inklusive"
         ],
         "featured": true
       },
@@ -128,16 +134,15 @@
         "name": "Business",
         "id": "tier-business",
         "href": "#contact",
-        "price": "Individuell",
+        "price": "100€ pro Stunde",
         "description": "Maßgeschneiderte Lösungen für Firmenumzüge.",
         "features": [
-          "Alles vom Premium-Paket",
-          "Unbegrenzte Anzahl an Helfern",
-          "Mehrere LKWs nach Bedarf",
-          "IT-Equipment Handling",
-          "Wochenend-Service",
-          "Projektmanager vor Ort",
-          "Express-Service möglich"
+          "Transporter 3,5t mit Fahrer",
+          "3 erfahrene Umzugshelfer",
+          "Standardmäßige Umzugsdecken",
+          "Möbelmontage inklusive",
+          "Verpackungsmaterial inklusive",
+          "Flexible Terminplanung"
         ]
       }
     ]
@@ -160,42 +165,36 @@
         "id": 1,
         "name": "Sarah M.",
         "rating": 5,
-        "location": "Berlin",
         "text": "Absolut professioneller Service! Das Team war pünktlich, freundlich und sehr vorsichtig mit unseren Möbeln. Der Umzug verlief reibungslos und schneller als erwartet."
       },
       {
         "id": 2,
         "name": "Thomas K.",
         "rating": 5,
-        "location": "Hamburg",
         "text": "Hervorragende Arbeit! Die Preisgestaltung war transparent, und das Team hat alle unsere Erwartungen übertroffen. Besonders die Möbelmontage war erstklassig."
       },
       {
         "id": 3,
         "name": "Lisa B.",
         "rating": 5,
-        "location": "München",
         "text": "Ein großes Lob an das gesamte Team! Die Kommunikation war ausgezeichnet, und selbst kurzfristige Änderungen wurden problemlos umgesetzt."
       },
       {
         "id": 4,
         "name": "Michael H.",
         "rating": 5,
-        "location": "Frankfurt",
         "text": "Sehr zufrieden mit dem Service. Das Team war hochprofessionell und hat unseren Firmenumzug perfekt koordiniert. Alle Termine wurden eingehalten."
       },
       {
         "id": 5,
         "name": "Julia W.",
         "rating": 5,
-        "location": "Köln",
         "text": "Fantastischer Service von Anfang bis Ende. Die Berater waren sehr kompetent und haben uns optimal bei der Planung unterstützt. Gerne wieder!"
       },
       {
         "id": 6,
         "name": "Andreas P.",
         "rating": 5,
-        "location": "Stuttgart",
         "text": "Bester Umzugsservice, den ich je hatte! Das Team war nicht nur effizient, sondern auch sehr freundlich und hilfsbereit. Absolut empfehlenswert."
       }
     ]

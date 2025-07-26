@@ -1,6 +1,8 @@
 import dynamic from 'next/dynamic';
+import Script from 'next/script';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
+import { generateLocalBusinessSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
 
 // Dynamic imports for better performance
 const Services = dynamic(() => import('@/components/Services'), {
@@ -33,31 +35,60 @@ const Footer = dynamic(() => import('@/components/Footer'), {
 
 export default function Home() {
   return (
-    <main className="relative">
-      <Navbar />
-      <Hero />
-      
-      <section id="services" className="scroll-mt-16">
-        <Services />
-      </section>
+    <>
+      {/* Strukturierte Daten für SEO */}
+      <Script
+        id="local-business-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateLocalBusinessSchema()),
+        }}
+      />
+      <Script
+        id="breadcrumb-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateBreadcrumbSchema()),
+        }}
+      />
+      <Script
+        id="faq-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateFAQSchema()),
+        }}
+      />
 
-      <section id="about" className="scroll-mt-16">
-        <About />
-      </section>
+      <main className="relative">
+        <Navbar />
+        <Hero />
+        
+        <section id="services" className="scroll-mt-16">
+          <Services />
+        </section>
 
-      <section id="pricing" className="scroll-mt-16">
-        <Pricing />
-      </section>
+        <section id="about" className="scroll-mt-16">
+          <About />
+        </section>
 
-      <section id="gallery" className="scroll-mt-16">
-        <ImageSwiper />
-      </section>
+        <section id="pricing" className="scroll-mt-16">
+          <Pricing />
+        </section>
 
-      <section id="contact" className="scroll-mt-16">
-        <Contact />
-      </section>
+        <section id="gallery" className="scroll-mt-16">
+          <ImageSwiper />
+        </section>
 
-      <Footer />
-    </main>
+        <section id="reviews" className="scroll-mt-16">
+          <Reviews />
+        </section>
+
+        <section id="contact" className="scroll-mt-16">
+          <Contact />
+        </section>
+
+        <Footer />
+      </main>
+    </>
   );
 }

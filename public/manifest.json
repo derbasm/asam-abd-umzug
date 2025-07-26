@@ -1,16 +1,81 @@
 {
-  "name": "Asam Abd Umzugsservice",
-  "short_name": "Asam Abd",
-  "description": "Professioneller Umzugsservice in München",
+  "name": "Asam Abd - Professioneller Umzugsservice Hamm",
+  "short_name": "Asam Abd Umzug",
+  "description": "Professioneller Umzugsservice in Hamm und NRW. Privatumzüge, Büroumzüge, Haushaltsauflösung, Möbelmontage und Transport ab 60€/Std.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#3B82F6",
+  "theme_color": "#1f2937",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "de-DE",
+  "dir": "ltr",
+  "categories": ["business", "productivity", "utilities"],
   "icons": [
     {
       "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.png", 
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/logo.png",
       "sizes": "1024x1024",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/swipper/01.jpg",
+      "sizes": "1200x630",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "Umzugsservice in Aktion"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Kostenvoranschlag",
+      "short_name": "Angebot",
+      "description": "Jetzt Kostenvoranschlag anfordern",
+      "url": "/#contact",
+      "icons": [
+        {
+          "src": "/favicon.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Unsere Preise",
+      "short_name": "Preise", 
+      "description": "Preise und Pakete ansehen",
+      "url": "/#pricing",
+      "icons": [
+        {
+          "src": "/favicon.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Anrufen",
+      "short_name": "Telefon",
+      "description": "Direkt anrufen: +49 176 80248293",
+      "url": "tel:+4917680248293",
+      "icons": [
+        {
+          "src": "/favicon.png",
+          "sizes": "96x96"
+        }
+      ]
     }
   ]
 }

@@ -1,59 +1,90 @@
-version: '3.8'
-
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runner
+    container_name: umzug_app
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-umzug_user}:${POSTGRES_PASSWORD:-umzug_password}@postgres:5432/${POSTGRES_DB:-umzug_db}"
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:5000}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      JWT_SECRET: ${JWT_SECRET}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      EMAIL_FROM: ${EMAIL_FROM}
+    ports:
+      - "${APP_PORT:-5000}:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    user: "1001:1001"
+    networks:
+      - app-network
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/cache
+
   postgres:
     image: postgres:15-alpine
     container_name: umzug_postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: umzug_db
-      POSTGRES_USER: umzug_user
-      POSTGRES_PASSWORD: umzug_password
-      # Production Security Settings
-      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
-    ports:
-      - "5432:5432"
+      POSTGRES_USER: ${POSTGRES_USER:-umzug_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-umzug_password}
+      POSTGRES_DB: ${POSTGRES_DB:-umzug_db}
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256"
     volumes:
-      # Named Volume für Datenpersistierung
       - postgres_data:/var/lib/postgresql/data
-      # Backup Directory (optional)
-      - ./backups:/backups
-      # Init Scripts
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-      # Custom PostgreSQL Configuration (optional)
-      - ./postgres.conf:/etc/postgresql/postgresql.conf
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U umzug_user -d umzug_db"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    # Resource Limits für Production
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
     deploy:
       resources:
         limits:
           memory: 512M
+          cpus: '0.5'
         reservations:
           memory: 256M
-
-  app:
-    build: .
-    container_name: umzug_app
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
-    environment:
-      DATABASE_URL: "postgresql://umzug_user:umzug_password@postgres:5432/umzug_db"
-      NEXTAUTH_SECRET: "your-secret-key-here"
-      NEXTAUTH_URL: "http://localhost:3000"
-      ADMIN_USERNAME: "admin"
-      ADMIN_PASSWORD: "admin123"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    volumes:
-      - ./src:/app/src
-      - ./public:/app/public
+          cpus: '0.25'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-umzug_user} -d ${POSTGRES_DB:-umzug_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+    security_opt:
+      - no-new-privileges:true
 
 volumes:
   postgres_data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

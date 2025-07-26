@@ -41,7 +41,23 @@
         "text": "Our Services",
         "link": "#services"
       }
+    },
+    "consultation": {
+      "text": "Free Consultation",
+      "link": "#contact"
     }
+  },
+  "about": {
+    "subtitle": "About Us",
+    "title": "Your Trusted Partner for Moving",
+    "description": "With over 10 years of experience in the moving industry, we stand for quality, reliability, and first-class service. Our goal is to make your move as pleasant and stress-free as possible.",
+    "features": [
+      "Professional and experienced team",
+      "Modern and safe transport vehicles",
+      "Flexible appointment scheduling",
+      "Transparent pricing",
+      "Personal consultation"
+    ]
   },
   "gallery": {
     "subtitle": "Gallery",
@@ -55,6 +71,7 @@
   "services": {
     "title": "Our Services",
     "subtitle": "We offer a wide range of moving services",
+    "description": "We offer you a comprehensive range of moving services, tailored to your individual needs.",
     "items": [
       {
         "title": "Residential Moving",
@@ -75,51 +92,65 @@
         "title": "Packing Service",
         "description": "Professional packing of your items with high-quality materials.",
         "icon": "ArchiveBoxIcon"
+      },
+      {
+        "title": "Transport",
+        "description": "Simple transport from A to B - safe and reliable for all your transportation needs.",
+        "icon": "TruckIcon"
+      },
+      {
+        "title": "House Clearance",
+        "description": "Professional clearance and disposal of individual or multiple furniture items and household goods.",
+        "icon": "TrashIcon"
       }
     ]
   },
   "pricing": {
-    "title": "Our Prices",
-    "subtitle": "Transparent and Fair Pricing",
-    "plans": [
+    "subtitle": "Prices",
+    "title": "The Right Solution for Every Move",
+    "description": "Choose the package that suits your needs. All prices are guidelines and can be adjusted after individual consultation.",
+    "cta": "Request Quote",
+    "tiers": [
       {
         "name": "Basic",
-        "price": "from €399",
-        "description": "Ideal for small apartments",
+        "id": "tier-basic",
+        "href": "#contact",
+        "price": "€60 per hour",
+        "description": "The perfect start for small moves.",
         "features": [
-          "Transport up to 20km",
-          "2 professional movers",
-          "3.5t van",
-          "Basic insurance",
-          "Basic furniture assembly"
+          "3.5t van with driver",
+          "1 experienced moving helper",
+          "Standard moving blankets"
         ]
       },
       {
         "name": "Premium",
-        "price": "from €699",
-        "description": "Perfect for medium households",
+        "id": "tier-premium",
+        "href": "#contact",
+        "price": "€80 per hour",
+        "description": "The optimal solution for medium to large moves.",
         "features": [
-          "Transport up to 50km",
-          "3 professional movers",
-          "7.5t truck",
-          "Extended insurance",
-          "Complete furniture assembly",
-          "Packing materials",
-          "Disposal service"
-        ]
+          "3.5t van with driver",
+          "2 experienced moving helpers",
+          "Standard moving blankets",
+          "Furniture assembly included",
+          "Packing materials included"
+        ],
+        "featured": true
       },
       {
         "name": "Business",
-        "price": "On Request",
-        "description": "Tailored for businesses",
+        "id": "tier-business",
+        "href": "#contact",
+        "price": "€100 per hour",
+        "description": "Customized solutions for corporate moves.",
         "features": [
-          "Unlimited transport",
-          "Team as needed",
-          "Fleet as needed",
-          "Full insurance",
-          "Project management",
-          "IT relocation service",
-          "24/7 support"
+          "3.5t van with driver",
+          "3 experienced moving helpers",
+          "Standard moving blankets",
+          "Furniture assembly included",
+          "Packing materials included",
+          "Flexible scheduling"
         ]
       }
     ]
@@ -129,41 +160,44 @@
     "subtitle": "Testimonials from satisfied customers",
     "items": [
       {
+        "id": 1,
         "name": "Anna Smith",
-        "role": "Private Customer",
-        "comment": "Very professional service. Everything was carefully packed and transported. Highly recommended!",
-        "rating": 5
+        "rating": 5,
+        "text": "Very professional service. Everything was carefully packed and transported. Highly recommended!"
       },
       {
+        "id": 2,
         "name": "Michael Weber",
-        "role": "CEO",
-        "comment": "Our office relocation was perfectly planned and executed. Minimal downtime and very competent team.",
-        "rating": 5
+        "rating": 5,
+        "text": "Our office relocation was perfectly planned and executed. Minimal downtime and very competent team."
       },
       {
+        "id": 3,
         "name": "Laura Meyer",
-        "role": "Private Customer",
-        "comment": "Fast, reliable, and friendly. The prices are fair and transparent. Would use again!",
-        "rating": 5
+        "rating": 5,
+        "text": "Fast, reliable, and friendly. The prices are fair and transparent. Would use again!"
       }
     ]
   },
   "contact": {
     "title": "Contact Us",
     "subtitle": "We're happy to provide personal consultation",
+    "description": "Get in touch with us for a free quote. Our team will be happy to advise you and find the perfect solution for your move.",
     "form": {
       "fields": [
         {
           "name": "name",
           "label": "Name",
           "type": "text",
-          "required": true
+          "required": true,
+          "error": "Please enter your name"
         },
         {
           "name": "email",
           "label": "Email",
           "type": "email",
-          "required": true
+          "required": true,
+          "error": "Please enter a valid email address"
         },
         {
           "name": "phone",
@@ -180,6 +214,8 @@
             "Office Moving",
             "Furniture Assembly",
             "Packing Service",
+            "Transport",
+            "Household Clearance",
             "Other"
           ],
           "required": true
@@ -209,5 +245,8 @@
         "city": "59077 Hamm"
       }
     }
+  },
+  "footer": {
+    "copyright": "All rights reserved."
   }
 } 

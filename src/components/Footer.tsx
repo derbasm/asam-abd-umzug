@@ -28,7 +28,7 @@ export default function Footer() {
     <footer className="bg-gradient-to-b from-accent-900 to-accent-800 text-white">
       <div className="container-custom section-spacing">
         {/* Main footer content */}
-        <div className="grid grid-cols-1 gap-8 sm:gap-12 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-8 sm:gap-12 lg:grid-cols-3">
           {/* Company info */}
           <div className="lg:col-span-2">
             <div className="mb-6">

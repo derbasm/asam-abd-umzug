@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
-import deData from '@/data/site-data.json';
+import { generateMetadata } from "@/lib/metadata";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -17,31 +17,25 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
+// SEO-optimierte Metadata
 export const metadata: Metadata = {
-  title: `${deData.company.name} - ${deData.company.description}`,
-  description: deData.hero.subtitle,
-  keywords: [
-    deData.company.name,
-    "Moving Service",
-    "Professional Moving",
-    "Moving Company",
-    "Furniture Transport",
-    "Moving Help",
-    "House Clearance",
-    "Office Moving",
-    "Residential Moving",
-    "Furniture Assembly"
-  ],
+  ...generateMetadata('de'),
+  
+  // Enhanced Icons Configuration
   icons: {
     icon: [
-      { url: '/favicon.png', sizes: '1024x1024', type: 'image/png' },
+      { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.png', sizes: '16x16', type: 'image/png' },
       { url: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' }
     ],
     apple: [
-      { url: '/favicon.png', sizes: '1024x1024', type: 'image/png' }
+      { url: '/favicon.png', sizes: '180x180', type: 'image/png' },
+      { url: '/favicon.png', sizes: '152x152', type: 'image/png' },
+      { url: '/favicon.png', sizes: '120x120', type: 'image/png' }
     ],
     shortcut: '/favicon.png',
   },
+  
   manifest: '/manifest.json',
 };
 

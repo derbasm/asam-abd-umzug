@@ -30,15 +30,6 @@ export default function Reviews() {
           >
             {reviews.title}
           </motion.h2>
-          <motion.p
-            className="mt-6 text-lg leading-8 text-accent-600 text-balance"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            {reviews.description}
-          </motion.p>
         </div>
         
         <div className="mx-auto mt-12 sm:mt-16 lg:mt-20 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
@@ -59,9 +50,6 @@ export default function Reviews() {
                     <h3 className="font-semibold text-lg text-accent-900 group-hover:text-primary-600 transition-colors duration-200">
                       {review.name}
                     </h3>
-                    <p className="text-sm text-accent-500 mt-1">
-                      📍 {review.location}
-                    </p>
                   </div>
                   
                   {/* Star rating */}
@@ -92,33 +80,7 @@ export default function Reviews() {
             </motion.article>
           ))}
         </div>
-        
-        {/* CTA section */}
-        <motion.div
-          className="mt-12 sm:mt-16 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-        >
-          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-white/20">
-            <p className="text-lg font-semibold text-accent-900 mb-2">
-              ⭐ Über 500 zufriedene Kunden
-            </p>
-            <p className="text-accent-600 mb-6">
-              Werden Sie Teil unserer wachsenden Familie zufriedener Kunden
-            </p>
-            <motion.a
-              href="#contact"
-              className="btn-primary btn-mobile inline-flex items-center"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Jetzt Bewertung lesen
-            </motion.a>
-          </div>
-        </motion.div>
       </div>
     </div>
   );
-} 
+};

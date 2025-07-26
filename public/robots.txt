@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Wichtige Seiten für Suchmaschinen
+Allow: /
+Allow: /en
+Allow: /api/contact
+
+# Blockiere irrelevante Bereiche
+Disallow: /api/admin/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /api/test-login
+
+# Sitemap Location
+Sitemap: https://asamabd-umzug.de/sitemap.xml
+
+# Crawl-delay für bessere Server-Performance
+Crawl-delay: 1
