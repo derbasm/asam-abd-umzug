@@ -1,8 +1,8 @@
 {
   "company": {
     "name": "Asam Abd",
-    "slogan": "Ihr Partner für stressfreie Umzüge",
-    "description": "Professionelle Umzugsdienstleistungen mit modernem Ansatz",
+    "slogan": "Ihr regionaler Umzugspartner in Hamm & Umgebung",
+    "description": "Professionelle Umzugsdienstleistungen in Hamm, Dortmund, Münster und allen umliegenden Städten",
     "phone": "+49 176 80248293",
     "email": "ma9495232@gmail.com",
     "address": {
@@ -31,8 +31,8 @@
     }
   },
   "hero": {
-    "title": "Ihr Partner für stressfreie Umzüge",
-    "subtitle": "Wir machen Ihren Umzug zu einem reibungslosen Erlebnis. Mit unserem erfahrenen Team und modernster Ausrüstung sorgen wir für einen professionellen und effizienten Umzugsservice.",
+    "title": "Professionelle Umzüge in Hamm & Umgebung",
+    "subtitle": "Ihr vertrauensvoller Umzugspartner für Hamm, Dortmund, Münster und alle umliegenden Städte. Von Ahlen bis Bönen, von Unna bis Kamen - wir sorgen für einen reibungslosen und stressfreien Umzug mit unserem erfahrenen Team und moderner Ausrüstung.",
     "cta": {
       "primary": {
         "text": "Kostenvoranschlag anfordern",
@@ -98,51 +98,59 @@
     ]
   },
   "pricing": {
-    "subtitle": "Preise",
-    "title": "Die richtige Lösung für jeden Umzug",
-    "description": "Wählen Sie das passende Paket für Ihre Bedürfnisse. Alle Preise sind Richtwerte und können nach individueller Beratung angepasst werden.",
-    "cta": "Jetzt anfragen",
+    "subtitle": "Service-Pakete",
+    "title": "Ihr perfektes Umzugspaket",
+    "description": "Wählen Sie das passende Service-Paket für Ihre Bedürfnisse. Von kleinen Transporten bis zum Vollservice-Umzug - wir haben die richtige Lösung für Sie.",
+    "cta": "Paket anfragen",
     "tiers": [
       {
-        "name": "Basis",
-        "id": "tier-basic",
+        "name": "Klein",
+        "id": "tier-klein",
         "href": "#contact",
-        "price": "60€ pro Stunde",
-        "description": "Der perfekte Einstieg für kleine Umzüge.",
+        "price": "ab 60€ pro Stunde",
+        "description": "Ideal für kleine Wohnungen, Studentenwohnheime oder einzelne Möbelstücke.",
         "features": [
           "Transporter 3,5t mit Fahrer",
-          "1 erfahrene Umzugshelfer",
-          "Standardmäßige Umzugsdecken"
+          "1 erfahrener Umzugshelfer", 
+          "Basis-Umzugsdecken",
+          "Transport von A nach B",
+          "Geeignet für 1-2 Zimmer",
+          "Keine Möbelmontage"
         ]
       },
       {
-        "name": "Premium",
-        "id": "tier-premium",
+        "name": "Standard",
+        "id": "tier-standard",
         "href": "#contact",
-        "price": "80€ pro Stunde",
-        "description": "Die optimale Lösung für mittlere bis große Umzüge.",
+        "price": "ab 80€ pro Stunde",
+        "description": "Perfekt für Familienwohnungen und mittlere Haushalte mit Zusatzservices.",
         "features": [
           "Transporter 3,5t mit Fahrer",
           "2 erfahrene Umzugshelfer",
-          "Standardmäßige Umzugsdecken",
+          "Premium-Umzugsdecken & Gurte",
           "Möbelmontage inklusive",
-          "Verpackungsmaterial inklusive"
+          "Basis-Verpackungsmaterial",
+          "Geeignet für 2-4 Zimmer",
+          "Schwere Gegenstände (Klavier, Safe)"
         ],
         "featured": true
       },
       {
-        "name": "Business",
-        "id": "tier-business",
+        "name": "Premium",
+        "id": "tier-premium", 
         "href": "#contact",
-        "price": "100€ pro Stunde",
-        "description": "Maßgeschneiderte Lösungen für Firmenumzüge.",
+        "price": "ab 100€ pro Stunde",
+        "description": "Vollservice für große Haushalte, Büros und anspruchsvolle Umzüge.",
         "features": [
           "Transporter 3,5t mit Fahrer",
           "3 erfahrene Umzugshelfer",
-          "Standardmäßige Umzugsdecken",
-          "Möbelmontage inklusive",
-          "Verpackungsmaterial inklusive",
-          "Flexible Terminplanung"
+          "Premium-Umzugsdecken & Spezialverpackung",
+          "Vollständige Möbelmontage & -demontage",
+          "Komplettes Verpackungsmaterial",
+          "Geeignet für 4+ Zimmer & Büros",
+          "Flexible Terminplanung",
+          "Halteverbotszone organisieren",
+          "Entrümpelung & Entsorgung"
         ]
       }
     ]

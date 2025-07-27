@@ -1,8 +1,8 @@
 {
   "company": {
     "name": "Asam Abd",
-    "slogan": "Your Partner for Stress-Free Moving",
-    "description": "Professional Moving Services with a Modern Approach",
+    "slogan": "Your regional moving partner in Hamm & surrounding area",
+    "description": "Professional moving services in Hamm, Dortmund, Münster and all surrounding cities",
     "phone": "+49 176 80248293",
     "email": "ma9495232@gmail.com",
     "address": {
@@ -30,8 +30,8 @@
     }
   },
   "hero": {
-    "title": "Your Partner for Stress-Free Moving",
-    "subtitle": "We make your move a seamless experience. With our experienced team and state-of-the-art equipment, we ensure professional and efficient moving services.",
+    "title": "Professional Moving in Hamm & Surrounding Area",
+    "subtitle": "Your trusted moving partner for Hamm, Dortmund, Münster and all surrounding cities. From Ahlen to Bönen, from Unna to Kamen - we ensure smooth and stress-free moving with our experienced team and modern equipment.",
     "cta": {
       "primary": {
         "text": "Request Quote",
@@ -49,8 +49,8 @@
   },
   "about": {
     "subtitle": "About Us",
-    "title": "Your Trusted Partner for Moving",
-    "description": "With over 10 years of experience in the moving industry, we stand for quality, reliability, and first-class service. Our goal is to make your move as pleasant and stress-free as possible.",
+    "title": "Your Local Moving Expert in the Region",
+    "description": "With over 10 years of experience in the moving industry, we are your reliable partner in Hamm, Dortmund, Münster and all surrounding cities. From Ahlen to Bönen, from Unna to Kamen - we know the region and ensure a perfect move right at your doorstep.",
     "features": [
       "Professional and experienced team",
       "Modern and safe transport vehicles",
@@ -106,51 +106,59 @@
     ]
   },
   "pricing": {
-    "subtitle": "Prices",
-    "title": "The Right Solution for Every Move",
-    "description": "Choose the package that suits your needs. All prices are guidelines and can be adjusted after individual consultation.",
-    "cta": "Request Quote",
+    "subtitle": "Service Packages",
+    "title": "Your Perfect Moving Package",
+    "description": "Choose the right service package for your needs. From small transports to full-service moves - we have the right solution for you.",
+    "cta": "Request Package",
     "tiers": [
       {
-        "name": "Basic",
-        "id": "tier-basic",
+        "name": "Small",
+        "id": "tier-small",
         "href": "#contact",
-        "price": "€60 per hour",
-        "description": "The perfect start for small moves.",
+        "price": "from €60 per hour",
+        "description": "Ideal for small apartments, student housing or individual furniture pieces.",
         "features": [
           "3.5t van with driver",
           "1 experienced moving helper",
-          "Standard moving blankets"
+          "Basic moving blankets",
+          "Transport from A to B",
+          "Suitable for 1-2 rooms",
+          "No furniture assembly"
         ]
+      },
+      {
+        "name": "Standard",
+        "id": "tier-standard",
+        "href": "#contact",
+        "price": "from €80 per hour",
+        "description": "Perfect for family apartments and medium households with additional services.",
+        "features": [
+          "3.5t van with driver",
+          "2 experienced moving helpers",
+          "Premium moving blankets & straps",
+          "Furniture assembly included",
+          "Basic packing materials",
+          "Suitable for 2-4 rooms",
+          "Heavy items (piano, safe)"
+        ],
+        "featured": true
       },
       {
         "name": "Premium",
         "id": "tier-premium",
         "href": "#contact",
-        "price": "€80 per hour",
-        "description": "The optimal solution for medium to large moves.",
-        "features": [
-          "3.5t van with driver",
-          "2 experienced moving helpers",
-          "Standard moving blankets",
-          "Furniture assembly included",
-          "Packing materials included"
-        ],
-        "featured": true
-      },
-      {
-        "name": "Business",
-        "id": "tier-business",
-        "href": "#contact",
-        "price": "€100 per hour",
-        "description": "Customized solutions for corporate moves.",
+        "price": "from €100 per hour",
+        "description": "Full service for large households, offices and demanding moves.",
         "features": [
           "3.5t van with driver",
           "3 experienced moving helpers",
-          "Standard moving blankets",
-          "Furniture assembly included",
-          "Packing materials included",
-          "Flexible scheduling"
+          "Premium moving blankets & special packaging",
+          "Complete furniture assembly & disassembly",
+          "Complete packing materials",
+          "Suitable for 4+ rooms & offices",
+          "Flexible scheduling",
+          "Organize parking restrictions",
+          "Clearance & disposal"
         ]
       }
     ]
@@ -181,8 +189,8 @@
   },
   "contact": {
     "title": "Contact Us",
-    "subtitle": "We're happy to provide personal consultation",
-    "description": "Get in touch with us for a free quote. Our team will be happy to advise you and find the perfect solution for your move.",
+    "subtitle": "Your regional contact partner",
+    "description": "Planning your move in Hamm, Dortmund, Münster or one of the surrounding cities? Contact us for a free quote - we are your local partner on site.",
     "form": {
       "fields": [
         {

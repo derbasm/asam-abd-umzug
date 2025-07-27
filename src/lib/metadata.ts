@@ -22,12 +22,26 @@ export function generateMetadata(language: 'de' | 'en' = 'de'): Metadata {
     "Verpackungsservice Hamm",
     "Transport Service Hamm",
     
-    // Regionale Keywords
-    "Umzug NRW",
-    "Umzugsservice Westfalen",
-    "Möbeltransport Dortmund",
-    "Umzug Münster",
-    "Umzugsunternehmen Ruhrgebiet",
+    // Regionale Keywords - Hamm und Umgebung
+    "Umzug Dortmund",
+    "Umzug Münster", 
+    "Umzug Ahlen",
+    "Umzug Bönen",
+    "Umzug Unna",
+    "Umzug Kamen",
+    "Umzug Bergkamen",
+    "Umzug Werne",
+    "Umzug Lünen",
+    "Umzugsservice Soest",
+    "Umzugsunternehmen Beckum",
+    "Möbeltransport Werl",
+    "Umzugshilfe Wickede",
+    "Transport Pelkum",
+    "Umzug Heessen",
+    "Umzug Rhynern",
+    "Umzug Bockum-Hövel",
+    "Umzugsservice Kreis Unna",
+    "Umzugsunternehmen Westfalen",
     
     // Service Keywords
     "professioneller Umzug",
@@ -37,11 +51,23 @@ export function generateMetadata(language: 'de' | 'en' = 'de'): Metadata {
     "Entrümpelung",
     "Möbel entsorgen",
     
-    // Long-tail Keywords
+    // Long-tail Keywords - Regional spezifisch
     "Umzugsunternehmen Hamm günstig",
     "Umzug Hamm Preise",
     "seriöse Umzugsfirma Hamm",
-    "Umzugshilfe Hamm Stundenlohn"
+    "Umzugshilfe Hamm Stundenlohn",
+    "Möbeltransport Dortmund günstig",
+    "Umzug Münster Kosten",
+    "Privatumzug Ahlen",
+    "Büroumzug Bönen",
+    "Haushaltsauflösung Unna",
+    "Umzugshelfer Kamen",
+    "Transportservice Bergkamen",
+    "Möbelmontage Werne",
+    "Umzugsfirma Lünen",
+    "Entrümpelung Soest",
+    "Umzug Beckum Preise",
+    "Möbeltransport Werl"
   ] : [
     // Primary Keywords
     "Moving Service Hamm",
@@ -58,12 +84,26 @@ export function generateMetadata(language: 'de' | 'en' = 'de'): Metadata {
     "Packing Service Hamm",
     "Transport Service Hamm",
     
-    // Regional Keywords
-    "Moving NRW",
-    "Moving Service Westphalia", 
-    "Furniture Transport Dortmund",
+    // Regional Keywords - Hamm and surrounding area
+    "Moving Dortmund",
     "Moving Münster",
-    "Moving Company Ruhr Area",
+    "Moving Ahlen", 
+    "Moving Bönen",
+    "Moving Unna",
+    "Moving Kamen",
+    "Moving Bergkamen",
+    "Moving Werne",
+    "Moving Lünen",
+    "Moving Service Soest",
+    "Moving Company Beckum",
+    "Furniture Transport Werl",
+    "Moving Help Wickede",
+    "Transport Pelkum",
+    "Moving Heessen",
+    "Moving Rhynern",
+    "Moving Bockum-Hövel",
+    "Moving Service Kreis Unna",
+    "Moving Company Westphalia",
     
     // Service Keywords
     "professional moving",
@@ -73,20 +113,32 @@ export function generateMetadata(language: 'de' | 'en' = 'de'): Metadata {
     "clearance service",
     "furniture disposal",
     
-    // Long-tail Keywords
+    // Long-tail Keywords - Regionally specific
     "cheap moving company Hamm",
     "moving Hamm prices", 
     "reliable moving company Hamm",
-    "moving help Hamm hourly rate"
+    "moving help Hamm hourly rate",
+    "affordable furniture transport Dortmund",
+    "moving Münster costs",
+    "residential moving Ahlen",
+    "office moving Bönen", 
+    "house clearance Unna",
+    "moving helpers Kamen",
+    "transport service Bergkamen",
+    "furniture assembly Werne",
+    "moving company Lünen",
+    "clearance service Soest",
+    "moving Beckum prices",
+    "furniture transport Werl"
   ];
 
   const title = isGerman 
-    ? `${data.company.name} - Professioneller Umzugsservice in Hamm | Umzugsunternehmen NRW` 
-    : `${data.company.name} - Professional Moving Service in Hamm | Moving Company NRW`;
+    ? `${data.company.name} - Ihr Umzugsservice in Hamm, Dortmund, Münster & Umgebung | Professionelle Umzüge` 
+    : `${data.company.name} - Your Moving Service in Hamm, Dortmund, Münster & Surrounding Area | Professional Moving`;
     
   const description = isGerman
-    ? `✅ Professioneller Umzugsservice in Hamm & NRW ⭐ Privatumzüge, Büroumzüge, Haushaltsauflösung ⭐ Günstige Preise ab 60€/Std ⭐ Kostenlose Beratung ☎️ ${data.company.phone}`
-    : `✅ Professional Moving Service in Hamm & NRW ⭐ Residential, Office Moving, House Clearance ⭐ Affordable rates from €60/hr ⭐ Free consultation ☎️ ${data.company.phone}`;
+    ? `✅ Ihr zuverlässiger Umzugspartner in Hamm, Dortmund, Münster & Umgebung ⭐ Privatumzüge, Büroumzüge, Haushaltsauflösung in Ahlen, Bönen, Unna, Kamen ⭐ Günstige Preise ab 60€/Std ⭐ Kostenlose Beratung ☎️ ${data.company.phone}`
+    : `✅ Your reliable moving partner in Hamm, Dortmund, Münster & surrounding area ⭐ Residential, Office Moving, House Clearance in Ahlen, Bönen, Unna, Kamen ⭐ Affordable rates from €60/hr ⭐ Free consultation ☎️ ${data.company.phone}`;
 
   return {
     title,
