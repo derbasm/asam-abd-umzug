@@ -72,7 +72,19 @@ fi
 
 # Run database migrations
 echo "🗃️  Running database migrations..."
-docker compose exec app npx prisma migrate deploy
+# Try running migrations with proper npm cache configuration
+if ! docker compose exec -T app sh -c "NPM_CONFIG_CACHE=/tmp/.npm npx prisma db push"; then
+    echo -e "${YELLOW}⚠️  Direct migration failed, trying alternative approach...${NC}"
+    # Alternative: Run migration in a temporary container without read-only restrictions
+    docker run --rm --network asam-abd-umzug_app-network \
+        -e DATABASE_URL="$DATABASE_URL" \
+        -v $(pwd)/prisma:/app/prisma \
+        node:18-alpine sh -c "
+            cd /app && 
+            npm install prisma @prisma/client && 
+            npx prisma db push
+        "
+fi
 
 # Show deployment status
 echo "📋 Deployment Status:"

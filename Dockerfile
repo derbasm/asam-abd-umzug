@@ -44,8 +44,9 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # Create necessary directories with correct permissions
-RUN mkdir -p /home/nextjs/.npm /app/.next/cache
+RUN mkdir -p /home/nextjs/.npm /home/nextjs/.npm/_cacache /app/.next/cache /app/.next/cache/images
 RUN chown -R nextjs:nodejs /home/nextjs /app/.next
+RUN chmod -R 755 /home/nextjs/.npm
 
 COPY --from=builder /app/public ./public
 
@@ -53,6 +54,12 @@ COPY --from=builder /app/public ./public
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# Copy Prisma files for migrations
+COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 
 USER nextjs
 

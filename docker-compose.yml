@@ -45,6 +45,8 @@ services:
     tmpfs:
       - /tmp
       - /var/cache
+      - /home/nextjs/.npm/_cacache
+      - /app/.next/cache
 
   postgres:
     image: postgres:15-alpine
