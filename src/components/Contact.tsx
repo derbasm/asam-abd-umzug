@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { PhoneIcon, EnvelopeIcon, MapPinIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from '@/hooks/useTranslations';
+import { useContactForm } from '@/hooks/useContactForm';
 
 interface FormData {
   name: string;
@@ -22,26 +23,24 @@ export default function Contact() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<FormData>();
 
+  const { isLoading, isSuccess, error, submitForm } = useContactForm();
+
   const onSubmit = async (data: FormData) => {
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+    console.log('Form submitted:', data);
+    
+    const success = await submitForm({
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      message: data.message,
+    });
 
-      if (!response.ok) {
-        throw new Error('Failed to send message');
-      }
-
-      // Handle success (e.g., show success message, reset form)
-    } catch (error) {
-      // Handle error (e.g., show error message)
-      console.error('Error sending message:', error);
+    if (success) {
+      reset(); // Reset form on success
+      console.log('Message sent successfully!');
     }
   };
 
@@ -215,11 +214,54 @@ export default function Contact() {
                 >
                   <button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-primary-600 to-secondary-600 text-white font-semibold py-4 px-6 rounded-xl hover:from-primary-700 hover:to-secondary-700 focus:ring-4 focus:ring-primary-200 transition-all duration-300 transform hover:scale-[1.02] shadow-lg"
+                    disabled={isLoading}
+                    className="w-full bg-gradient-to-r from-primary-600 to-secondary-600 text-white font-semibold py-4 px-6 rounded-xl hover:from-primary-700 hover:to-secondary-700 focus:ring-4 focus:ring-primary-200 transition-all duration-300 transform hover:scale-[1.02] shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                   >
-                    {contact.form.submitButton}
+                    {isLoading ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
+                        Nachricht wird gesendet...
+                      </span>
+                    ) : (
+                      contact.form.submitButton
+                    )}
                   </button>
                 </motion.div>
+
+                {/* Success/Error Messages */}
+                {isSuccess && (
+                  <motion.div 
+                    className="mt-4 p-4 bg-green-100 border border-green-300 rounded-lg"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="flex items-center gap-2 text-green-800">
+                      <span className="text-green-600">✅</span>
+                      <p className="font-medium">Nachricht erfolgreich gesendet!</p>
+                    </div>
+                    <p className="mt-1 text-sm text-green-700">
+                      Vielen Dank für Ihre Anfrage. Wir melden uns schnellstmöglich bei Ihnen.
+                    </p>
+                  </motion.div>
+                )}
+
+                {error && (
+                  <motion.div 
+                    className="mt-4 p-4 bg-red-100 border border-red-300 rounded-lg"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="flex items-center gap-2 text-red-800">
+                      <span className="text-red-600">❌</span>
+                      <p className="font-medium">Fehler beim Senden</p>
+                    </div>
+                    <p className="mt-1 text-sm text-red-700">
+                      {error}
+                    </p>
+                  </motion.div>
+                )}
                 
                 {/* Form info */}
                 <div className="text-center pt-4">
