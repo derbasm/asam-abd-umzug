@@ -5,8 +5,13 @@ async function createAdmin() {
   const prisma = new PrismaClient();
   
   try {
-    const username = process.env.ADMIN_USERNAME || 'admin';
-    const password = process.env.ADMIN_PASSWORD || 'admin123';
+    const username = process.env.ADMIN_EMAIL;
+    const password = process.env.ADMIN_PASSWORD;
+    
+    if (!username || !password) {
+      console.error('❌ ADMIN_EMAIL und ADMIN_PASSWORD müssen in der .env Datei gesetzt sein');
+      return;
+    }
     
     // Check if admin already exists
     const existingAdmin = await prisma.adminUser.findUnique({
@@ -25,7 +30,7 @@ async function createAdmin() {
     // Create admin user
     const admin = await prisma.adminUser.create({
       data: {
-        username: 'admin',
+        username: username,
         passwordHash: hashedPassword
       }
     });

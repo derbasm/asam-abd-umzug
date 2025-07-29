@@ -43,10 +43,10 @@ services:
       - no-new-privileges:true
     read_only: true
     tmpfs:
-      - /tmp
-      - /var/cache
-      - /home/nextjs/.npm/_cacache
-      - /app/.next/cache
+      - /tmp:rw,exec,nosuid,nodev
+      - /var/cache:rw,nosuid,nodev
+      - /home/nextjs/.npm/_cacache:rw,nosuid,nodev,uid=1001,gid=1001
+      - /app/.next/cache:rw,nosuid,nodev,uid=1001,gid=1001
 
   postgres:
     image: postgres:15-alpine

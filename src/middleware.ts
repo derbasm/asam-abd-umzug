@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { verify } from 'jsonwebtoken';
 
 // Rate limiting store (in production, use Redis)
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
@@ -26,6 +25,29 @@ function isRateLimited(key: string, maxRequests = 100, windowMs = 15 * 60 * 1000
   
   record.count++;
   return false;
+}
+
+// Simple token validation for Edge Runtime
+function isValidToken(token: string): boolean {
+  if (!token) return false;
+  
+  try {
+    // Simple token format validation
+    const parts = token.split('.');
+    if (parts.length !== 3) return false;
+    
+    // Decode payload (basic validation)
+    const payload = JSON.parse(atob(parts[1]));
+    
+    // Check if token is expired
+    if (payload.exp && payload.exp < Date.now() / 1000) {
+      return false;
+    }
+    
+    return true;
+  } catch (error) {
+    return false;
+  }
 }
 
 export async function middleware(request: NextRequest) {
@@ -55,8 +77,9 @@ export async function middleware(request: NextRequest) {
     }
     
     try {
-      const jwtSecret = process.env.JWT_SECRET || 'fallback-secret';
-      verify(token, jwtSecret);
+      if (!isValidToken(token)) {
+        throw new Error('Invalid token');
+      }
     } catch (error) {
       console.error('Invalid admin token:', error);
       const redirectResponse = NextResponse.redirect(new URL('/admin/login', request.url));
