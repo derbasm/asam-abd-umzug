@@ -34,12 +34,14 @@ export const getCustomerEmailTemplate = (data: {
         <h3>Ihre Anfrage im Überblick:</h3>
         <div class="contact-info">
             <p><strong>Name:</strong> ${data.name}</p>
-        </div>        <p>Unser erfahrenes Team wird Ihre Anfrage bearbeiten und Ihnen innerhalb von 24 Stunden ein unverbindliches Angebot zusenden.</p>
+        </div>
+        
+        <p>Unser erfahrenes Team wird Ihre Anfrage bearbeiten und Ihnen innerhalb von 24 Stunden ein unverbindliches Angebot zusenden.</p>
         
         <div class="contact-info">
             <h4>Bei Rückfragen erreichen Sie uns:</h4>
             <p><strong>Telefon:</strong> +49 176 80248293</p>
-            <p><strong>E-Mail:</strong> ma9495232@gmail.com</p>
+            <p><strong>E-Mail:</strong> asamabdumzug@gmail.com</p>
             <p><strong>Adresse:</strong> Fangstraße 72, 59077 Hamm</p>
             <p><strong>Öffnungszeiten:</strong> Mo-Fr: 08:00 - 18:00 Uhr</p>
         </div>
@@ -125,10 +127,12 @@ export const getCompanyEmailTemplate = (data: {
 // Email Transporter Setup
 export const createEmailTransporter = () => {
   return nodemailer.createTransport({
-    service: 'gmail',
+    host: process.env.SMTP_HOST,
+    port: parseInt(process.env.SMTP_PORT || '587'),
+    secure: false, // true for 465, false for other ports
     auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_APP_PASSWORD, // App-specific password
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASSWORD,
     },
   });
 };
@@ -140,7 +144,7 @@ export const sendCustomerConfirmation = async (customerData: {
   const transporter = createEmailTransporter();
   
   const mailOptions = {
-    from: process.env.GMAIL_USER,
+    from: process.env.EMAIL_FROM,
     to: customerData.email,
     subject: 'Bestätigung Ihrer Umzugsanfrage - Asam Abd',
     html: getCustomerEmailTemplate(customerData),
@@ -158,8 +162,8 @@ export const sendCompanyNotification = async (formData: {
   const transporter = createEmailTransporter();
   
   const mailOptions = {
-    from: process.env.GMAIL_USER,
-    to: 'ma9495232@gmail.com', // Company email
+    from: process.env.EMAIL_FROM,
+    to: process.env.COMPANY_EMAIL || 'ma9495232@gmail.com', // Company email from env
     subject: `🚚 Neue Umzugsanfrage von ${formData.name}`,
     html: getCompanyEmailTemplate(formData),
   };
