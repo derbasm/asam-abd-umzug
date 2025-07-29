@@ -80,10 +80,10 @@ export default function Hero() {
               
               <div className="relative">
                 <Image
-                  src="/images/logo.png"
+                  src="/images/logo.webp"
                   alt={`${data.company.name} Logo`}
-                  width={912}
-                  height={600}
+                  width={512}
+                  height={512}
                   className="w-full rounded-2xl shadow-2xl ring-1 ring-accent-900/10 transform hover:scale-105 transition-transform duration-300"
                   priority
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw"

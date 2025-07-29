@@ -8,7 +8,7 @@ export function generateLocalBusinessSchema() {
     "alternateName": "Asam Abd Umzugsservice",
     "description": "Professioneller Umzugsservice in Hamm und NRW. Wir bieten Privatumzüge, Büroumzüge, Haushaltsauflösung, Möbelmontage und Transportservice.",
     "url": "https://asamabd-umzug.de",
-    "logo": "https://asamabd-umzug.de/images/logo.png",
+    "logo": "https://asamabd-umzug.de/images/logo.webp",
     "image": [
       "https://asamabd-umzug.de/images/swipper/01.jpg",
       "https://asamabd-umzug.de/images/swipper/02.jpg",

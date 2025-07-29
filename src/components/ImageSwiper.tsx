@@ -17,32 +17,32 @@ import 'swiper/css/effect-fade';
 const swiperImages = [
   {
     id: 1,
-    src: '/images/swipper/01.jpg',
+    src: '/images/swipper/01.webp',
     alt: 'Umzugsservice Bild 1',
   },
   {
     id: 2,
-    src: '/images/swipper/02.jpg',
+    src: '/images/swipper/02.webp',
     alt: 'Umzugsservice Bild 2',
   },
   {
     id: 3,
-    src: '/images/swipper/03.jpg',
+    src: '/images/swipper/03.webp',
     alt: 'Umzugsservice Bild 3',
   },
   {
     id: 4,
-    src: '/images/swipper/04.jpg',
+    src: '/images/swipper/04.webp',
     alt: 'Umzugsservice Bild 4',
   },
   {
     id: 5,
-    src: '/images/swipper/05.jpg',
+    src: '/images/swipper/05.webp',
     alt: 'Umzugsservice Bild 5',
   },
   {
     id: 6,
-    src: '/images/swipper/06.jpg',
+    src: '/images/swipper/06.webp',
     alt: 'Umzugsservice Bild 6',
   },
 ];
@@ -118,13 +118,17 @@ export default function ImageSwiper() {
             {swiperImages.map((image) => (
               <SwiperSlide key={image.id}>
                 <div className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                  <div className="relative w-full h-64 sm:h-72 lg:h-80 overflow-hidden">
+                  <div className="relative w-full h-64 sm:h-72 lg:h-80 overflow-hidden bg-white">
                     <Image
                       src={image.src}
                       alt={image.alt}
-                      fill
-                      className="object-contain transition-transform duration-700 group-hover:scale-105 bg-white"
+                      width={800}
+                      height={600}
+                      className="object-contain w-full h-full transition-transform duration-700 group-hover:scale-105"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      loading="lazy"
+                      placeholder="blur"
+                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                     />
                   </div>
                 </div>

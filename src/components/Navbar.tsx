@@ -41,7 +41,7 @@ export default function Navbar() {
           <Link href="#" className="-m-1.5 p-1.5 flex items-center gap-3 touch-target">
             <div className="relative">
               <Image
-                src="/images/logo.png"
+                src="/images/logo.webp"
                 alt={`${data.company.name} Logo`}
                 width={40}
                 height={40}
@@ -98,7 +98,7 @@ export default function Navbar() {
             <Link href="#" className="-m-1.5 p-1.5 flex items-center gap-3" onClick={() => setMobileMenuOpen(false)}>
               <div className="relative">
                 <Image
-                  src="/images/logo.png"
+                  src="/images/logo.webp"
                   alt={`${data.company.name} Logo`}
                   width={32}
                   height={32}

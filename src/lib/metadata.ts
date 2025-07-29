@@ -155,7 +155,7 @@ export function generateMetadata(language: 'de' | 'en' = 'de'): Metadata {
       description,
       images: [
         {
-          url: 'https://asamabd-umzug.de/images/logo.png',
+          url: 'https://asamabd-umzug.de/images/logo.webp',
           width: 1200,
           height: 630,
           alt: `${data.company.name} Logo`,
@@ -176,7 +176,7 @@ export function generateMetadata(language: 'de' | 'en' = 'de'): Metadata {
       creator: '@asamabd_umzug',
       title,
       description,
-      images: ['https://asamabd-umzug.de/images/logo.png'],
+      images: ['https://asamabd-umzug.de/images/logo.webp'],
     },
     
     // Additional Meta Tags
