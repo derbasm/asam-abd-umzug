@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
+import VisitorTracker from "@/components/VisitorTracker";
 import { generateMetadata } from "@/lib/metadata";
+import { generateLocalBusinessSchema } from "@/lib/schema";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -43,10 +45,19 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const localBusinessSchema = generateLocalBusinessSchema();
+
   return (
     <html lang="de" className={`${inter.variable} ${poppins.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
+      </head>
       <body className="min-h-screen bg-white font-sans antialiased">
         <Providers>
+          <VisitorTracker />
           <main className="flex min-h-screen flex-col">
             {children}
           </main>

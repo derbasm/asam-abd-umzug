@@ -5,7 +5,6 @@ import { Dialog } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import { useTranslations } from '@/hooks/useTranslations';
 
 export default function Navbar() {
@@ -23,15 +22,12 @@ export default function Navbar() {
   }, []);
 
   return (
-    <motion.header
+    <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
           ? 'bg-white/95 backdrop-blur-safari shadow-lg border-b border-accent-100/50'
           : 'bg-transparent'
       }`}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
     >
       <nav
         className="container-custom flex items-center justify-between py-4 lg:py-6"
@@ -69,12 +65,7 @@ export default function Navbar() {
         
         <div className="hidden lg:flex lg:gap-x-8 xl:gap-x-12">
           {data.navigation.map((item, index) => (
-            <motion.div
-              key={item.name}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-            >
+            <div key={item.name}>
               <Link
                 href={item.href}
                 className="relative px-3 py-2 text-sm font-semibold text-accent-900 hover:text-primary-600 transition-all duration-200 group touch-target"
@@ -82,7 +73,7 @@ export default function Navbar() {
                 {item.name}
                 <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-primary-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-200" />
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
       </nav>
@@ -123,12 +114,7 @@ export default function Navbar() {
           <div className="flow-root">
             <div className="space-y-2">
               {data.navigation.map((item, index) => (
-                <motion.div
-                  key={item.name}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                >
+                <div key={item.name}>
                   <Link
                     href={item.href}
                     className="group flex items-center gap-4 rounded-xl px-4 py-3 text-base font-semibold text-accent-900 hover:bg-primary-50 hover:text-primary-600 transition-all duration-200 touch-target"
@@ -139,7 +125,7 @@ export default function Navbar() {
                     </span>
                     {item.name}
                   </Link>
-                </motion.div>
+                </div>
               ))}
             </div>
             
@@ -158,6 +144,6 @@ export default function Navbar() {
           </div>
         </Dialog.Panel>
       </Dialog>
-    </motion.header>
+    </header>
   );
 } 

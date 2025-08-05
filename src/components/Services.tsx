@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { TruckIcon, HomeIcon, BuildingOfficeIcon, ArchiveBoxIcon, WrenchScrewdriverIcon, ClipboardDocumentCheckIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useTranslations } from '@/hooks/useTranslations';
@@ -23,45 +22,23 @@ export default function Services() {
     <div className="section-padding bg-gradient-to-b from-white via-accent-50/50 to-white">
       <div className="container mx-auto max-w-7xl container-padding">
         <div className="mx-auto max-w-2xl text-center">
-          <motion.p
-            className="text-sm font-semibold uppercase tracking-wide text-primary-600"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
+          <p className="text-sm font-semibold uppercase tracking-wide text-primary-600">
             {services.subtitle}
-          </motion.p>
-          <motion.h2
-            className="mt-2 gradient-text"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
+          </p>
+          <h2 className="mt-2 gradient-text">
             {services.title}
-          </motion.h2>
-          <motion.p
-            className="mt-4 text-accent-600"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
+          </h2>
+          <p className="mt-4 text-accent-600">
             {services.description}
-          </motion.p>
+          </p>
         </div>
         <div className="mx-auto mt-12 grid max-w-2xl grid-cols-1 gap-8 sm:mt-16 lg:mt-20 lg:max-w-none lg:grid-cols-3">
           {services.items.map((service, index) => {
             const Icon = iconMap[service.icon as keyof typeof iconMap] || HomeIcon;
             return (
-              <motion.div
+              <div
                 key={service.title}
                 className="card p-8 relative group"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary-600/5 to-secondary-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
                 <div className="relative">
@@ -79,7 +56,7 @@ export default function Services() {
                     </Link>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>

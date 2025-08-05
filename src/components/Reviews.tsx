@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { StarIcon } from '@heroicons/react/24/solid';
 import { useTranslations } from '@/hooks/useTranslations';
 
@@ -12,36 +11,22 @@ export default function Reviews() {
     <div className="bg-gradient-to-b from-white to-accent-50 section-spacing" id="reviews">
       <div className="container-custom">
         <div className="mx-auto max-w-2xl text-center">
-          <motion.h2
-            className="text-base font-semibold leading-7 text-primary-600"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
+          <h2 className="text-base font-semibold leading-7 text-primary-600">
             {reviews.subtitle}
-          </motion.h2>
-          <motion.h2
-            className="mt-2 mobile-heading lg:text-4xl xl:text-5xl font-heading gradient-text text-balance"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
+          </h2>
+          <h2 className="mt-2 mobile-heading lg:text-4xl xl:text-5xl font-heading gradient-text text-balance">
             {reviews.title}
-          </motion.h2>
+          </h2>
+          <p className="mt-4 text-accent-600">
+            {reviews.description}
+          </p>
         </div>
         
         <div className="mx-auto mt-12 sm:mt-16 lg:mt-20 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
           {reviews.items.map((review, index) => (
-            <motion.article
+            <article
               key={review.id}
               className="card-interactive group h-full"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ scale: 1.02 }}
             >
               <div className="flex flex-col h-full">
                 {/* Header */}
@@ -77,10 +62,10 @@ export default function Reviews() {
                 {/* Bottom border indicator */}
                 <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-600 to-secondary-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full" />
               </div>
-            </motion.article>
+            </article>
           ))}
         </div>
       </div>
     </div>
   );
-};
+}

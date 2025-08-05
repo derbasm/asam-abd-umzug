@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { PhoneIcon, EnvelopeIcon, MapPinIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from '@/hooks/useTranslations';
@@ -12,8 +11,6 @@ interface FormData {
   phone: string;
   message: string;
 }
-
-type FormFields = keyof FormData;
 
 export default function Contact() {
   const { data } = useTranslations();
@@ -28,14 +25,14 @@ export default function Contact() {
 
   const { isLoading, isSuccess, error, submitForm } = useContactForm();
 
-  const onSubmit = async (data: FormData) => {
-    console.log('Form submitted:', data);
+  const onSubmit = async (formData: FormData) => {
+    console.log('Form submitted:', formData);
     
     const success = await submitForm({
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      message: data.message,
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      message: formData.message,
     });
 
     if (success) {
@@ -44,236 +41,201 @@ export default function Contact() {
     }
   };
 
+  // Find form field data by name
+  const getFieldData = (fieldName: string) => {
+    return contact.form.fields.find(field => field.name === fieldName);
+  };
+
+  const nameField = getFieldData('name');
+  const emailField = getFieldData('email');
+  const phoneField = getFieldData('phone');
+  const messageField = getFieldData('message');
+
   return (
     <div className="relative isolate bg-accent-50 section-spacing" id="contact">
       <div className="container-custom">
         <div className="mx-auto max-w-2xl text-center">
-          <motion.h2
-            className="mobile-heading lg:text-4xl xl:text-5xl font-heading gradient-text text-balance"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
+          <h2 className="text-3xl font-bold tracking-tight text-accent-900 sm:text-4xl">
             {contact.title}
-          </motion.h2>
-          <motion.p
-            className="mt-6 text-lg leading-8 text-accent-600 text-balance"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            {contact.description}
-          </motion.p>
+          </h2>
+          <p className="mt-2 text-lg leading-8 text-accent-600">
+            {contact.subtitle}
+          </p>
         </div>
-        
-        <motion.div
-          className="mx-auto mt-12 sm:mt-16 lg:mt-20 grid max-w-4xl grid-cols-1 gap-8 lg:gap-12 xl:gap-16 lg:grid-cols-2"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          {/* Contact Information */}
-          <div className="order-2 lg:order-1">
-            <div className="mx-auto max-w-xl lg:mx-0">
-              <div className="grid grid-cols-1 gap-6 sm:gap-8">
-                <motion.div 
-                  className="flex gap-4 sm:gap-6 p-4 sm:p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.3 }}
-                >
-                  <div className="icon-box bg-primary-600 text-white group-hover:bg-secondary-600">
-                    <PhoneIcon className="h-6 w-6" aria-hidden="true" />
+
+        <div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-16 lg:grid-cols-2">
+          {/* Contact Info */}
+          <div>
+            <div className="grid grid-cols-1 gap-8">
+              <div className="relative">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <PhoneIcon className="h-6 w-6 text-primary-600" aria-hidden="true" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-semibold text-accent-900 group-hover:text-primary-600 transition-colors">
-                      {contact.contactInfo.phone.title}
-                    </h3>
-                    <p className="mt-2 text-accent-600 font-medium">
-                      <a href={`tel:${data.company.phone}`} className="hover:text-primary-600 transition-colors">
-                        {contact.contactInfo.phone.value}
-                      </a>
-                    </p>
-                    <p className="mt-1 text-sm text-accent-500">{contact.contactInfo.phone.hours}</p>
-                  </div>
-                </motion.div>
-                
-                <motion.div 
-                  className="flex gap-4 sm:gap-6 p-4 sm:p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.4 }}
-                >
-                  <div className="icon-box bg-primary-600 text-white group-hover:bg-secondary-600">
-                    <EnvelopeIcon className="h-6 w-6" aria-hidden="true" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-semibold text-accent-900 group-hover:text-primary-600 transition-colors">
-                      {contact.contactInfo.email.title}
-                    </h3>
-                    <p className="mt-2 text-accent-600 font-medium break-all">
-                      <a href={`mailto:${contact.contactInfo.email.value}`} className="hover:text-primary-600 transition-colors">
-                        {contact.contactInfo.email.value}
+                  <div className="ml-3 text-base">
+                    <p className="font-medium text-accent-900">{contact.contactInfo.phone.title}</p>
+                    <p className="text-accent-600">
+                      <a 
+                        href={`tel:${data.company.phone}`}
+                        className="hover:text-primary-600 transition-colors"
+                      >
+                        {data.company.phone}
                       </a>
                     </p>
                   </div>
-                </motion.div>
-                
-                <motion.div 
-                  className="flex gap-4 sm:gap-6 p-4 sm:p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.5 }}
-                >
-                  <div className="icon-box bg-primary-600 text-white group-hover:bg-secondary-600">
-                    <MapPinIcon className="h-6 w-6" aria-hidden="true" />
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <EnvelopeIcon className="h-6 w-6 text-primary-600" aria-hidden="true" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-semibold text-accent-900 group-hover:text-primary-600 transition-colors">
-                      {contact.contactInfo.address.title}
-                    </h3>
-                    <p className="mt-2 text-accent-600">{contact.contactInfo.address.street}</p>
-                    <p className="text-accent-600">{contact.contactInfo.address.city}</p>
+                  <div className="ml-3 text-base">
+                    <p className="font-medium text-accent-900">{contact.contactInfo.email.title}</p>
+                    <p className="text-accent-600">
+                      <a 
+                        href={`mailto:${data.company.email}`}
+                        className="hover:text-primary-600 transition-colors break-all"
+                      >
+                        {data.company.email}
+                      </a>
+                    </p>
                   </div>
-                </motion.div>
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <MapPinIcon className="h-6 w-6 text-primary-600" aria-hidden="true" />
+                  </div>
+                  <div className="ml-3 text-base">
+                    <p className="font-medium text-accent-900">{contact.contactInfo.address.title}</p>
+                    <p className="text-accent-600">
+                      {data.company.address.street}<br />
+                      {data.company.address.zip} {data.company.address.city}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Contact Form */}
-          <motion.div
-            className="order-1 lg:order-2"
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 sm:p-10">
-              <div className="mb-8 text-center">
-                <h3 className="text-2xl font-bold text-accent-900 mb-2">Kostenlose Beratung</h3>
-                <p className="text-accent-600">Schreiben Sie uns eine Nachricht</p>
+          <div className="bg-white rounded-2xl shadow-xl ring-1 ring-accent-900/5 p-8">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium leading-6 text-accent-900">
+                  {nameField?.label || 'Name'}
+                </label>
+                <div className="mt-2">
+                  <input
+                    {...register('name', { 
+                      required: nameField?.required ? nameField.error : false,
+                      minLength: { value: 2, message: 'Name muss mindestens 2 Zeichen lang sein' }
+                    })}
+                    type="text"
+                    id="name"
+                    className="block w-full rounded-md border-0 px-3.5 py-2 text-accent-900 shadow-sm ring-1 ring-inset ring-accent-300 placeholder:text-accent-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
+                    placeholder="Ihr Name"
+                  />
+                  {errors.name && (
+                    <p className="mt-2 text-sm text-red-600">{errors.name.message}</p>
+                  )}
+                </div>
               </div>
-              
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                {contact.form.fields.map((field, index) => (
-                  <motion.div 
-                    key={field.name} 
-                    className="w-full"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }}
-                  >
-                    <label htmlFor={field.name} className="block text-sm font-medium text-accent-700 mb-3">
-                      {field.label}
-                      {field.required && <span className="text-red-500 ml-1">*</span>}
-                    </label>
-                    <div className="relative">
-                      {field.type === 'textarea' ? (
-                        <textarea
-                          {...register(field.name as FormFields, { required: field.required })}
-                          rows={5}
-                          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 resize-none text-accent-900 placeholder-accent-400"
-                          placeholder={`${field.label} eingeben...`}
-                        />
-                      ) : (
-                        <input
-                          type={field.type}
-                          {...register(field.name as FormFields, { required: field.required })}
-                          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 text-accent-900 placeholder-accent-400"
-                          placeholder={`${field.label} eingeben...`}
-                        />
-                      )}
-                      {errors[field.name as FormFields] && (
-                        <motion.p 
-                          className="mt-2 text-sm text-red-600 flex items-center gap-2"
-                          initial={{ opacity: 0, scale: 0.95 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <span className="text-red-500">⚠️</span>
-                          {field.error}
-                        </motion.p>
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
-                
-                <motion.div 
-                  className="pt-6"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.8 }}
+
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium leading-6 text-accent-900">
+                  {emailField?.label || 'E-Mail'}
+                </label>
+                <div className="mt-2">
+                  <input
+                    {...register('email', { 
+                      required: emailField?.required ? emailField.error : false,
+                      pattern: {
+                        value: /^\S+@\S+$/i,
+                        message: 'Bitte geben Sie eine gültige E-Mail-Adresse ein'
+                      }
+                    })}
+                    type="email"
+                    id="email"
+                    className="block w-full rounded-md border-0 px-3.5 py-2 text-accent-900 shadow-sm ring-1 ring-inset ring-accent-300 placeholder:text-accent-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
+                    placeholder="ihre.email@beispiel.de"
+                  />
+                  {errors.email && (
+                    <p className="mt-2 text-sm text-red-600">{errors.email.message}</p>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium leading-6 text-accent-900">
+                  {phoneField?.label || 'Telefon'}
+                </label>
+                <div className="mt-2">
+                  <input
+                    {...register('phone')}
+                    type="tel"
+                    id="phone"
+                    className="block w-full rounded-md border-0 px-3.5 py-2 text-accent-900 shadow-sm ring-1 ring-inset ring-accent-300 placeholder:text-accent-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
+                    placeholder="+49 123 456789"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium leading-6 text-accent-900">
+                  {messageField?.label || 'Nachricht'}
+                </label>
+                <div className="mt-2">
+                  <textarea
+                    {...register('message', { 
+                      required: messageField?.required ? messageField.error || 'Nachricht ist erforderlich' : false,
+                      minLength: { value: 10, message: 'Nachricht muss mindestens 10 Zeichen lang sein' }
+                    })}
+                    id="message"
+                    rows={4}
+                    className="block w-full rounded-md border-0 px-3.5 py-2 text-accent-900 shadow-sm ring-1 ring-inset ring-accent-300 placeholder:text-accent-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
+                    placeholder="Beschreiben Sie Ihren Umzug..."
+                  />
+                  {errors.message && (
+                    <p className="mt-2 text-sm text-red-600">{errors.message.message}</p>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="w-full bg-gradient-to-r from-primary-600 to-secondary-600 text-white font-semibold py-4 px-6 rounded-xl hover:from-primary-700 hover:to-secondary-700 focus:ring-4 focus:ring-primary-200 transition-all duration-300 transform hover:scale-[1.02] shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                  >
-                    {isLoading ? (
-                      <span className="flex items-center justify-center gap-2">
-                        <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
-                        Nachricht wird gesendet...
-                      </span>
-                    ) : (
-                      contact.form.submitButton
-                    )}
-                  </button>
-                </motion.div>
+                  {isLoading ? 'Wird gesendet...' : contact.form.submitButton}
+                </button>
+              </div>
 
-                {/* Success/Error Messages */}
-                {isSuccess && (
-                  <motion.div 
-                    className="mt-4 p-4 bg-green-100 border border-green-300 rounded-lg"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="flex items-center gap-2 text-green-800">
-                      <span className="text-green-600">✅</span>
-                      <p className="font-medium">Nachricht erfolgreich gesendet!</p>
-                    </div>
-                    <p className="mt-1 text-sm text-green-700">
-                      Vielen Dank für Ihre Anfrage. Wir melden uns schnellstmöglich bei Ihnen.
-                    </p>
-                  </motion.div>
-                )}
-
-                {error && (
-                  <motion.div 
-                    className="mt-4 p-4 bg-red-100 border border-red-300 rounded-lg"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="flex items-center gap-2 text-red-800">
-                      <span className="text-red-600">❌</span>
-                      <p className="font-medium">Fehler beim Senden</p>
-                    </div>
-                    <p className="mt-1 text-sm text-red-700">
-                      {error}
-                    </p>
-                  </motion.div>
-                )}
-                
-                {/* Form info */}
-                <div className="text-center pt-4">
-                  <p className="text-xs text-accent-500">
-                    🔒 Ihre Daten werden sicher übertragen und nicht an Dritte weitergegeben
+              {/* Success/Error Messages */}
+              {isSuccess && (
+                <div className="rounded-md bg-green-50 p-4">
+                  <p className="text-sm text-green-800">
+                    ✅ Nachricht erfolgreich gesendet! Wir melden uns bald bei Ihnen.
                   </p>
                 </div>
-              </form>
-            </div>
-          </motion.div>
-        </motion.div>
+              )}
+
+              {error && (
+                <div className="rounded-md bg-red-50 p-4">
+                  <p className="text-sm text-red-800">
+                    ❌ Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut.
+                  </p>
+                </div>
+              )}
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   );
-} 
+}

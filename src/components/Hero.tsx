@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslations } from '@/hooks/useTranslations';
@@ -17,12 +16,7 @@ export default function Hero() {
       
       <div className="container-custom">
         <div className="mx-auto max-w-7xl pb-24 pt-10 sm:pb-32 lg:grid lg:grid-cols-12 lg:gap-x-8 lg:py-40">
-          <motion.div 
-            className="px-6 lg:px-0 lg:col-span-6 flex flex-col justify-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+          <div className="px-6 lg:px-0 lg:col-span-6 flex flex-col justify-center">
             <div className="max-w-2xl mx-auto lg:mx-0 lg:max-w-xl">
               <h1 className="mt-6 font-heading gradient-text text-balance">
                 {hero.title}
@@ -47,33 +41,23 @@ export default function Hero() {
               </div>
               
               {/* Trust indicators */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
-                className="mt-12 flex flex-wrap items-center gap-6 text-sm text-accent-500"
-              >
+              <div className="mt-12 flex flex-wrap items-center gap-6 text-sm text-accent-500">
                 <div className="flex items-center gap-2">
                   <span className="text-primary-600">✓</span>
                   <span>Über 10 Jahre Erfahrung</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-primary-600">✓</span>
-                  <span>100% Versichert</span>
+                  <span>Professioneller Service</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-primary-600">✓</span>
                   <span>Kostenlose Beratung</span>
                 </div>
-              </motion.div>
+              </div>
             </div>
-          </motion.div>
-          <motion.div
-            className="mt-16 sm:mt-20 lg:col-span-6 lg:mt-0 flex items-center justify-center lg:justify-end"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
+          </div>
+          <div className="mt-16 sm:mt-20 lg:col-span-6 lg:mt-0 flex items-center justify-center lg:justify-end">
             <div className="relative w-full max-w-lg lg:max-w-none">
               {/* Background decoration */}
               <div className="absolute -inset-4 bg-gradient-to-r from-primary-600/20 to-secondary-600/20 rounded-2xl blur-2xl" />
@@ -90,7 +74,7 @@ export default function Hero() {
                 />
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>

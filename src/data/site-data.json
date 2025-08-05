@@ -107,7 +107,7 @@
         "name": "Klein",
         "id": "tier-klein",
         "href": "#contact",
-        "price": "ab 60€ pro Stunde",
+        "price": "ab 75€ pro Stunde",
         "description": "Ideal für kleine Wohnungen, Studentenwohnheime oder einzelne Möbelstücke.",
         "features": [
           "Transporter 3,5t mit Fahrer",
@@ -122,7 +122,7 @@
         "name": "Standard",
         "id": "tier-standard",
         "href": "#contact",
-        "price": "ab 80€ pro Stunde",
+        "price": "ab 100€ pro Stunde",
         "description": "Perfekt für Familienwohnungen und mittlere Haushalte mit Zusatzservices.",
         "features": [
           "Transporter 3,5t mit Fahrer",
@@ -139,7 +139,7 @@
         "name": "Premium",
         "id": "tier-premium", 
         "href": "#contact",
-        "price": "ab 100€ pro Stunde",
+        "price": "ab 120€ pro Stunde",
         "description": "Vollservice für große Haushalte, Büros und anspruchsvolle Umzüge.",
         "features": [
           "Transporter 3,5t mit Fahrer",
@@ -149,7 +149,6 @@
           "Komplettes Verpackungsmaterial",
           "Geeignet für 4+ Zimmer & Büros",
           "Flexible Terminplanung",
-          "Halteverbotszone organisieren",
           "Entrümpelung & Entsorgung"
         ]
       }

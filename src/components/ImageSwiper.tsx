@@ -4,7 +4,6 @@ import React from 'react';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation, EffectFade } from 'swiper/modules';
-import { motion } from 'framer-motion';
 import { useTranslations } from '@/hooks/useTranslations';
 
 // Import Swiper styles
@@ -54,13 +53,7 @@ export default function ImageSwiper() {
     <div className="relative bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Header */}
-        <motion.div
-          className="mx-auto max-w-2xl text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
+        <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-base font-semibold leading-7 text-primary-600">
             {data.gallery.subtitle}
           </h2>
@@ -70,16 +63,10 @@ export default function ImageSwiper() {
           <p className="mt-6 text-lg leading-8 text-accent-600">
             {data.gallery.description}
           </p>
-        </motion.div>
+        </div>
 
         {/* Swiper */}
-        <motion.div
-          className="mt-16 lg:mt-20"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
+        <div className="mt-16 lg:mt-20">
           <Swiper
             modules={[Autoplay, Pagination, Navigation, EffectFade]}
             spaceBetween={20}
@@ -115,7 +102,7 @@ export default function ImageSwiper() {
             loop={true}
             className="!pb-16"
           >
-            {swiperImages.map((image) => (
+            {swiperImages.map((image, index) => (
               <SwiperSlide key={image.id}>
                 <div className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                   <div className="relative w-full h-64 sm:h-72 lg:h-80 overflow-hidden bg-white">
@@ -126,7 +113,9 @@ export default function ImageSwiper() {
                       height={600}
                       className="object-contain w-full h-full transition-transform duration-700 group-hover:scale-105"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      loading="lazy"
+                      priority={index === 0}
+                      loading={index === 0 ? "eager" : "lazy"}
+                      quality={85}
                       placeholder="blur"
                       blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                     />
@@ -135,16 +124,10 @@ export default function ImageSwiper() {
               </SwiperSlide>
             ))}
           </Swiper>
-        </motion.div>
+        </div>
 
         {/* Call to Action */}
-        <motion.div
-          className="mt-16 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-        >
+        <div className="mt-16 text-center">
           <p className="text-lg text-accent-600 mb-8">
             {data.gallery.cta.description}
           </p>
@@ -162,7 +145,7 @@ export default function ImageSwiper() {
               {data.gallery.cta.callButton}
             </a>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Custom Swiper Styles */}

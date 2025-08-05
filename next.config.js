@@ -8,13 +8,26 @@ const nextConfig = {
     domains: ['images.unsplash.com'],
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 60,
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   
   // Performance optimizations
   experimental: {
     optimizeCss: true,
     scrollRestoration: true,
+    serverComponentsExternalPackages: ['@prisma/client'],
   },
+  
+  // Bundle analyzer in development
+  ...(process.env.ANALYZE === 'true' && {
+    bundleAnalyzer: {
+      enabled: true,
+    },
+  }),
+  
+  // Compression
+  compress: true,
   
   // Security headers
   async headers() {

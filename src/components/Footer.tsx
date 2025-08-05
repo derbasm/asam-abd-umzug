@@ -18,9 +18,9 @@ export default function Footer() {
       { name: 'Kontakt', href: '#contact' },
     ],
     legal: [
-      { name: 'Impressum', href: '#' },
-      { name: 'Datenschutz', href: '#' },
-      { name: 'AGB', href: '#' },
+      { name: 'Impressum', href: '/impressum' },
+      { name: 'Datenschutz', href: '/datenschutz' },
+      { name: 'AGB', href: '/agb' },
     ],
   };
 

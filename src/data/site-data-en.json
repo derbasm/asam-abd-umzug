@@ -165,7 +165,8 @@
   },
   "reviews": {
     "title": "What Our Customers Say",
-    "subtitle": "Testimonials from satisfied customers",
+    "subtitle": "Testimonials from satisfied customers", 
+    "description": "Find out why our customers trust us and recommend our services.",
     "items": [
       {
         "id": 1,
