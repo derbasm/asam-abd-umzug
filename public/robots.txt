@@ -1,21 +1,21 @@
 User-agent: *
 Allow: /
 
-# Wichtige Seiten für Crawling
-Allow: /impressum
-Allow: /datenschutz
-Allow: /agb
-
-# Blockiere Admin-Bereiche und APIs
-Disallow: /api/admin/
+# Blockiere alle Unterseiten - nur Homepage soll indexiert werden
+Disallow: /impressum
+Disallow: /datenschutz
+Disallow: /agb
+Disallow: /api/
 Disallow: /admin/
 Disallow: /_next/
-Disallow: /api/test-login
-Disallow: /api/track-visitor
-Disallow: /*.json$
 
-# Sitemap Location (für Produktion später anpassen)
-Sitemap: http://localhost:5001/sitemap.xml
+# Blockiere auch spezifische Bereiche
+Disallow: /#about
+Disallow: /#services
+Disallow: /#contact
+
+# Sitemap Location (enthält nur Homepage)
+Sitemap: https://asamabd-umzug.de/sitemap.xml
 
 # Crawl-delay für bessere Server-Performance
 Crawl-delay: 1

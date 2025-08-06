@@ -3,6 +3,9 @@ import prisma from '@/lib/db';
 import { verifyToken } from '@/lib/auth';
 import { startOfDay, startOfMonth, startOfYear, endOfDay, endOfMonth, endOfYear, subDays, subMonths, subYears } from 'date-fns';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 async function checkAuth(request: NextRequest) {
   const token = request.cookies.get('admin-token')?.value;
   

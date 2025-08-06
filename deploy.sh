@@ -23,7 +23,7 @@ fi
 source .env
 
 # Validate required environment variables
-required_vars=("DATABASE_URL" "NEXTAUTH_SECRET" "JWT_SECRET")
+required_vars=("DATABASE_URL" "NEXTAUTH_SECRET" "JWT_SECRET" "ADMIN_EMAIL" "ADMIN_PASSWORD")
 for var in "${required_vars[@]}"; do
     if [ -z "${!var}" ]; then
         echo -e "${RED}❌ Error: $var is not set in .env file${NC}"
@@ -37,9 +37,9 @@ echo -e "${GREEN}✅ Environment variables validated${NC}"
 echo "🛑 Stopping existing containers..."
 docker compose down
 
-# Remove old images (optional - uncomment if you want to force rebuild)
-# echo "🗑️  Removing old images..."
-# docker image prune -f
+# Optional: Remove unused images to save space (but preserve database volumes)
+echo "🧹 Cleaning up unused Docker images..."
+docker image prune -f
 
 # Build and start containers
 echo "🏗️  Building and starting containers..."
@@ -72,18 +72,32 @@ fi
 
 # Run database migrations
 echo "🗃️  Running database migrations..."
-# Try running migrations with proper npm cache configuration
-if ! docker compose exec -T app sh -c "NPM_CONFIG_CACHE=/tmp/.npm npx prisma db push"; then
+# Set the correct DATABASE_URL for Docker network
+DOCKER_DATABASE_URL="postgresql://${POSTGRES_USER:-umzug_user}:${POSTGRES_PASSWORD:-umzug_password}@postgres:5432/${POSTGRES_DB:-umzug_db}"
+
+# Try running migrations directly in the app container
+if ! docker compose exec -T app sh -c "DATABASE_URL='$DOCKER_DATABASE_URL' npx prisma db push"; then
     echo -e "${YELLOW}⚠️  Direct migration failed, trying alternative approach...${NC}"
-    # Alternative: Run migration in a temporary container without read-only restrictions
+    # Alternative: Run migration in a temporary container with correct network and database URL
     docker run --rm --network asam-abd-umzug_app-network \
-        -e DATABASE_URL="$DATABASE_URL" \
+        -e DATABASE_URL="$DOCKER_DATABASE_URL" \
         -v $(pwd)/prisma:/app/prisma \
         node:18-alpine sh -c "
             cd /app && 
             npm install prisma @prisma/client && 
             npx prisma db push
         "
+fi
+
+# Create admin user automatically (if not exists)
+echo "👤 Creating admin user..."
+if DATABASE_URL="postgresql://${POSTGRES_USER:-umzug_user}:${POSTGRES_PASSWORD:-umzug_password}@localhost:5433/${POSTGRES_DB:-umzug_db}" \
+   ADMIN_EMAIL="${ADMIN_EMAIL}" \
+   ADMIN_PASSWORD="${ADMIN_PASSWORD}" \
+   node create-admin.js; then
+    echo -e "${GREEN}✅ Admin user setup completed${NC}"
+else
+    echo -e "${YELLOW}⚠️  Admin user creation failed, but deployment continues${NC}"
 fi
 
 # Show deployment status
@@ -97,13 +111,24 @@ echo -e "${GREEN}🌐 Application is running at: http://localhost:$APP_PORT${NC}
 echo -e "${GREEN}🔧 Admin panel: http://localhost:$APP_PORT/admin${NC}"
 echo -e "${GREEN}🏥 Health check: http://localhost:$APP_PORT/api/health${NC}"
 
+# Show admin login information
+echo ""
+echo "👤 Admin Login Information:"
+echo "  Username: ${ADMIN_EMAIL}"
+echo "  Password: [configured in .env]"
+echo "  Login URL: http://localhost:$APP_PORT/admin/login"
+
 # Show useful commands
 echo ""
 echo "📚 Useful commands:"
 echo "  View logs: docker compose logs -f"
 echo "  Stop services: docker compose down"
+echo "  Restart deployment: ./deploy.sh"
 echo "  Database console: docker compose exec postgres psql -U \$POSTGRES_USER -d \$POSTGRES_DB"
 echo "  App shell: docker compose exec app sh"
+
+echo ""
+echo -e "${GREEN}✅ Note: Database data is persistent - your admin user and other data will survive deployments!${NC}"
 
 # Optional: Open browser (uncomment if desired)
 # if command -v xdg-open > /dev/null; then
