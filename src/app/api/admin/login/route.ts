@@ -61,6 +61,15 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Login error:', error);
+    
+    // Specific error handling for database connection issues
+    if (error instanceof Error && error.message.includes("Can't reach database server")) {
+      return NextResponse.json(
+        { error: 'Datenbankverbindung fehlgeschlagen. Bitte versuchen Sie es später erneut.' },
+        { status: 503 }
+      );
+    }
+    
     return NextResponse.json(
       { error: 'Ein Fehler ist aufgetreten' },
       { status: 500 }

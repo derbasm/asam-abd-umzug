@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic';
 import Script from 'next/script';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
+import VisitorTracker from '@/components/VisitorTracker';
 import { generateLocalBusinessSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
 
 // Dynamic imports for better performance
@@ -30,12 +31,18 @@ const Contact = dynamic(() => import('@/components/Contact'), {
 });
 
 const Footer = dynamic(() => import('@/components/Footer'), {
-  loading: () => <div>Loading...</div>
+  loading: () => <div className="min-h-[200px] bg-accent-900"></div>
 });
 
 export default function Home() {
   return (
     <>
+      {/* Visitor Tracking nur für Homepage */}
+      <VisitorTracker />
+      
+      {/* Preload critical images */}
+      <link rel="preload" as="image" href="/images/logo.webp" />
+      
       {/* Strukturierte Daten für SEO */}
       <Script
         id="local-business-schema"

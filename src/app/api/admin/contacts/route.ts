@@ -26,20 +26,16 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
-    const status = searchParams.get('status');
     
     const skip = (page - 1) * limit;
     
-    const where = status ? { status: status as any } : {};
-    
     const [contacts, total] = await Promise.all([
       prisma.contact.findMany({
-        where,
         orderBy: { createdAt: 'desc' },
         skip,
         take: limit,
       }),
-      prisma.contact.count({ where })
+      prisma.contact.count()
     ]);
 
     return NextResponse.json({
@@ -54,39 +50,6 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     console.error('Contacts API error:', error);
-    return NextResponse.json(
-      { error: 'Ein Fehler ist aufgetreten' },
-      { status: 500 }
-    );
-  }
-}
-
-export async function PUT(request: NextRequest) {
-  try {
-    const admin = await checkAuth(request);
-    
-    if (!admin) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { id, status } = await request.json();
-
-    if (!id || !status) {
-      return NextResponse.json(
-        { error: 'ID und Status sind erforderlich' },
-        { status: 400 }
-      );
-    }
-
-    const contact = await prisma.contact.update({
-      where: { id: parseInt(id) },
-      data: { status }
-    });
-
-    return NextResponse.json(contact);
-
-  } catch (error) {
-    console.error('Contact update error:', error);
     return NextResponse.json(
       { error: 'Ein Fehler ist aufgetreten' },
       { status: 500 }

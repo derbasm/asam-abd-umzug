@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import DashboardNav from '@/components/DashboardNav';
 
 interface Contact {
   id: number;
@@ -10,7 +11,6 @@ interface Contact {
   phone?: string;
   service?: string;
   message?: string;
-  status: 'NEW' | 'IN_PROGRESS' | 'COMPLETED';
   createdAt: string;
 }
 
@@ -28,7 +28,6 @@ export default function AdminContacts() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [statusFilter, setStatusFilter] = useState('');
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -42,8 +41,7 @@ export default function AdminContacts() {
       setLoading(true);
       const params = new URLSearchParams({
         page: page.toString(),
-        limit: '10',
-        ...(statusFilter && { status: statusFilter })
+        limit: '10'
       });
 
       const response = await fetch(`/api/admin/contacts?${params}`);
@@ -69,43 +67,7 @@ export default function AdminContacts() {
 
   useEffect(() => {
     fetchContacts();
-  }, [page, statusFilter]);
-
-  const updateContactStatus = async (id: number, status: string) => {
-    try {
-      const response = await fetch('/api/admin/contacts', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id, status }),
-      });
-
-      if (response.ok) {
-        fetchContacts(); // Reload contacts
-      }
-    } catch (error) {
-      console.error('Update error:', error);
-    }
-  };
-
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case 'NEW': return 'Neu';
-      case 'IN_PROGRESS': return 'In Bearbeitung';
-      case 'COMPLETED': return 'Abgeschlossen';
-      default: return status;
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'NEW': return 'bg-red-100 text-red-800';
-      case 'IN_PROGRESS': return 'bg-yellow-100 text-yellow-800';
-      case 'COMPLETED': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
+  }, [page]);
 
   if (loading) {
     return (
@@ -117,87 +79,115 @@ export default function AdminContacts() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <h1 className="text-3xl font-bold text-gray-900">Kontakte verwalten</h1>
-            <button
-              onClick={() => router.push('/admin/dashboard')}
-              className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium"
-            >
-              Zurück zum Dashboard
-            </button>
-          </div>
-        </div>
-      </div>
-
+      <DashboardNav />
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        {/* Filter */}
-        <div className="mb-6">
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-md"
-          >
-            <option value="">Alle Status</option>
-            <option value="NEW">Neu</option>
-            <option value="IN_PROGRESS">In Bearbeitung</option>
-            <option value="COMPLETED">Abgeschlossen</option>
-          </select>
-        </div>
+        <div className="px-4 py-6 sm:px-0">
+          <div className="space-y-6">
+            {/* Header */}
+            <div className="flex justify-between items-center">
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">Detaillierte Kontaktanfragen</h1>
+                <p className="text-gray-600">Verwaltung aller eingehenden Kontaktanfragen</p>
+              </div>
+            </div>
 
         {/* Contacts Table */}
-        <div className="bg-white shadow overflow-hidden sm:rounded-md">
-          <ul className="divide-y divide-gray-200">
-            {contacts.map((contact) => (
-              <li key={contact.id}>
-                <div className="px-4 py-4 sm:px-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium text-gray-900 truncate">
-                          {contact.name}
-                        </p>
-                        <div className="ml-2 flex-shrink-0 flex">
-                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(contact.status)}`}>
-                            {getStatusLabel(contact.status)}
-                          </span>
+        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Name
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    E-Mail
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Telefonnummer
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Nachricht
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Zeitpunkt
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {contacts.map((contact) => (
+                  <tr key={contact.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0 h-8 w-8">
+                          <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
+                            <span className="text-green-600 text-sm font-medium">
+                              {contact.name.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="ml-4">
+                          <div className="text-sm font-medium text-gray-900">
+                            {contact.name}
+                          </div>
+                          {contact.service && (
+                            <div className="text-sm text-gray-500">
+                              {contact.service}
+                            </div>
+                          )}
                         </div>
                       </div>
-                      <p className="mt-1 text-sm text-gray-500">
-                        {contact.email} • {contact.phone}
-                      </p>
-                      {contact.service && (
-                        <p className="mt-1 text-sm text-gray-500">
-                          Service: {contact.service}
-                        </p>
-                      )}
-                      {contact.message && (
-                        <p className="mt-2 text-sm text-gray-600">
-                          {contact.message}
-                        </p>
-                      )}
-                      <p className="mt-2 text-xs text-gray-400">
-                        {new Date(contact.createdAt).toLocaleString('de-DE')}
-                      </p>
-                    </div>
-                    <div className="ml-4 flex-shrink-0">
-                      <select
-                        value={contact.status}
-                        onChange={(e) => updateContactStatus(contact.id, e.target.value)}
-                        className="text-sm border border-gray-300 rounded-md px-2 py-1"
-                      >
-                        <option value="NEW">Neu</option>
-                        <option value="IN_PROGRESS">In Bearbeitung</option>
-                        <option value="COMPLETED">Abgeschlossen</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">
+                        <a href={`mailto:${contact.email}`} className="text-blue-600 hover:text-blue-800">
+                          {contact.email}
+                        </a>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">
+                        {contact.phone ? (
+                          <a href={`tel:${contact.phone}`} className="text-blue-600 hover:text-blue-800">
+                            {contact.phone}
+                          </a>
+                        ) : (
+                          <span className="text-gray-400">-</span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm text-gray-900 max-w-xs">
+                        {contact.message ? (
+                          <div className="truncate" title={contact.message}>
+                            {contact.message.length > 100 
+                              ? `${contact.message.substring(0, 100)}...` 
+                              : contact.message}
+                          </div>
+                        ) : (
+                          <span className="text-gray-400">-</span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">
+                        {new Date(contact.createdAt).toLocaleDateString('de-DE')}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        {new Date(contact.createdAt).toLocaleTimeString('de-DE')}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {contacts.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-gray-500">Keine Kontaktanfragen gefunden</p>
+            </div>
+          )}
         </div>
 
         {/* Pagination */}
@@ -227,6 +217,8 @@ export default function AdminContacts() {
             </div>
           </div>
         )}
+      </div>
+        </div>
       </div>
     </div>
   );

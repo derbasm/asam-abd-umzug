@@ -17,7 +17,6 @@ model Contact {
   phone     String?
   service   String?
   message   String?
-  status    ContactStatus @default(NEW)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -62,10 +61,4 @@ model AdminUser {
   updatedAt    DateTime @updatedAt @map("updated_at")
 
   @@map("admin_users")
-}
-
-enum ContactStatus {
-  NEW         @map("new")
-  IN_PROGRESS @map("in_progress")
-  COMPLETED   @map("completed")
 }

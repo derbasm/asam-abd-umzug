@@ -26,6 +26,7 @@ export async function POST(request: NextRequest) {
     
     const ip = getClientIP(request);
     const userAgent = request.headers.get('user-agent') || '';
+    const now = new Date();
     
     // Get or create visitor
     let visitor = await prisma.visitor.findFirst({
@@ -33,15 +34,30 @@ export async function POST(request: NextRequest) {
     });
     
     if (visitor) {
-      // Update existing visitor
-      visitor = await prisma.visitor.update({
-        where: { id: visitor.id },
-        data: {
-          lastVisit: new Date(),
-          visits: { increment: 1 },
-          userAgent
-        }
-      });
+      // Check if last visit was within last 30 minutes (prevent spam)
+      const timeDiff = now.getTime() - visitor.lastVisit.getTime();
+      const thirtyMinutes = 30 * 60 * 1000;
+      
+      if (timeDiff < thirtyMinutes) {
+        // Too recent, don't increment but update lastVisit
+        visitor = await prisma.visitor.update({
+          where: { id: visitor.id },
+          data: {
+            lastVisit: now,
+            userAgent
+          }
+        });
+      } else {
+        // Update existing visitor with visit increment
+        visitor = await prisma.visitor.update({
+          where: { id: visitor.id },
+          data: {
+            lastVisit: now,
+            visits: { increment: 1 },
+            userAgent
+          }
+        });
+      }
     } else {
       // Create new visitor
       visitor = await prisma.visitor.create({
@@ -55,17 +71,36 @@ export async function POST(request: NextRequest) {
       });
     }
     
-    // Track page visit
-    await prisma.visitorPage.create({
-      data: {
+    // Track page visit - only if path hasn't been visited recently
+    const recentPageVisit = await prisma.visitorPage.findFirst({
+      where: {
         visitorId: visitor.id,
-        path: path || '/'
+        path: path || '/',
+        timestamp: {
+          gte: new Date(now.getTime() - 5 * 60 * 1000) // Last 5 minutes
+        }
       }
     });
+    
+    if (!recentPageVisit) {
+      await prisma.visitorPage.create({
+        data: {
+          visitorId: visitor.id,
+          path: path || '/'
+        }
+      });
+    }
     
     return NextResponse.json({ success: true, visitorId: visitor.id });
   } catch (error) {
     console.error('Visitor tracking error:', error);
+    
+    // Graceful handling for database connection issues
+    if (error instanceof Error && error.message.includes("Can't reach database server")) {
+      console.warn('Database not available, skipping visitor tracking');
+      return NextResponse.json({ success: true, message: 'Database unavailable' }, { status: 200 });
+    }
+    
     return NextResponse.json({ error: 'Tracking failed' }, { status: 500 });
   }
 }

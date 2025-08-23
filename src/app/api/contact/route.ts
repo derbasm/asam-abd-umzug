@@ -33,8 +33,7 @@ export async function POST(request: NextRequest) {
           email,
           phone,
           service: service || '',
-          message: message || '',
-          status: 'NEW'
+          message: message || ''
         }
       });
 

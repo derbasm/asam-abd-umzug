@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
-import VisitorTracker from "@/components/VisitorTracker";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import { generateMetadata } from "@/lib/metadata";
 import { generateLocalBusinessSchema } from "@/lib/schema";
 
@@ -56,12 +56,13 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-white font-sans antialiased">
-        <Providers>
-          <VisitorTracker />
-          <main className="flex min-h-screen flex-col">
-            {children}
-          </main>
-        </Providers>
+        <ErrorBoundary>
+          <Providers>
+            <main className="flex min-h-screen flex-col">
+              {children}
+            </main>
+          </Providers>
+        </ErrorBoundary>
       </body>
     </html>
   );
