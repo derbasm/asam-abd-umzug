@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { trackEvent } from '@/lib/analytics';
 
 interface ContactFormData {
   name: string;
@@ -65,6 +66,11 @@ export const useContactForm = () => {
 
       return true;
     } catch (error) {
+      trackEvent('form_error', {
+        location: 'contact_form',
+        error_type: 'submission',
+      });
+
       setState({
         isLoading: false,
         isSuccess: false,

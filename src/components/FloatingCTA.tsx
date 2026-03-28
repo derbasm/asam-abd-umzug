@@ -2,6 +2,7 @@
 
 import { PhoneIcon } from '@heroicons/react/24/solid';
 import { useTranslations } from '@/hooks/useTranslations';
+import { trackEvent } from '@/lib/analytics';
 
 export default function FloatingCTA() {
   const { data } = useTranslations();
@@ -14,6 +15,7 @@ export default function FloatingCTA() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="WhatsApp Kontakt"
+        onClick={() => trackEvent('whatsapp_click', { location: 'floating_cta' })}
         className="flex h-12 w-12 items-center justify-center rounded-full bg-green-500 text-white shadow-lg hover:bg-green-600 transition-colors duration-200 hover:scale-110 transform"
       >
         {/* WhatsApp SVG icon */}
@@ -26,6 +28,7 @@ export default function FloatingCTA() {
       <a
         href={`tel:${data.company.phone}`}
         aria-label="Jetzt anrufen"
+        onClick={() => trackEvent('phone_click', { location: 'floating_cta' })}
         className="flex h-14 w-14 items-center justify-center rounded-full bg-primary-600 text-white shadow-xl hover:bg-primary-700 transition-all duration-200 hover:scale-110 transform ring-4 ring-primary-600/20"
       >
         <PhoneIcon className="h-6 w-6" aria-hidden="true" />

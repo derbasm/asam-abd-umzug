@@ -15,6 +15,8 @@ In 1-2 Wochen messbar mehr qualifizierte Anfragen über Telefon, WhatsApp und Ko
 
 ## Aktueller Status
 
+Stand: 28.03.2026 (Update)
+
 ### Bereits umgesetzt
 
 - Mobile Floating CTA für Telefon und WhatsApp ist eingebunden.
@@ -22,21 +24,28 @@ In 1-2 Wochen messbar mehr qualifizierte Anfragen über Telefon, WhatsApp und Ko
 - Kontaktformular wurde erweitert um Umzugsdatum sowie Von-/Nach-Ort.
 - Strukturierte Daten werden auf der Startseite eingebunden.
 - Produktionsdomain wird im Schema bereits verwendet.
+- GA4-Integration ist vorbereitet und wird erst nach Consent geladen.
+- Conversion-Events sind eingebaut: `phone_click`, `whatsapp_click`, `contact_submit`, `hero_cta_click`, `form_error`.
+- Consent/DSGVO-Steuerung ist eingebaut (Opt-in/Opt-out Banner, Tracking nur nach Einwilligung).
+- `public/robots.txt` wurde bereinigt (rechtliche Seiten indexierbar, technische Bereiche blockiert).
+- `public/sitemap.xml` enthält jetzt Startseite, Impressum, Datenschutz und AGB mit Sprachrouten und hreflang.
+- Dashboard-Stats-API ist authentifiziert.
+- JWT nutzt kein unsicheres Fallback-Secret mehr.
+- Kontakt-API ist robuster (Zod-Validierung, Rate-Limit, ausfallsicherer Mailversand mit `Promise.allSettled`).
+- Admin-Login ist robuster (Zod-Validierung, Rate-Limit gegen Brute-Force).
+- **DE/EN URL-Struktur mit echten Routen ist implementiert (`/de`, `/en`).**
+- **`canonical` und hreflang sind mit Sprachrouten synchronisiert.**
+- **Root-Seite redirects zu `/de` als Standard-Sprache.**
+- **FAQ-Seite als separate Route veröffentlicht (`/de/faq`, `/en/faq`) mit Sitemap-Einträgen.**
+- **Reviews mit externen Social-Proof-Signalen erweitert (Google, ProvenExpert, Facebook Links mit Verifikation).**
+- **Hero mit Response-Time-Badge ("Antwort in 2 Stunden") und 24/7-Erreichbarkeits-Badge modernisiert.**
 
 ### Noch offen
 
-- GA4 und Conversion-Tracking fehlen noch.
-- Consent/DSGVO-Trackingsteuerung fehlt noch.
-- robots.txt blockiert weiter wichtige indexierbare Seiten.
-- sitemap.xml enthält weiterhin nur die Startseite.
-- Verification-Codes in Metadata sind weiterhin Platzhalter.
-- DE/EN URL-Struktur mit echten Routen fehlt.
-- hreflang/canonical sind nicht mit realen Sprachrouten synchronisiert.
-- Hero nutzt noch das Logo statt eines echten Umzugs-/Team-Bildes.
-- Reviews sind noch nicht auf glaubwürdige externe Social-Proof-Signale umgestellt.
-- Dashboard-Stats-API ist noch nicht konsistent abgesichert.
-- JWT nutzt noch ein unsicheres Fallback-Secret.
-- API-Validierung und Lead-Verarbeitung sind noch nicht robust genug.
+- Search Console Verknüpfung und Domain-Property-Setup fehlen noch.
+- Verification-Codes in Metadata müssen mit echten Werten hinterlegt werden (z. B. Google/Bing).
+- Hero-Bild: Noch Placeholder statt echtes Team-/Umzugsfoto. Benötigt professionelle Fotografie oder Stock-Bild.
+- Redaktioneller Content-Hebel (Checkliste, lokaler Ratgeber) ist noch offen.
 
 ## Umsetzungsreihenfolge
 
@@ -134,7 +143,6 @@ In 1-2 Wochen messbar mehr qualifizierte Anfragen über Telefon, WhatsApp und Ko
 
 ## Empfohlene nächste Umsetzung
 
-1. SEO-Basis fixen.
-2. Consent + Auth absichern.
-3. DE/EN Routing sauber aufbauen.
-4. Hero und Reviews auf echten Conversion-Standard bringen.
+1. Search Console + Verification-Codes produktiv abschließen (wird die Google-Rankings sicherbar machen).
+2. Echtes Hero-Bild beschaffen (Team, Fahrzeug oder Umzugsszene für höhere Conversion).
+3. Redaktionelle Content-Hebel: Umzugscheckliste und lokale Ratgeber (z. B. "Umzug in Dortmund") veröffentlichen.

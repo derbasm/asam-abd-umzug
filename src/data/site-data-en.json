@@ -5,6 +5,7 @@
     "description": "Professional moving services in Hamm, Dortmund, Münster and all surrounding cities",
     "phone": "+49 176 80248293",
     "email": "asamabdumzug@gmail.com",
+    "workingHours": "Mon-Fri: 08:00 - 18:00",
     "address": {
       "street": "Fangstraße 72",
       "city": "Hamm",
@@ -18,6 +19,7 @@
     { "name": "About", "href": "#about" },
     { "name": "Pricing", "href": "#pricing" },
     { "name": "Gallery", "href": "#gallery" },
+    { "name": "FAQ", "href": "/en/faq" },
     { "name": "Contact", "href": "#contact" }
   ],
   "ui": {
@@ -254,6 +256,37 @@
         "city": "59077 Hamm"
       }
     }
+  },
+  "faq": {
+    "subtitle": "Frequently Asked Questions",
+    "title": "Everything You Need to Know About Your Move",
+    "description": "Have questions? Here you'll find answers to the most common questions from our customers.",
+    "items": [
+      {
+        "question": "How much does a removal in Hamm cost?",
+        "answer": "Our moving prices start from €75 per hour for the Small Package with van and 1 moving helper. The Standard Package (2 helpers, furniture assembly) costs from €100/hour, the Premium Package (3 helpers, full service) from €120/hour. We'll be happy to provide you with a free, non-binding quote."
+      },
+      {
+        "question": "Which cities and regions do you serve?",
+        "answer": "We operate throughout North Rhine-Westphalia. Our main service area includes Hamm, Dortmund, Münster, Unna, Ahlen, Bönen, Kamen, Bergkamen, Werne, Lünen, Soest, Beckum, Werl and Wickede. Our service radius extends up to 100 km."
+      },
+      {
+        "question": "How far in advance must I book the move?",
+        "answer": "We recommend booking 2-4 weeks in advance, especially on weekends and during peak season (May-September). However, we're happy to handle short-notice requests - just get in touch with us!"
+      },
+      {
+        "question": "Do you also offer household clearances and junk removal?",
+        "answer": "Yes, we offer professional household clearances and junk removal. We dispose of individual or multiple furniture items and household goods professionally and environmentally friendly. Contact us for an individual quote."
+      },
+      {
+        "question": "Is a free on-site inspection possible?",
+        "answer": "Yes, for larger moves we offer a free on-site inspection upon request. This allows us to assess the effort involved accurately and provide you with a transparent fixed-price quote."
+      },
+      {
+        "question": "What happens if something is damaged during the move?",
+        "answer": "We handle your belongings with extreme care. We are liable for transport according to §§ 425 et seq. HGB. We additionally recommend moving insurance for complete protection - we're happy to advise you."
+      }
+    ]
   },
   "footer": {
     "copyright": "All rights reserved."

@@ -1,11 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 import { subDays, format, startOfDay, endOfDay } from 'date-fns';
+import { getAdminFromRequest } from '@/lib/auth';
+
+const ALLOWED_RANGES = new Set(['1d', '7d', '30d', '365d']);
 
 export async function GET(request: NextRequest) {
   try {
+    const admin = await getAdminFromRequest(request);
+    if (!admin) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { searchParams } = new URL(request.url);
-    const range = searchParams.get('range') || '30d';
+    const requestedRange = searchParams.get('range') || '30d';
+    const range = ALLOWED_RANGES.has(requestedRange) ? requestedRange : '30d';
     
     // Calculate date range based on time period
     let days: number;

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
+import { hasTrackingConsent } from '@/lib/analytics';
 
 export function useVisitorTracking() {
   const pathname = usePathname();
@@ -7,6 +8,10 @@ export function useVisitorTracking() {
 
   useEffect(() => {
     const trackVisitor = async () => {
+      if (!hasTrackingConsent()) {
+        return;
+      }
+
       // Prevent duplicate tracking for the same session and path
       if (hasTracked.current.has(pathname)) {
         return; // Already tracked this path in this session
@@ -41,10 +46,19 @@ export function useVisitorTracking() {
       }
     };
 
+    const handleConsentUpdate = (event: Event) => {
+      const customEvent = event as CustomEvent<string>;
+      if (customEvent.detail === 'granted' && !hasTracked.current.has(pathname)) {
+        trackVisitor();
+      }
+    };
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('tracking-consent-updated', handleConsentUpdate);
 
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('tracking-consent-updated', handleConsentUpdate);
     };
   }, [pathname]);
 }

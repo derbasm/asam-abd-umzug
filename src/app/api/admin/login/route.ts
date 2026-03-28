@@ -1,15 +1,72 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 import { verifyPassword, generateToken } from '@/lib/auth';
+import { adminLoginSchema } from '@/lib/validation';
+
+const LOGIN_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+const LOGIN_RATE_LIMIT_MAX_ATTEMPTS = 10;
+
+const loginRateLimitStore = new Map<string, { count: number; resetAt: number }>();
+
+function getClientIP(request: NextRequest): string {
+  const forwarded = request.headers.get('x-forwarded-for');
+  const realIP = request.headers.get('x-real-ip');
+
+  if (forwarded) {
+    return forwarded.split(',')[0].trim();
+  }
+
+  if (realIP) {
+    return realIP;
+  }
+
+  return 'unknown';
+}
+
+function registerLoginAttempt(key: string): boolean {
+  const now = Date.now();
+  const existing = loginRateLimitStore.get(key);
+
+  if (!existing || now > existing.resetAt) {
+    loginRateLimitStore.set(key, {
+      count: 1,
+      resetAt: now + LOGIN_RATE_LIMIT_WINDOW_MS,
+    });
+    return false;
+  }
+
+  if (existing.count >= LOGIN_RATE_LIMIT_MAX_ATTEMPTS) {
+    return true;
+  }
+
+  existing.count += 1;
+  return false;
+}
+
+function clearLoginAttempts(key: string): void {
+  loginRateLimitStore.delete(key);
+}
 
 export async function POST(request: NextRequest) {
   try {
-    const { username, password } = await request.json();
+    const payload = await request.json();
+    const parsed = adminLoginSchema.safeParse(payload);
 
-    if (!username || !password) {
+    if (!parsed.success) {
       return NextResponse.json(
         { error: 'Benutzername und Passwort sind erforderlich' },
         { status: 400 }
+      );
+    }
+
+    const { username, password } = parsed.data;
+    const clientIP = getClientIP(request);
+    const rateLimitKey = `${clientIP}:${username}`;
+
+    if (registerLoginAttempt(rateLimitKey)) {
+      return NextResponse.json(
+        { error: 'Zu viele Login-Versuche. Bitte versuchen Sie es in einigen Minuten erneut.' },
+        { status: 429 }
       );
     }
 
@@ -34,6 +91,8 @@ export async function POST(request: NextRequest) {
         { status: 401 }
       );
     }
+
+    clearLoginAttempts(rateLimitKey);
 
     // JWT Token generieren
     const token = generateToken({

@@ -1,20 +1,15 @@
 User-agent: *
 Allow: /
 
-# Blockiere alle Unterseiten - nur Homepage soll indexiert werden
-Disallow: /impressum
-Disallow: /datenschutz
-Disallow: /agb
+# Nur sensible/technische Bereiche blockieren
 Disallow: /api/
 Disallow: /admin/
 Disallow: /_next/
 
-# Blockiere auch spezifische Bereiche
-Disallow: /#about
-Disallow: /#services
-Disallow: /#contact
+# Optional: interne Assets und Build-Artefakte vermeiden
+Disallow: /_vercel/
 
-# Sitemap Location (enthält nur Homepage)
+# Sitemap Location
 Sitemap: https://asamabd-umzug.de/sitemap.xml
 
 # Crawl-delay für bessere Server-Performance

@@ -2,7 +2,14 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { NextRequest } from 'next/server';
 
-const JWT_SECRET = process.env.NEXTAUTH_SECRET || 'fallback-secret-key';
+function getJwtSecret(): string | null {
+  const secret = process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET;
+  if (!secret || secret.trim().length < 32) {
+    return null;
+  }
+
+  return secret;
+}
 
 export interface AdminUser {
   id: number;
@@ -18,16 +25,26 @@ export async function verifyPassword(password: string, hashedPassword: string): 
 }
 
 export function generateToken(user: AdminUser): string {
+  const jwtSecret = getJwtSecret();
+  if (!jwtSecret) {
+    throw new Error('NEXTAUTH_SECRET (or AUTH_SECRET) must be set with at least 32 characters');
+  }
+
   return jwt.sign(
     { id: user.id, username: user.username },
-    JWT_SECRET,
+    jwtSecret,
     { expiresIn: '24h' }
   );
 }
 
 export function verifyToken(token: string): AdminUser | null {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as AdminUser;
+    const jwtSecret = getJwtSecret();
+    if (!jwtSecret) {
+      return null;
+    }
+
+    const decoded = jwt.verify(token, jwtSecret) as AdminUser;
     return decoded;
   } catch (error) {
     return null;
@@ -36,12 +53,18 @@ export function verifyToken(token: string): AdminUser | null {
 
 export async function getAdminFromRequest(request: NextRequest): Promise<AdminUser | null> {
   const authHeader = request.headers.get('authorization');
-  
-  if (!authHeader?.startsWith('Bearer ')) {
+  let token: string | undefined;
+
+  if (authHeader?.startsWith('Bearer ')) {
+    token = authHeader.substring(7);
+  } else {
+    token = request.cookies.get('admin-token')?.value;
+  }
+
+  if (!token) {
     return null;
   }
 
-  const token = authHeader.substring(7);
   return verifyToken(token);
 }
 

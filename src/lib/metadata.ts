@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import deData from '@/data/site-data.json';
 import enData from '@/data/site-data-en.json';
+import type { Language } from '@/lib/i18n';
 
-export function generateMetadata(language: 'de' | 'en' = 'de'): Metadata {
+export function generateMetadata(language: Language = 'de'): Metadata {
   const data = language === 'de' ? deData : enData;
   const isGerman = language === 'de';
+  const baseUrl = 'https://asamabd-umzug.de';
+  const pagePrefix = isGerman ? '/de' : '/en';
+  const pageUrl = `${baseUrl}${pagePrefix}`;
   
   const seoKeywords = isGerman ? [
     // Primäre Keywords
@@ -149,7 +153,7 @@ export function generateMetadata(language: 'de' | 'en' = 'de'): Metadata {
     openGraph: {
       type: 'website',
       locale: isGerman ? 'de_DE' : 'en_US',
-      url: 'https://asamabd-umzug.de',
+      url: pageUrl,
       siteName: data.company.name,
       title,
       description,
@@ -192,18 +196,13 @@ export function generateMetadata(language: 'de' | 'en' = 'de'): Metadata {
       },
     },
     
-    // Verification Tags
-    verification: {
-      google: 'your-google-site-verification-code',
-      yandex: 'your-yandex-verification-code',
-    },
-    
     // Canonical URL
     alternates: {
-      canonical: 'https://asamabd-umzug.de',
+      canonical: pageUrl,
       languages: {
-        'de-DE': 'https://asamabd-umzug.de',
-        'en-US': 'https://asamabd-umzug.de/en',
+        'de-DE': `${baseUrl}/de`,
+        'en-US': `${baseUrl}/en`,
+        'x-default': `${baseUrl}/de`,
       },
     },
     

@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Inter, Poppins } from "next/font/google";
-import "./globals.css";
 import Providers from "@/components/Providers";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import ConsentBanner from "@/components/ConsentBanner";
 import AnalyticsLoader from "@/components/AnalyticsLoader";
 import { generateMetadata } from "@/lib/metadata";
 import { generateLocalBusinessSchema } from "@/lib/schema";
+import { Inter, Poppins } from "next/font/google";
+import "../globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,11 +21,8 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
-// SEO-optimierte Metadata
 export const metadata: Metadata = {
-  ...generateMetadata('de'),
-  
-  // Enhanced Icons Configuration
+  ...generateMetadata('en'),
   icons: {
     icon: [
       { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
@@ -38,11 +35,10 @@ export const metadata: Metadata = {
     ],
     shortcut: '/favicon.png',
   },
-  
   manifest: '/manifest.json',
 };
 
-export default function RootLayout({
+export default function ENLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -50,7 +46,7 @@ export default function RootLayout({
   const localBusinessSchema = generateLocalBusinessSchema();
 
   return (
-    <html lang="de" className={`${inter.variable} ${poppins.variable}`}>
+    <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
       <head>
         <script
           type="application/ld+json"

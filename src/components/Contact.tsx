@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { PhoneIcon, EnvelopeIcon, MapPinIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useContactForm } from '@/hooks/useContactForm';
+import { trackEvent } from '@/lib/analytics';
 
 const SERVICE_OPTIONS = [
   { value: '', label: 'Bitte wählen...' },
@@ -55,8 +56,20 @@ export default function Contact() {
     });
 
     if (success) {
+      trackEvent('contact_submit', {
+        location: 'contact_form',
+        service: formData.service || 'unspecified',
+      });
       reset();
     }
+  };
+
+  const onInvalidSubmit = () => {
+    trackEvent('form_error', {
+      location: 'contact_form',
+      fields: Object.keys(errors).join(','),
+      error_type: 'validation',
+    });
   };
 
   return (
@@ -83,6 +96,7 @@ export default function Contact() {
                 <p className="font-semibold text-accent-900">{contact.contactInfo.phone.title}</p>
                 <a
                   href={`tel:${data.company.phone}`}
+                  onClick={() => trackEvent('phone_click', { location: 'contact_section' })}
                   className="text-accent-600 hover:text-primary-600 transition-colors mt-1 block"
                 >
                   {data.company.phone}
@@ -128,18 +142,11 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Trust badge */}
-            <div className="rounded-xl bg-primary-50 border border-primary-100 p-5">
-              <p className="text-sm font-semibold text-primary-700 mb-1">✅ Kostenlose Beratung</p>
-              <p className="text-sm text-accent-600">
-                Wir melden uns innerhalb von 24 Stunden bei Ihnen mit einem unverbindlichen Angebot.
-              </p>
-            </div>
           </div>
 
           {/* Contact Form */}
           <div className="lg:col-span-3 bg-white rounded-2xl shadow-xl ring-1 ring-accent-900/5 p-8">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <form onSubmit={handleSubmit(onSubmit, onInvalidSubmit)} className="space-y-5">
               {/* Name + Phone */}
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <div>

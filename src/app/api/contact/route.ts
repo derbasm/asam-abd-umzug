@@ -2,72 +2,164 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { sendCustomerConfirmation, sendCompanyNotification } from '@/lib/email';
 import prisma from '@/lib/db';
+import { logger } from '@/lib/logger';
+import { contactRequestSchema, formatZodError } from '@/lib/validation';
+
+const CONTACT_RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const CONTACT_RATE_LIMIT_MAX = 5;
+
+const contactRateLimitStore = new Map<string, { count: number; resetAt: number }>();
+
+function getClientIP(request: NextRequest): string {
+  const forwarded = request.headers.get('x-forwarded-for');
+  const realIP = request.headers.get('x-real-ip');
+
+  if (forwarded) {
+    return forwarded.split(',')[0].trim();
+  }
+
+  if (realIP) {
+    return realIP;
+  }
+
+  return 'unknown';
+}
+
+function isContactRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const existing = contactRateLimitStore.get(ip);
+
+  if (!existing || now > existing.resetAt) {
+    contactRateLimitStore.set(ip, {
+      count: 1,
+      resetAt: now + CONTACT_RATE_LIMIT_WINDOW_MS,
+    });
+    return false;
+  }
+
+  if (existing.count >= CONTACT_RATE_LIMIT_MAX) {
+    return true;
+  }
+
+  existing.count += 1;
+  return false;
+}
 
 export async function POST(request: NextRequest) {
+  const clientIP = getClientIP(request);
+
+  if (isContactRateLimited(clientIP)) {
+    return NextResponse.json(
+      { error: 'Zu viele Anfragen. Bitte versuchen Sie es in ein paar Minuten erneut.' },
+      { status: 429 }
+    );
+  }
+
   try {
-    const data = await request.json();
-    const { name, email, phone, service, message } = data;
+    const rawData = await request.json();
+    const parsed = contactRequestSchema.safeParse(rawData);
 
-    // Validierung
-    if (!name || !email || !phone) {
+    if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Bitte füllen Sie alle erforderlichen Felder aus.' },
+        { error: formatZodError(parsed.error) },
         { status: 400 }
       );
     }
 
-    // Email-Validierung
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    const { name, email, phone, service, message, website } = parsed.data;
+
+    // Honeypot anti-spam: bots often fill hidden fields.
+    if (website) {
       return NextResponse.json(
-        { error: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.' },
+        { message: 'Ihre Anfrage wurde erfolgreich empfangen.' },
+        { status: 200 }
+      );
+    }
+
+    if (!phone) {
+      return NextResponse.json(
+        { error: 'Telefonnummer ist erforderlich.' },
         { status: 400 }
       );
     }
 
-    try {
-      // Kontakt in der Datenbank speichern
-      const contact = await prisma.contact.create({
-        data: {
-          name,
-          email,
-          phone,
-          service: service || '',
-          message: message || ''
-        }
-      });
-
-      // Bestätigungsmail an Kunden senden
-      await sendCustomerConfirmation({
+    // Save lead first so no request is lost if email provider has temporary issues.
+    const contact = await prisma.contact.create({
+      data: {
         name,
         email,
-      });
+        phone,
+        service: service || '',
+        message: message || ''
+      }
+    });
 
-      // Benachrichtigung an Unternehmen senden
-      await sendCompanyNotification({
+    const [customerEmailResult, companyEmailResult] = await Promise.allSettled([
+      sendCustomerConfirmation({
+        name,
+        email,
+      }),
+      sendCompanyNotification({
         name,
         email,
         phone,
         message,
-      });
+      }),
+    ]);
 
+    if (customerEmailResult.status === 'rejected') {
+      logger.warn('Customer confirmation email failed', {
+        contactId: contact.id,
+        reason: customerEmailResult.reason instanceof Error
+          ? customerEmailResult.reason.message
+          : String(customerEmailResult.reason),
+      });
+    }
+
+    if (companyEmailResult.status === 'rejected') {
+      logger.error('Company notification email failed', {
+        contactId: contact.id,
+        reason: companyEmailResult.reason instanceof Error
+          ? companyEmailResult.reason.message
+          : String(companyEmailResult.reason),
+      });
+    }
+
+    const allEmailsSent =
+      customerEmailResult.status === 'fulfilled' &&
+      companyEmailResult.status === 'fulfilled';
+
+    if (allEmailsSent) {
       return NextResponse.json(
-        { 
+        {
           message: 'Ihre Anfrage wurde erfolgreich versendet. Sie erhalten in Kürze eine Bestätigung per E-Mail.',
           contactId: contact.id
         },
         { status: 200 }
       );
-    } catch (emailError) {
-      console.error('Email sending failed:', emailError);
+    }
+
+    return NextResponse.json(
+      {
+        message: 'Ihre Anfrage wurde gespeichert. Falls Sie keine E-Mail erhalten, kontaktieren Sie uns bitte direkt telefonisch.',
+        contactId: contact.id,
+      },
+      { status: 202 }
+    );
+
+  } catch (error) {
+    logger.error('Contact form error', {
+      message: error instanceof Error ? error.message : 'unknown',
+      clientIP,
+    });
+
+    if (error instanceof Error && error.message.includes("Can't reach database server")) {
       return NextResponse.json(
-        { error: 'Es gab ein Problem beim Versenden der E-Mail. Bitte versuchen Sie es später erneut oder kontaktieren Sie uns direkt.' },
-        { status: 500 }
+        { error: 'Unsere Anfrageverarbeitung ist aktuell kurzzeitig nicht erreichbar. Bitte versuchen Sie es in wenigen Minuten erneut.' },
+        { status: 503 }
       );
     }
 
-  } catch (error) {
-    console.error('Contact form error:', error);
     return NextResponse.json(
       { error: 'Es ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es später erneut.' },
       { status: 500 }

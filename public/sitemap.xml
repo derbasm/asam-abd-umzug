@@ -1,12 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
-<!-- Nur die Hauptseite - alle anderen Seiten werden durch robots.txt blockiert -->
+<!-- German (de) URLs -->
 <url>
-  <loc>https://asamabd-umzug.de/</loc>
-  <lastmod>2025-08-06</lastmod>
+  <loc>https://asamabd-umzug.de/de</loc>
+  <lastmod>2026-03-28</lastmod>
   <changefreq>weekly</changefreq>
   <priority>1.0</priority>
+  <xhtml:link rel="alternate" hreflang="en" href="https://asamabd-umzug.de/en" />
+</url>
+
+<url>
+  <loc>https://asamabd-umzug.de/de/faq</loc>
+  <lastmod>2026-03-28</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+  <xhtml:link rel="alternate" hreflang="en" href="https://asamabd-umzug.de/en/faq" />
+</url>
+
+<url>
+  <loc>https://asamabd-umzug.de/de/impressum</loc>
+  <lastmod>2026-03-28</lastmod>
+  <changefreq>yearly</changefreq>
+  <priority>0.3</priority>
+  <xhtml:link rel="alternate" hreflang="en" href="https://asamabd-umzug.de/en/impressum" />
+</url>
+
+<url>
+  <loc>https://asamabd-umzug.de/de/datenschutz</loc>
+  <lastmod>2026-03-28</lastmod>
+  <changefreq>yearly</changefreq>
+  <priority>0.3</priority>
+  <xhtml:link rel="alternate" hreflang="en" href="https://asamabd-umzug.de/en/datenschutz" />
+</url>
+
+<url>
+  <loc>https://asamabd-umzug.de/de/agb</loc>
+  <lastmod>2026-03-28</lastmod>
+  <changefreq>yearly</changefreq>
+  <priority>0.3</priority>
+  <xhtml:link rel="alternate" hreflang="en" href="https://asamabd-umzug.de/en/agb" />
+</url>
+
+<!-- English (en) URLs -->
+<url>
+  <loc>https://asamabd-umzug.de/en</loc>
+  <lastmod>2026-03-28</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>1.0</priority>
+  <xhtml:link rel="alternate" hreflang="de" href="https://asamabd-umzug.de/de" />
+</url>
+
+<url>
+  <loc>https://asamabd-umzug.de/en/faq</loc>
+  <lastmod>2026-03-28</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+  <xhtml:link rel="alternate" hreflang="de" href="https://asamabd-umzug.de/de/faq" />
+</url>
+
+<url>
+  <loc>https://asamabd-umzug.de/en/impressum</loc>
+  <lastmod>2026-03-28</lastmod>
+  <changefreq>yearly</changefreq>
+  <priority>0.3</priority>
+  <xhtml:link rel="alternate" hreflang="de" href="https://asamabd-umzug.de/de/impressum" />
+</url>
+
+<url>
+  <loc>https://asamabd-umzug.de/en/datenschutz</loc>
+  <lastmod>2026-03-28</lastmod>
+  <changefreq>yearly</changefreq>
+  <priority>0.3</priority>
+  <xhtml:link rel="alternate" hreflang="de" href="https://asamabd-umzug.de/de/datenschutz" />
+</url>
+
+<url>
+  <loc>https://asamabd-umzug.de/en/agb</loc>
+  <lastmod>2026-03-28</lastmod>
+  <changefreq>yearly</changefreq>
+  <priority>0.3</priority>
+  <xhtml:link rel="alternate" hreflang="de" href="https://asamabd-umzug.de/de/agb" />
 </url>
 
 </urlset>

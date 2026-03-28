@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslations } from '@/hooks/useTranslations';
-import { IMAGES } from '@/constants/images';
+import { trackEvent } from '@/lib/analytics';
 
 export default function Hero() {
   const { data } = useTranslations();
@@ -16,7 +16,7 @@ export default function Hero() {
       
       <div className="container-custom">
         <div className="mx-auto max-w-7xl pb-24 pt-10 sm:pb-32 lg:grid lg:grid-cols-12 lg:gap-x-8 lg:py-40">
-          <div className="px-6 lg:px-0 lg:col-span-6 flex flex-col justify-center">
+          <div className="px-0 lg:px-0 lg:col-span-6 flex flex-col justify-center">
             <div className="max-w-2xl mx-auto lg:mx-0 lg:max-w-xl">
               <h1 className="mt-6 font-heading gradient-text text-balance">
                 {hero.title}
@@ -28,6 +28,7 @@ export default function Hero() {
               <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-x-6">
                 <Link
                   href={hero.cta.primary.link}
+                  onClick={() => trackEvent('hero_cta_click', { location: 'hero_primary' })}
                   className="btn-primary btn-mobile w-full sm:w-auto touch-target"
                 >
                   {hero.cta.primary.text}
@@ -40,7 +41,7 @@ export default function Hero() {
                 </Link>
               </div>
               
-              {/* Trust indicators */}
+              {/* Trust indicators with response time */}
               <div className="mt-12 flex flex-wrap items-center gap-6 text-sm text-accent-500">
                 <div className="flex items-center gap-2">
                   <span className="text-primary-600">✓</span>
@@ -74,20 +75,34 @@ export default function Hero() {
             </div>
           </div>
           <div className="mt-16 sm:mt-20 lg:col-span-6 lg:mt-0 flex items-center justify-center lg:justify-end">
-            <div className="relative w-full max-w-lg lg:max-w-none">
+            <div className="relative w-full max-w-full sm:max-w-lg lg:max-w-none px-1 sm:px-0">
               {/* Background decoration */}
-              <div className="absolute -inset-4 bg-gradient-to-r from-primary-600/20 to-secondary-600/20 rounded-2xl blur-2xl" />
+              <div className="absolute inset-0 sm:-inset-4 bg-gradient-to-r from-primary-600/20 to-secondary-600/20 rounded-2xl blur-2xl" />
               
               <div className="relative">
-                <Image
-                  src="/images/logo.webp"
-                  alt={`${data.company.name} Logo`}
-                  width={512}
-                  height={512}
-                  className="w-full rounded-2xl shadow-2xl ring-1 ring-accent-900/10 transform hover:scale-105 transition-transform duration-300"
-                  priority
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw"
-                />
+                {/* Hero Image - Replace with actual moving/team image in production */}
+                <div className="relative w-full bg-gradient-to-br from-primary-100 to-secondary-100 rounded-2xl overflow-hidden aspect-square lg:aspect-auto lg:h-full min-h-[320px] sm:min-h-[400px] flex items-center justify-center">
+                  <Image
+                    src="/images/logo.webp"
+                    alt={`${data.company.name} - Professionelle Umzüge`}
+                    width={512}
+                    height={512}
+                    className="h-full w-full object-cover"
+                    priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw"
+                  />
+                </div>
+
+                {/* Floating badge: response time */}
+                <div className="absolute bottom-3 right-3 sm:-bottom-4 sm:-right-4 bg-white rounded-full shadow-xl p-3 sm:p-4 border-2 border-primary-600">
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-accent-900">24/7</div>
+                    <div className="text-xs text-accent-600 mt-0.5">Erreichbar</div>
+                  </div>
+                </div>
+
+                {/* Ring decoration */}
+                <div className="absolute inset-0 sm:-inset-4 border-2 border-primary-200/50 rounded-2xl pointer-events-none" />
               </div>
             </div>
           </div>
