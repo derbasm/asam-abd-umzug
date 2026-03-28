@@ -7,12 +7,12 @@ export function generateLocalBusinessSchema() {
     "name": deData.company.name,
     "alternateName": "Asam Abd Umzugsservice",
     "description": "Professioneller Umzugsservice in Hamm und NRW. Wir bieten Privatumzüge, Büroumzüge, Haushaltsauflösung, Möbelmontage und Transportservice.",
-    "url": "http://localhost:5001",
-    "logo": "http://localhost:5001/images/logo.png",
+    "url": "https://asamabd-umzug.de",
+    "logo": "https://asamabd-umzug.de/images/logo.webp",
     "image": [
-      "http://localhost:5001/images/swipper/01.webp",
-      "http://localhost:5001/images/swipper/02.webp",
-      "http://localhost:5001/images/swipper/03.webp"
+      "https://asamabd-umzug.de/images/swipper/01.webp",
+      "https://asamabd-umzug.de/images/swipper/02.webp",
+      "https://asamabd-umzug.de/images/swipper/03.webp"
     ],
     "telephone": deData.company.phone,
     "email": deData.company.email,

@@ -76,6 +76,15 @@ export default function Navbar() {
             </div>
           ))}
         </div>
+
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+          <Link
+            href="#contact"
+            className="btn-primary text-sm px-5 py-2.5 shadow-md hover:shadow-lg"
+          >
+            Jetzt anfragen
+          </Link>
+        </div>
       </nav>
       <Dialog
         as="div"
@@ -131,11 +140,18 @@ export default function Navbar() {
             
             {/* Mobile CTA */}
             <div className="mt-8 pt-6 border-t border-accent-200">
+              <Link
+                href="#contact"
+                className="btn-primary w-full text-center block"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Jetzt anfragen
+              </Link>
               {/* Contact info in mobile menu */}
               <div className="mt-6 space-y-4">
-                <div className="flex items-center gap-3 text-sm text-accent-600">
+                <a href={`tel:${data.company.phone}`} className="flex items-center gap-3 text-sm text-accent-600 hover:text-primary-600 transition-colors">
                   <span>{data.company.phone}</span>
-                </div>
+                </a>
                 <div className="flex items-center gap-3 text-sm text-accent-600">
                   <span>{data.company.email}</span>
                 </div>

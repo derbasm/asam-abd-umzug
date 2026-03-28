@@ -105,6 +105,10 @@
     @apply card cursor-pointer hover:shadow-lg hover:-translate-y-1 hover:border-primary-200;
   }
 
+  .icon-container {
+    @apply flex h-12 w-12 items-center justify-center rounded-xl bg-primary-100 text-primary-600 transition-all duration-300;
+  }
+
   .icon-box {
     @apply flex h-12 w-12 items-center justify-center rounded-xl bg-primary-100 text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition-colors duration-200;
   }

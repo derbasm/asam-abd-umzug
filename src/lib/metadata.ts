@@ -137,8 +137,8 @@ export function generateMetadata(language: 'de' | 'en' = 'de'): Metadata {
     : `${data.company.name} - Your Moving Service in Hamm, Dortmund, Münster & Surrounding Area | Professional Moving`;
     
   const description = isGerman
-    ? `✅ Ihr zuverlässiger Umzugspartner in Hamm, Dortmund, Münster & Umgebung ⭐ Privatumzüge, Büroumzüge, Haushaltsauflösung in Ahlen, Bönen, Unna, Kamen ⭐ Günstige Preise ab 60€/Std ⭐ Kostenlose Beratung ☎️ ${data.company.phone}`
-    : `✅ Your reliable moving partner in Hamm, Dortmund, Münster & surrounding area ⭐ Residential, Office Moving, House Clearance in Ahlen, Bönen, Unna, Kamen ⭐ Affordable rates from €60/hr ⭐ Free consultation ☎️ ${data.company.phone}`;
+    ? `✅ Ihr zuverlässiger Umzugspartner in Hamm, Dortmund, Münster & Umgebung ⭐ Privatumzüge, Büroumzüge, Haushaltsauflösung in Ahlen, Bönen, Unna, Kamen ⭐ Günstige Preise ab 75€/Std ⭐ Kostenlose Beratung ☎️ ${data.company.phone}`
+    : `✅ Your reliable moving partner in Hamm, Dortmund, Münster & surrounding area ⭐ Residential, Office Moving, House Clearance in Ahlen, Bönen, Unna, Kamen ⭐ Affordable rates from €75/hr ⭐ Free consultation ☎️ ${data.company.phone}`;
 
   return {
     title,

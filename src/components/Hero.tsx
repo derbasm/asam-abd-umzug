@@ -55,6 +55,22 @@ export default function Hero() {
                   <span>Kostenlose Beratung</span>
                 </div>
               </div>
+
+              {/* Stats */}
+              <div className="mt-12 grid grid-cols-3 gap-4 border-t border-accent-100 pt-8">
+                <div className="text-center">
+                  <div className="text-2xl sm:text-3xl font-bold gradient-text">500+</div>
+                  <div className="text-xs sm:text-sm text-accent-500 mt-1">Erfolgreiche Umzüge</div>
+                </div>
+                <div className="text-center border-x border-accent-100">
+                  <div className="text-2xl sm:text-3xl font-bold gradient-text">10+</div>
+                  <div className="text-xs sm:text-sm text-accent-500 mt-1">Jahre Erfahrung</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl sm:text-3xl font-bold gradient-text">5★</div>
+                  <div className="text-xs sm:text-sm text-accent-500 mt-1">Kundenbewertung</div>
+                </div>
+              </div>
             </div>
           </div>
           <div className="mt-16 sm:mt-20 lg:col-span-6 lg:mt-0 flex items-center justify-center lg:justify-end">

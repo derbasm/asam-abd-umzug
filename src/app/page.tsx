@@ -3,6 +3,7 @@ import Script from 'next/script';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import VisitorTracker from '@/components/VisitorTracker';
+import FloatingCTA from '@/components/FloatingCTA';
 import { generateLocalBusinessSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
 
 // Dynamic imports for better performance
@@ -23,6 +24,10 @@ const ImageSwiper = dynamic(() => import('@/components/ImageSwiper'), {
 });
 
 const Reviews = dynamic(() => import('@/components/Reviews'), {
+  loading: () => <div>Loading...</div>
+});
+
+const FAQ = dynamic(() => import('@/components/FAQ'), {
   loading: () => <div>Loading...</div>
 });
 
@@ -90,11 +95,18 @@ export default function Home() {
           <Reviews />
         </section>
 
+        <section id="faq" className="scroll-mt-16">
+          <FAQ />
+        </section>
+
         <section id="contact" className="scroll-mt-16">
           <Contact />
         </section>
 
         <Footer />
+
+        {/* Floating mobile CTA */}
+        <FloatingCTA />
       </main>
     </>
   );

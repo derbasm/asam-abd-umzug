@@ -14,12 +14,34 @@
     "workingHours": "Mo-Fr: 08:00 - 18:00 Uhr"
   },
   "navigation": [
-    { "name": "Start", "href": "#" },
-    { "name": "Leistungen", "href": "#services" },
-    { "name": "Über uns", "href": "#about" },
-    { "name": "Preise", "href": "#pricing" },
-    { "name": "Galerie", "href": "#gallery" },
-    { "name": "Kontakt", "href": "#contact" }
+    {
+      "name": "Start",
+      "href": "#"
+    },
+    {
+      "name": "Leistungen",
+      "href": "#services"
+    },
+    {
+      "name": "Über uns",
+      "href": "#about"
+    },
+    {
+      "name": "Preise",
+      "href": "#pricing"
+    },
+    {
+      "name": "Galerie",
+      "href": "#gallery"
+    },
+    {
+      "name": "FAQ",
+      "href": "#faq"
+    },
+    {
+      "name": "Kontakt",
+      "href": "#contact"
+    }
   ],
   "ui": {
     "navigation": {
@@ -111,7 +133,7 @@
         "description": "Ideal für kleine Wohnungen, Studentenwohnheime oder einzelne Möbelstücke.",
         "features": [
           "Transporter 3,5t mit Fahrer",
-          "1 erfahrener Umzugshelfer", 
+          "1 erfahrener Umzugshelfer",
           "Basis-Umzugsdecken",
           "Transport von A nach B",
           "Geeignet für 1-2 Zimmer",
@@ -137,7 +159,7 @@
       },
       {
         "name": "Premium",
-        "id": "tier-premium", 
+        "id": "tier-premium",
         "href": "#contact",
         "price": "ab 120€ pro Stunde",
         "description": "Vollservice für große Haushalte, Büros und anspruchsvolle Umzüge.",
@@ -261,5 +283,36 @@
   },
   "footer": {
     "copyright": "© {year} Asam Abd. Alle Rechte vorbehalten."
+  },
+  "faq": {
+    "subtitle": "Häufige Fragen",
+    "title": "Alles, was Sie über Ihren Umzug wissen müssen",
+    "description": "Haben Sie Fragen? Hier finden Sie Antworten auf die häufigsten Fragen unserer Kunden.",
+    "items": [
+      {
+        "question": "Was kostet ein Umzug in Hamm?",
+        "answer": "Unsere Umzugspreise beginnen ab 75€ pro Stunde für das Klein-Paket mit Transporter und 1 Umzugshelfer. Das Standard-Paket (2 Helfer, Möbelmontage) kostet ab 100€/Std., das Premium-Paket (3 Helfer, Vollservice) ab 120€/Std. Wir erstellen Ihnen gerne ein kostenloses, unverbindliches Angebot."
+      },
+      {
+        "question": "Welche Städte und Regionen bedienen Sie?",
+        "answer": "Wir sind in ganz Nordrhein-Westfalen tätig. Unser Hauptgebiet umfasst Hamm, Dortmund, Münster, Unna, Ahlen, Bönen, Kamen, Bergkamen, Werne, Lünen, Soest, Beckum, Werl und Wickede. Unser Serviceradius beträgt bis zu 100 km."
+      },
+      {
+        "question": "Wie weit im Voraus muss ich den Umzug buchen?",
+        "answer": "Wir empfehlen eine Buchung 2–4 Wochen im Voraus, besonders an Wochenenden und in der Hauptsaison (Mai–September). Kurzfristige Anfragen behandeln wir jedoch gerne – sprechen Sie uns einfach an!"
+      },
+      {
+        "question": "Bieten Sie auch Haushaltsauflösungen und Entrümpelung an?",
+        "answer": "Ja, wir bieten professionelle Haushaltsauflösungen und Entrümpelung an. Wir entsorgen einzelne oder mehrere Möbel und Haushaltsgegenstände fachgerecht und umweltfreundlich. Kontaktieren Sie uns für ein individuelles Angebot."
+      },
+      {
+        "question": "Ist eine kostenlose Besichtigung möglich?",
+        "answer": "Ja, für größere Umzüge bieten wir auf Wunsch eine kostenlose Vor-Ort-Besichtigung an. So können wir den Aufwand genau einschätzen und Ihnen ein transparentes Festpreisangebot unterbreiten."
+      },
+      {
+        "question": "Was passiert, wenn etwas beim Umzug beschädigt wird?",
+        "answer": "Wir gehen äußerst sorgfältig mit Ihrem Eigentum um. Für den Transport haften wir gemäß §§ 425 ff. HGB. Wir empfehlen zusätzlich eine Umzugsversicherung für vollständigen Schutz – wir beraten Sie gerne."
+      }
+    ]
   }
-} 
+}
