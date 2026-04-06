@@ -51,7 +51,7 @@ export default function Reviews() {
 
             {/* Kleinanzeigen Reviews */}
             <Link
-              href="https://www.kleinanzeigen.de/bewertungen/umzug-asam-abd"
+              href="https://www.kleinanzeigen.de/s-anzeige/asam-abd-umzug-stressfreie-umzuege-in-hamm-umgebung/3374459007-238-2019"
               target="_blank"
               rel="noopener noreferrer"
               className="group flex flex-col items-center rounded-xl border-2 border-accent-200 p-6 sm:p-8 hover:border-primary-600 hover:bg-gradient-to-br hover:from-primary-50 hover:to-transparent transition-all duration-300 cursor-pointer"
