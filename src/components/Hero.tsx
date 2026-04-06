@@ -15,10 +15,10 @@ export default function Hero() {
       <div className="absolute inset-y-0 right-1/2 -z-10 mr-16 w-[200%] origin-bottom-left skew-x-[-30deg] bg-white shadow-xl shadow-primary-600/10 ring-1 ring-primary-50 sm:mr-28 lg:mr-0 xl:mr-16 xl:origin-center" />
       
       <div className="container-custom">
-        <div className="mx-auto max-w-7xl pb-24 pt-10 sm:pb-32 lg:grid lg:grid-cols-12 lg:gap-x-8 lg:py-40">
+        <div className="mx-auto max-w-7xl pb-24 pt-10 sm:pb-32 lg:grid lg:grid-cols-12 lg:gap-x-8 lg:py-20">
           <div className="px-0 lg:px-0 lg:col-span-6 flex flex-col justify-center">
             <div className="max-w-2xl mx-auto lg:mx-0 lg:max-w-xl">
-              <h1 className="mt-6 font-heading gradient-text text-balance">
+              <h1 className="py-3 font-heading gradient-text text-balance">
                 {hero.title}
               </h1>
               <p className="mt-6 text-lg text-accent-600 text-balance leading-8">

@@ -18,7 +18,7 @@ export default function About() {
               <h2 className="text-base font-semibold leading-7 text-primary-600">
                 {about.subtitle}
               </h2>
-              <h2 className="mt-2 mobile-heading lg:text-4xl xl:text-5xl font-heading gradient-text text-balance">
+              <h2 className="py-2 mobile-heading lg:text-4xl xl:text-5xl font-heading gradient-text text-balance">
                 {about.title}
               </h2>
               <p className="mt-6 text-lg leading-8 text-accent-600 text-balance">

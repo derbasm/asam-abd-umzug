@@ -25,7 +25,7 @@ export default function Services() {
           <p className="text-sm font-semibold uppercase tracking-wide text-primary-600">
             {services.subtitle}
           </p>
-          <h2 className="mt-2 gradient-text">
+          <h2 className="py-2 gradient-text">
             {services.title}
           </h2>
           <p className="mt-4 text-accent-600">

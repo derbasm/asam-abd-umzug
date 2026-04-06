@@ -8,10 +8,8 @@ import { trackEvent } from '@/lib/analytics';
 
 const SERVICE_OPTIONS = [
   { value: '', label: 'Bitte wählen...' },
-  { value: 'Privatumzug', label: 'Privatumzug' },
-  { value: 'Büroumzug', label: 'Büroumzug' },
+  { value: 'Umzug', label: 'Umzug' },
   { value: 'Möbelmontage', label: 'Möbelmontage' },
-  { value: 'Verpackungsservice', label: 'Verpackungsservice' },
   { value: 'Transport', label: 'Transport (A nach B)' },
   { value: 'Haushaltsauflösung', label: 'Haushaltsauflösung / Entrümpelung' },
 ];

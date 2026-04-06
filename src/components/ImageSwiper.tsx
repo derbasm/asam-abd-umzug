@@ -50,7 +50,7 @@ export default function ImageSwiper() {
   const { data } = useTranslations();
 
   return (
-    <div className="relative bg-white py-24 sm:py-32">
+    <div className="relative bg-white py-8 sm:py-10">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Header */}
         <div className="mx-auto max-w-2xl text-center">
@@ -66,7 +66,7 @@ export default function ImageSwiper() {
         </div>
 
         {/* Swiper */}
-        <div className="mt-16 lg:mt-20">
+        <div className="mt-8 lg:mt-10">
           <Swiper
             modules={[Autoplay, Pagination, Navigation, EffectFade]}
             spaceBetween={20}
@@ -100,7 +100,7 @@ export default function ImageSwiper() {
             }}
             navigation={true}
             loop={true}
-            className="!pb-16"
+            className="!pb-6"
           >
             {swiperImages.map((image, index) => (
               <SwiperSlide key={image.id}>
@@ -116,8 +116,7 @@ export default function ImageSwiper() {
                       priority={index === 0}
                       loading={index === 0 ? "eager" : "lazy"}
                       quality={85}
-                      placeholder="blur"
-                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+
                     />
                   </div>
                 </div>
@@ -127,7 +126,7 @@ export default function ImageSwiper() {
         </div>
 
         {/* Call to Action */}
-        <div className="mt-16 text-center">
+        <div className="mt-8 text-center">
           <p className="text-lg text-accent-600 mb-8">
             {data.gallery.cta.description}
           </p>

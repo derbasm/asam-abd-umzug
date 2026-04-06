@@ -18,7 +18,7 @@ export default function FAQ() {
           <p className="text-sm font-semibold uppercase tracking-wide text-primary-600">
             {faq.subtitle}
           </p>
-          <h2 className="mt-2 mobile-heading lg:text-4xl xl:text-5xl font-heading gradient-text text-balance">
+          <h2 className="py-2 mobile-heading lg:text-4xl xl:text-5xl font-heading gradient-text text-balance">
             {faq.title}
           </h2>
           <p className="mt-4 text-accent-600">

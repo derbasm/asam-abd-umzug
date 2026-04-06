@@ -88,24 +88,14 @@
     "description": "Wir bieten Ihnen ein umfassendes Angebot an Umzugsdienstleistungen, maßgeschneidert auf Ihre individuellen Bedürfnisse.",
     "items": [
       {
-        "title": "Privatumzüge",
-        "description": "Von der kleinen Wohnung bis zum großen Haus - wir transportieren Ihr Hab und Gut sicher und zuverlässig.",
+        "title": "Umzüge",
+        "description": "Ob privat oder gewerblich – wir übernehmen Ihren Umzug professionell, sicher und stressfrei. Für Wohnungen, Häuser und Büros jeder Größe.",
         "icon": "HomeIcon"
-      },
-      {
-        "title": "Büroumzüge",
-        "description": "Professionelle Planung und Durchführung von Büroumzügen mit minimaler Ausfallzeit.",
-        "icon": "BuildingOfficeIcon"
       },
       {
         "title": "Möbelmontage",
         "description": "Fachgerechte Demontage und Montage Ihrer Möbel durch unser geschultes Personal.",
         "icon": "WrenchIcon"
-      },
-      {
-        "title": "Verpackungsservice",
-        "description": "Professionelles Verpacken Ihrer Gegenstände mit hochwertigen Materialien.",
-        "icon": "ArchiveBoxIcon"
       },
       {
         "title": "Transport",
