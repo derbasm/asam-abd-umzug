@@ -13,9 +13,14 @@ async function createAdmin() {
       return;
     }
     
-    // Check if admin already exists
-    const existingAdmin = await prisma.adminUser.findUnique({
-      where: { username }
+    // Check if admin already exists (case-insensitive)
+    const existingAdmin = await prisma.adminUser.findFirst({
+      where: {
+        username: {
+          equals: username,
+          mode: 'insensitive'
+        }
+      }
     });
     
     if (existingAdmin) {

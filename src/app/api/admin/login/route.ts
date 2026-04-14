@@ -73,9 +73,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Admin User aus der Datenbank holen
-    const adminUser = await prisma.adminUser.findUnique({
-      where: { username }
+    // Admin User aus der Datenbank holen (case-insensitive)
+    const adminUser = await prisma.adminUser.findFirst({
+      where: {
+        username: {
+          equals: username,
+          mode: 'insensitive'
+        }
+      }
     });
 
     if (!adminUser) {
