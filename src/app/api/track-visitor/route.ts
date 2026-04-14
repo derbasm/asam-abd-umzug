@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 
+// Visitor tracking relies on request headers (IP, user-agent) and DB — run dynamically
+export const dynamic = 'force-dynamic';
+
+// Rate limiting for visitor tracking (max 10 requests per IP per 10 minutes)
+const TRACK_RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const TRACK_RATE_LIMIT_MAX = 10;
+const trackRateLimitStore = new Map<string, { count: number; resetAt: number }>();
+
 function getClientIP(request: NextRequest): string {
   // Try different headers for IP detection
   const forwarded = request.headers.get('x-forwarded-for');
@@ -22,11 +30,24 @@ function getClientIP(request: NextRequest): string {
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = getClientIP(request);
+
+    // Rate limiting check
+    const now = Date.now();
+    const existing = trackRateLimitStore.get(ip);
+    if (existing && now <= existing.resetAt) {
+      if (existing.count >= TRACK_RATE_LIMIT_MAX) {
+        return NextResponse.json({ success: true }, { status: 200 });
+      }
+      existing.count += 1;
+    } else {
+      trackRateLimitStore.set(ip, { count: 1, resetAt: now + TRACK_RATE_LIMIT_WINDOW_MS });
+    }
+
     const { path } = await request.json();
     
-    const ip = getClientIP(request);
     const userAgent = request.headers.get('user-agent') || '';
-    const now = new Date();
+    const currentTime = new Date();
     
     // Get or create visitor
     let visitor = await prisma.visitor.findFirst({
@@ -35,7 +56,7 @@ export async function POST(request: NextRequest) {
     
     if (visitor) {
       // Check if last visit was within last 30 minutes (prevent spam)
-      const timeDiff = now.getTime() - visitor.lastVisit.getTime();
+      const timeDiff = currentTime.getTime() - visitor.lastVisit.getTime();
       const thirtyMinutes = 30 * 60 * 1000;
       
       if (timeDiff < thirtyMinutes) {
@@ -43,7 +64,7 @@ export async function POST(request: NextRequest) {
         visitor = await prisma.visitor.update({
           where: { id: visitor.id },
           data: {
-            lastVisit: now,
+            lastVisit: currentTime,
             userAgent
           }
         });
@@ -52,7 +73,7 @@ export async function POST(request: NextRequest) {
         visitor = await prisma.visitor.update({
           where: { id: visitor.id },
           data: {
-            lastVisit: now,
+            lastVisit: currentTime,
             visits: { increment: 1 },
             userAgent
           }
@@ -77,7 +98,7 @@ export async function POST(request: NextRequest) {
         visitorId: visitor.id,
         path: path || '/',
         timestamp: {
-          gte: new Date(now.getTime() - 5 * 60 * 1000) // Last 5 minutes
+          gte: new Date(currentTime.getTime() - 5 * 60 * 1000) // Last 5 minutes
         }
       }
     });

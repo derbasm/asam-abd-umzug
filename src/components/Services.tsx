@@ -1,16 +1,18 @@
 'use client';
 
-import { TruckIcon, HomeIcon, BuildingOfficeIcon, ArchiveBoxIcon, WrenchScrewdriverIcon, ClipboardDocumentCheckIcon } from '@heroicons/react/24/outline';
+import { TruckIcon, HomeIcon, BuildingOfficeIcon, ArchiveBoxIcon, WrenchScrewdriverIcon, ClipboardDocumentCheckIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useTranslations } from '@/hooks/useTranslations';
 
 // Icon mapping
-const iconMap = {
+const iconMap: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
   HomeIcon,
   BuildingOfficeIcon,
   WrenchScrewdriverIcon,
+  WrenchIcon: WrenchScrewdriverIcon,
   ArchiveBoxIcon,
   TruckIcon,
+  TrashIcon,
   ClipboardDocumentCheckIcon,
 };
 

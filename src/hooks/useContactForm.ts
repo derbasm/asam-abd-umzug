@@ -81,8 +81,13 @@ export const useContactForm = () => {
     }
   };
 
+  const resetState = () => {
+    setState({ isLoading: false, isSuccess: false, error: null });
+  };
+
   return {
     ...state,
     submitForm,
+    resetState,
   };
 }; 

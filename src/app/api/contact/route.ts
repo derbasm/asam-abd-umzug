@@ -5,6 +5,9 @@ import prisma from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { contactRequestSchema, formatZodError } from '@/lib/validation';
 
+// Contact form accesses request headers and the database — prevent build-time execution
+export const dynamic = 'force-dynamic';
+
 const CONTACT_RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const CONTACT_RATE_LIMIT_MAX = 5;
 

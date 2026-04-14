@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { jwtVerify } from 'jose';
 
 // Rate limiting store (in production, use Redis)
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
@@ -27,25 +28,18 @@ function isRateLimited(key: string, maxRequests = 100, windowMs = 15 * 60 * 1000
   return false;
 }
 
-// Simple token validation for Edge Runtime
-function isValidToken(token: string): boolean {
+// JWT verification with full signature check (Edge Runtime compatible via jose)
+async function isValidToken(token: string): Promise<boolean> {
   if (!token) return false;
-  
+
+  const secret = process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET;
+  if (!secret) return false;
+
   try {
-    // Simple token format validation
-    const parts = token.split('.');
-    if (parts.length !== 3) return false;
-    
-    // Decode payload (basic validation)
-    const payload = JSON.parse(atob(parts[1]));
-    
-    // Check if token is expired
-    if (payload.exp && payload.exp < Date.now() / 1000) {
-      return false;
-    }
-    
+    const encodedSecret = new TextEncoder().encode(secret);
+    await jwtVerify(token, encodedSecret);
     return true;
-  } catch (error) {
+  } catch {
     return false;
   }
 }
@@ -59,6 +53,7 @@ export async function middleware(request: NextRequest) {
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'origin-when-cross-origin');
   response.headers.set('X-XSS-Protection', '1; mode=block');
+  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   
   // Rate limiting for API routes
   if (path.startsWith('/api/')) {
@@ -76,12 +71,8 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
     
-    try {
-      if (!isValidToken(token)) {
-        throw new Error('Invalid token');
-      }
-    } catch (error) {
-      console.error('Invalid admin token:', error);
+    const valid = await isValidToken(token);
+    if (!valid) {
       const redirectResponse = NextResponse.redirect(new URL('/admin/login', request.url));
       redirectResponse.cookies.delete('admin-token');
       return redirectResponse;

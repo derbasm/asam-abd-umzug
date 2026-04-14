@@ -33,6 +33,7 @@ export default function FAQ() {
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
                 className="flex w-full items-start justify-between text-left gap-4 group"
                 aria-expanded={openIndex === index}
+                aria-controls={`faq-panel-${index}`}
               >
                 <span className="text-base sm:text-lg font-semibold text-accent-900 group-hover:text-primary-600 transition-colors duration-200">
                   {item.question}
@@ -45,6 +46,9 @@ export default function FAQ() {
                 />
               </button>
               <div
+                id={`faq-panel-${index}`}
+                role="region"
+                aria-labelledby={`faq-button-${index}`}
                 className={`overflow-hidden transition-all duration-300 ease-in-out ${
                   openIndex === index ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'
                 }`}

@@ -1,13 +1,21 @@
 'use client';
 
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useRouter, usePathname } from 'next/navigation';
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
 
 export default function LanguageSwitch() {
   const { language, setLanguage } = useLanguage();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const toggleLanguage = () => {
-    setLanguage(language === 'de' ? 'en' : 'de');
+    const newLang = language === 'de' ? 'en' : 'de';
+    setLanguage(newLang);
+
+    // Update URL to match the new language
+    const pathWithoutLang = pathname.replace(/^\/(de|en)/, '');
+    router.push(`/${newLang}${pathWithoutLang || ''}`);
   };
 
   return (

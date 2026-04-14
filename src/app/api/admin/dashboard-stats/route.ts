@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/db';
+import { Prisma } from '@prisma/client';
 import { subDays, format, startOfDay, endOfDay } from 'date-fns';
 import { getAdminFromRequest } from '@/lib/auth';
+
+// Force dynamic rendering: this route depends on request headers/cookies and DB access
+export const dynamic = 'force-dynamic';
 
 const ALLOWED_RANGES = new Set(['1d', '7d', '30d', '365d']);
 
@@ -52,78 +56,67 @@ export async function GET(request: NextRequest) {
     const startDate = range === '1d' ? startOfDay(new Date()) : startOfDay(subDays(endDate, days));
 
         // Get visitor counts based on time range
-    let visitorQuery: string;
-    let contactQuery: string;
+    let visitorStats: Array<{ date: string; count: bigint }>;
+    let contactStats: Array<{ date: string; count: bigint }>;
     
     if (range === '1d') {
-      // Hourly data for 1 day
-      visitorQuery = `
+      visitorStats = await prisma.$queryRaw<Array<{ date: string; count: bigint }>>`
         SELECT 
           TO_CHAR(DATE_TRUNC('hour', first_visit), 'YYYY-MM-DD HH24:00:00') as date,
           COUNT(DISTINCT id)::bigint as count
         FROM visitors 
-        WHERE first_visit >= $1 AND first_visit <= $2
+        WHERE first_visit >= ${startDate} AND first_visit <= ${endDate}
         GROUP BY DATE_TRUNC('hour', first_visit)
         ORDER BY date
       `;
-      contactQuery = `
+      contactStats = await prisma.$queryRaw<Array<{ date: string; count: bigint }>>`
         SELECT 
           TO_CHAR(DATE_TRUNC('hour', created_at), 'YYYY-MM-DD HH24:00:00') as date,
           COUNT(*)::bigint as count
         FROM contacts 
-        WHERE created_at >= $1 AND created_at <= $2
+        WHERE created_at >= ${startDate} AND created_at <= ${endDate}
         GROUP BY DATE_TRUNC('hour', created_at)
         ORDER BY date
       `;
     } else if (range === '365d') {
-      // Monthly data for 1 year
-      visitorQuery = `
+      visitorStats = await prisma.$queryRaw<Array<{ date: string; count: bigint }>>`
         SELECT 
           TO_CHAR(DATE_TRUNC('month', first_visit), 'YYYY-MM-01') as date,
           COUNT(DISTINCT id)::bigint as count
         FROM visitors 
-        WHERE first_visit >= $1 AND first_visit <= $2
+        WHERE first_visit >= ${startDate} AND first_visit <= ${endDate}
         GROUP BY DATE_TRUNC('month', first_visit)
         ORDER BY date
       `;
-      contactQuery = `
+      contactStats = await prisma.$queryRaw<Array<{ date: string; count: bigint }>>`
         SELECT 
           TO_CHAR(DATE_TRUNC('month', created_at), 'YYYY-MM-01') as date,
           COUNT(*)::bigint as count
         FROM contacts 
-        WHERE created_at >= $1 AND created_at <= $2
+        WHERE created_at >= ${startDate} AND created_at <= ${endDate}
         GROUP BY DATE_TRUNC('month', created_at)
         ORDER BY date
       `;
     } else {
-      // Daily data for 7d/30d
-      visitorQuery = `
+      visitorStats = await prisma.$queryRaw<Array<{ date: string; count: bigint }>>`
         SELECT 
           DATE(first_visit) as date,
           COUNT(DISTINCT id)::bigint as count
         FROM visitors 
-        WHERE first_visit >= $1 AND first_visit <= $2
+        WHERE first_visit >= ${startDate} AND first_visit <= ${endDate}
         GROUP BY DATE(first_visit)
         ORDER BY date
       `;
-      contactQuery = `
+      contactStats = await prisma.$queryRaw<Array<{ date: string; count: bigint }>>`
         SELECT 
           DATE(created_at) as date,
           COUNT(*)::bigint as count
         FROM contacts 
-        WHERE created_at >= $1 AND created_at <= $2
+        WHERE created_at >= ${startDate} AND created_at <= ${endDate}
         GROUP BY DATE(created_at)
         ORDER BY date
       `;
     }
-
-    const visitorStats = await prisma.$queryRawUnsafe<Array<{ date: string; count: bigint }>>(
-      visitorQuery, startDate, endDate
-    );
-    
-    const contactStats = await prisma.$queryRawUnsafe<Array<{ date: string; count: bigint }>>(
-      contactQuery, startDate, endDate
-    );
 
     // Get total counts
     const totalVisitors = await prisma.visitor.count();

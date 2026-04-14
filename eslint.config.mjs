@@ -13,9 +13,9 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals"),
   {
     rules: {
-      // Disable problematic rules
-      "@typescript-eslint/no-unused-vars": "off",
-      "@typescript-eslint/no-explicit-any": "off",
+      // Warn on unused vars and any usage
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-explicit-any": "warn",
       "react-hooks/exhaustive-deps": "warn",
       "react/no-unescaped-entities": "off",
       "no-var": "warn",

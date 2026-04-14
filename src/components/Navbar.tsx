@@ -7,7 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslations } from '@/hooks/useTranslations';
 
-export default function Navbar() {
+function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { data } = useTranslations();
@@ -57,6 +57,8 @@ export default function Navbar() {
             type="button"
             className="touch-target inline-flex items-center justify-center rounded-lg p-2 text-accent-700 hover:bg-accent-50 hover:text-accent-900 transition-all duration-200"
             onClick={() => setMobileMenuOpen(true)}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
           >
             <span className="sr-only">{data.ui.navigation.openMenu}</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
@@ -162,4 +164,6 @@ export default function Navbar() {
       </Dialog>
     </header>
   );
-} 
+}
+
+export default React.memo(Navbar);

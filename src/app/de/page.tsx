@@ -5,38 +5,41 @@ import Hero from '@/components/Hero';
 import VisitorTracker from '@/components/VisitorTracker';
 import FloatingCTA from '@/components/FloatingCTA';
 import { generateLocalBusinessSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
+import { generateMetadata } from '@/lib/metadata';
+
+export const metadata = generateMetadata('de', 'home');
 
 // Dynamic imports for better performance
 const Services = dynamic(() => import('@/components/Services'), {
-  loading: () => <div>Loading...</div>
+  loading: () => <div className="min-h-[400px] bg-gradient-to-b from-white to-accent-50/50 animate-pulse" />
 });
 
 const About = dynamic(() => import('@/components/About'), {
-  loading: () => <div>Loading...</div>
+  loading: () => <div className="min-h-[400px] bg-white animate-pulse" />
 });
 
 const Pricing = dynamic(() => import('@/components/Pricing'), {
-  loading: () => <div>Loading...</div>
+  loading: () => <div className="min-h-[500px] bg-accent-50 animate-pulse" />
 });
 
 const ImageSwiper = dynamic(() => import('@/components/ImageSwiper'), {
-  loading: () => <div>Loading...</div>
+  loading: () => <div className="min-h-[300px] bg-accent-100 animate-pulse rounded-lg" />
 });
 
 const Reviews = dynamic(() => import('@/components/Reviews'), {
-  loading: () => <div>Loading...</div>
+  loading: () => <div className="min-h-[300px] bg-white animate-pulse" />
 });
 
 const FAQ = dynamic(() => import('@/components/FAQ'), {
-  loading: () => <div>Loading...</div>
+  loading: () => <div className="min-h-[300px] bg-white animate-pulse" />
 });
 
 const Contact = dynamic(() => import('@/components/Contact'), {
-  loading: () => <div>Loading...</div>
+  loading: () => <div className="min-h-[500px] bg-accent-50 animate-pulse" />
 });
 
 const Footer = dynamic(() => import('@/components/Footer'), {
-  loading: () => <div className="min-h-[200px] bg-accent-900"></div>
+  loading: () => <div className="min-h-[200px] bg-accent-900" />
 });
 
 export default function DeHome() {

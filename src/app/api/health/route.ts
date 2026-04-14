@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/lib/db';
 
-const prisma = new PrismaClient();
+// This route checks the database and must run dynamically (do not prerender at build time)
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
@@ -32,7 +33,5 @@ export async function GET(request: NextRequest) {
       },
       { status: 503 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }

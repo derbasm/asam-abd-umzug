@@ -1,9 +1,10 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
 import { useTranslations } from '@/hooks/useTranslations';
 
-export default function Footer() {
+function Footer() {
   const { data } = useTranslations();
   const { footer } = data;
   const currentYear = new Date().getFullYear();
@@ -97,4 +98,6 @@ export default function Footer() {
       </div>
     </footer>
   );
-} 
+}
+
+export default React.memo(Footer);

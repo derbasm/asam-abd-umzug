@@ -9,8 +9,6 @@ services:
     environment:
       NODE_ENV: production
       DATABASE_URL: "postgresql://${POSTGRES_USER:-umzug_user}:${POSTGRES_PASSWORD:-umzug_password}@postgres:5432/${POSTGRES_DB:-umzug_db}"
-      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:5000}
-      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
       JWT_SECRET: ${JWT_SECRET}
       SMTP_HOST: ${SMTP_HOST}
       SMTP_PORT: ${SMTP_PORT}
@@ -31,7 +29,7 @@ services:
           memory: 512M
           cpus: '0.5'
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/api/health').then(r=>{if(!r.ok)throw 1;process.exit(0)}).catch(()=>process.exit(1))"]
       interval: 30s
       timeout: 10s
       retries: 3

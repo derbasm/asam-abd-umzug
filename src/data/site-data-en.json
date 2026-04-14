@@ -19,7 +19,7 @@
     { "name": "About", "href": "#about" },
     { "name": "Pricing", "href": "#pricing" },
     { "name": "Gallery", "href": "#gallery" },
-    { "name": "FAQ", "href": "/en/faq" },
+    { "name": "FAQ", "href": "#faq" },
     { "name": "Contact", "href": "#contact" }
   ],
   "ui": {

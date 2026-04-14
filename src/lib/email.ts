@@ -1,9 +1,20 @@
 import nodemailer from 'nodemailer';
 
+// Prevent XSS in HTML email templates
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 // Email Templates
 export const getCustomerEmailTemplate = (data: {
   name: string;
 }) => {
+  const safeName = escapeHtml(data.name);
   return `
 <!DOCTYPE html>
 <html lang="de">
@@ -27,13 +38,13 @@ export const getCustomerEmailTemplate = (data: {
     </div>
     
     <div class="content">
-        <p>Liebe/r <span class="highlight">${data.name}</span>,</p>
+        <p>Liebe/r <span class="highlight">${safeName}</span>,</p>
         
         <p>vielen Dank für Ihr Vertrauen! Wir haben Ihre Umzugsanfrage erhalten und werden uns schnellstmöglich bei Ihnen melden.</p>
         
         <h3>Ihre Anfrage im Überblick:</h3>
         <div class="contact-info">
-            <p><strong>Name:</strong> ${data.name}</p>
+            <p><strong>Name:</strong> ${safeName}</p>
         </div>
         
         <p>Unser erfahrenes Team wird Ihre Anfrage bearbeiten und Ihnen innerhalb von 24 Stunden ein unverbindliches Angebot zusenden.</p>
@@ -67,6 +78,10 @@ export const getCompanyEmailTemplate = (data: {
   phone: string;
   message?: string;
 }) => {
+  const safeName = escapeHtml(data.name);
+  const safeEmail = escapeHtml(data.email);
+  const safePhone = escapeHtml(data.phone);
+  const safeMessage = data.message ? escapeHtml(data.message) : undefined;
   return `
 <!DOCTYPE html>
 <html lang="de">
@@ -97,14 +112,14 @@ export const getCompanyEmailTemplate = (data: {
         
         <div class="customer-info">
             <h3>Kundendaten:</h3>
-            <p><strong>Name:</strong> ${data.name}</p>
-            <p><strong>E-Mail:</strong> ${data.email}</p>
-            <p><strong>Telefon:</strong> ${data.phone}</p>
+            <p><strong>Name:</strong> ${safeName}</p>
+            <p><strong>E-Mail:</strong> ${safeEmail}</p>
+            <p><strong>Telefon:</strong> ${safePhone}</p>
         </div>
         
         <div class="customer-info">
             <h3>Umzugsdetails:</h3>
-            ${data.message ? `<p><strong>Nachricht:</strong><br>${data.message}</p>` : '<p><em>Keine zusätzliche Nachricht</em></p>'}
+            ${safeMessage ? `<p><strong>Nachricht:</strong><br>${safeMessage}</p>` : '<p><em>Keine zusätzliche Nachricht</em></p>'}
         </div>
         
         <div class="urgent">
@@ -164,7 +179,7 @@ export const sendCompanyNotification = async (formData: {
   const mailOptions = {
     from: process.env.EMAIL_FROM,
     to: process.env.COMPANY_EMAIL || 'ma9495232@gmail.com', // Company email from env
-    subject: `🚚 Neue Umzugsanfrage von ${formData.name}`,
+    subject: `Neue Umzugsanfrage von ${formData.name.replace(/[<>"]/g, '')}`,
     html: getCompanyEmailTemplate(formData),
   };
 

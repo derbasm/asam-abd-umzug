@@ -3,6 +3,9 @@ import prisma from '@/lib/db';
 import { verifyPassword, generateToken } from '@/lib/auth';
 import { adminLoginSchema } from '@/lib/validation';
 
+// Route depends on request headers for rate limiting and IP detection — force dynamic
+export const dynamic = 'force-dynamic';
+
 const LOGIN_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
 const LOGIN_RATE_LIMIT_MAX_ATTEMPTS = 10;
 

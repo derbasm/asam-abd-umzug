@@ -39,7 +39,7 @@ export default function Contact() {
     reset,
   } = useForm<FormData>();
 
-  const { isLoading, isSuccess, error, submitForm } = useContactForm();
+  const { isLoading, isSuccess, error, submitForm, resetState } = useContactForm();
 
   const onSubmit = async (formData: FormData) => {
     const success = await submitForm({
@@ -282,10 +282,20 @@ export default function Contact() {
               </p>
 
               {isSuccess && (
-                <div className="rounded-xl bg-green-50 border border-green-200 p-4">
+                <div className="rounded-xl bg-green-50 border border-green-200 p-4 flex items-start justify-between gap-3">
                   <p className="text-sm font-medium text-green-800">
                     ✅ Vielen Dank! Ihre Anfrage wurde erfolgreich gesendet. Wir melden uns innerhalb von 24 Stunden bei Ihnen.
                   </p>
+                  <button
+                    type="button"
+                    onClick={resetState}
+                    className="flex-shrink-0 text-green-600 hover:text-green-800 transition-colors"
+                    aria-label="Meldung schließen"
+                  >
+                    <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                    </svg>
+                  </button>
                 </div>
               )}
 

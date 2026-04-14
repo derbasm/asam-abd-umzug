@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 import { verifyToken } from '@/lib/auth';
+import { logger } from '@/lib/logger';
 
 // Force dynamic rendering for this route
 export const dynamic = 'force-dynamic';
@@ -25,7 +26,7 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '20');
+    const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 100);
     
     const skip = (page - 1) * limit;
     
@@ -53,7 +54,7 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Visitors API error:', error);
+    logger.error('Visitors API error', { error: error instanceof Error ? error.message : error });
     return NextResponse.json(
       { error: 'Ein Fehler ist aufgetreten' },
       { status: 500 }
