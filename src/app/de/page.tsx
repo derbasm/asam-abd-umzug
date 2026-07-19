@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import VisitorTracker from '@/components/VisitorTracker';
 import FloatingCTA from '@/components/FloatingCTA';
-import { generateLocalBusinessSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
+import { generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
 import { generateMetadata } from '@/lib/metadata';
 
 export const metadata = generateMetadata('de', 'home');
@@ -48,13 +48,6 @@ export default function DeHome() {
       <VisitorTracker />
       <link rel="preload" as="image" href="/images/logo.webp" />
       
-      <Script
-        id="local-business-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(generateLocalBusinessSchema()),
-        }}
-      />
       <Script
         id="breadcrumb-schema"
         type="application/ld+json"

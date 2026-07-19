@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
@@ -42,20 +43,27 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const localBusinessSchema = generateLocalBusinessSchema();
+  const pathname = (await headers()).get('x-pathname') ?? '';
+  const isEnglish = pathname.startsWith('/en');
+  const isLanguageRoute = pathname.startsWith('/de') || pathname.startsWith('/en');
+  // /de and /en have their own layout that already injects this schema;
+  // only the language-agnostic routes (legal pages, admin) need it here.
+  const localBusinessSchema = isLanguageRoute ? null : generateLocalBusinessSchema();
 
   return (
-    <html lang="de" className={`${inter.variable} ${poppins.variable}`}>
+    <html lang={isEnglish ? 'en' : 'de'} className={`${inter.variable} ${poppins.variable}`}>
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
-        />
+        {localBusinessSchema && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+          />
+        )}
       </head>
       <body className="min-h-screen bg-white font-sans antialiased">
         <a

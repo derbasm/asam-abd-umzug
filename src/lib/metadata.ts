@@ -276,7 +276,8 @@ export function generateMetadata(language: Language = 'de', page: string = 'home
       languages: {
         'de-DE': buildPath(true),
         'en-US': buildPath(false),
-        'x-default': buildPath(false),
+        // Root "/" redirects to "/de" — x-default must match the actual default language.
+        'x-default': buildPath(true),
       },
     },
     
