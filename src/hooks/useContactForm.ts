@@ -10,6 +10,7 @@ interface ContactFormData {
   fromCity?: string;
   toCity?: string;
   message?: string;
+  website?: string;
 }
 
 interface ContactFormState {
@@ -49,6 +50,7 @@ export const useContactForm = () => {
           phone: data.phone,
           service: data.service || '',
           message: enrichedMessage,
+          website: data.website || '',
         }),
       });
 
@@ -90,4 +92,4 @@ export const useContactForm = () => {
     submitForm,
     resetState,
   };
-}; 
+};

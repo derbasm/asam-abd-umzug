@@ -23,6 +23,7 @@ interface FormData {
   fromCity: string;
   toCity: string;
   message: string;
+  website: string;
 }
 
 const inputClass =
@@ -145,6 +146,10 @@ export default function Contact() {
           {/* Contact Form */}
           <div className="lg:col-span-3 bg-white rounded-2xl shadow-xl ring-1 ring-accent-900/5 p-8">
             <form onSubmit={handleSubmit(onSubmit, onInvalidSubmit)} className="space-y-5">
+              <div className="sr-only" aria-hidden="true">
+                <label htmlFor="website">Website</label>
+                <input {...register('website')} id="website" type="text" tabIndex={-1} autoComplete="off" />
+              </div>
               {/* Name + Phone */}
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <div>
@@ -160,8 +165,10 @@ export default function Contact() {
                     id="name"
                     className={inputClass}
                     placeholder="Ihr Name"
+                    aria-invalid={Boolean(errors.name)}
+                    aria-describedby={errors.name ? 'name-error' : undefined}
                   />
-                  {errors.name && <p className="mt-1.5 text-xs text-red-600">{errors.name.message}</p>}
+                  {errors.name && <p id="name-error" className="mt-1.5 text-xs text-red-600">{errors.name.message}</p>}
                 </div>
 
                 <div>
@@ -174,8 +181,10 @@ export default function Contact() {
                     id="phone"
                     className={inputClass}
                     placeholder="+49 176 ..."
+                    aria-invalid={Boolean(errors.phone)}
+                    aria-describedby={errors.phone ? 'phone-error' : undefined}
                   />
-                  {errors.phone && <p className="mt-1.5 text-xs text-red-600">{errors.phone.message}</p>}
+                  {errors.phone && <p id="phone-error" className="mt-1.5 text-xs text-red-600">{errors.phone.message}</p>}
                 </div>
               </div>
 
@@ -193,8 +202,10 @@ export default function Contact() {
                   id="email"
                   className={inputClass}
                   placeholder="ihre.email@beispiel.de"
+                  aria-invalid={Boolean(errors.email)}
+                  aria-describedby={errors.email ? 'email-error' : undefined}
                 />
-                {errors.email && <p className="mt-1.5 text-xs text-red-600">{errors.email.message}</p>}
+                {errors.email && <p id="email-error" className="mt-1.5 text-xs text-red-600">{errors.email.message}</p>}
               </div>
 
               {/* Service */}
@@ -282,7 +293,7 @@ export default function Contact() {
               </p>
 
               {isSuccess && (
-                <div className="rounded-xl bg-green-50 border border-green-200 p-4 flex items-start justify-between gap-3">
+                <div role="status" className="rounded-xl bg-green-50 border border-green-200 p-4 flex items-start justify-between gap-3">
                   <p className="text-sm font-medium text-green-800">
                     ✅ Vielen Dank! Ihre Anfrage wurde erfolgreich gesendet. Wir melden uns innerhalb von 24 Stunden bei Ihnen.
                   </p>
@@ -300,7 +311,7 @@ export default function Contact() {
               )}
 
               {error && (
-                <div className="rounded-xl bg-red-50 border border-red-200 p-4">
+                <div role="alert" className="rounded-xl bg-red-50 border border-red-200 p-4">
                   <p className="text-sm text-red-800">❌ {error}</p>
                 </div>
               )}
