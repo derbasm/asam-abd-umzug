@@ -90,21 +90,28 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - name: DEBUG readable vulnerability table
+      # trivy-action builds SARIF reports with all severities regardless of the
+      # `severity` input (so GitHub code scanning can triage the full picture),
+      # but still applies `exit-code` to that unfiltered set. That silently
+      # turned any MEDIUM/LOW finding into a build-blocking failure. The gate
+      # and the report are therefore two separate scans: the table-format scan
+      # enforces CRITICAL/HIGH only, the SARIF one never fails the build and
+      # exists purely to populate the Security tab.
+      - name: Gate on critical vulnerabilities
         uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: ${{ steps.image.outputs.image }}
           format: table
           severity: CRITICAL,HIGH
-          exit-code: '0'
-      - name: Scan published image for critical vulnerabilities
+          exit-code: '1'
+      - name: Build vulnerability report for the Security tab
+        if: always()
         uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: ${{ steps.image.outputs.image }}
           format: sarif
           output: trivy-results.sarif
-          severity: CRITICAL,HIGH
-          exit-code: '1'
+          exit-code: '0'
       - name: Upload vulnerability report
         if: always()
         uses: github/codeql-action/upload-sarif@v3
