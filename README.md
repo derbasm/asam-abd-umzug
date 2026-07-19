@@ -43,7 +43,7 @@ Das Setup-Script:
 
 ### 3. Anwendung starten
 ```bash
-npm run dev
+pnpm dev
 ```
 
 Die Website ist unter http://localhost:3000 verfügbar.
@@ -61,7 +61,8 @@ Die Website ist unter http://localhost:3000 verfügbar.
 
 ### 1. Dependencies installieren
 ```bash
-npm install
+corepack enable
+pnpm install --frozen-lockfile
 ```
 
 ### 2. Umgebungsvariablen
@@ -72,13 +73,13 @@ cp .env.example .env
 
 ### 3. PostgreSQL starten
 ```bash
-docker-compose up -d postgres
+docker compose up -d postgres
 ```
 
 ### 4. Datenbank-Setup
 ```bash
-npx prisma generate
-npx prisma db push
+pnpm db:generate
+pnpm db:migrate
 ```
 
 ### 5. Admin-Benutzer erstellen
@@ -177,19 +178,19 @@ touch src/app/api/new-endpoint/route.ts
 ### Logs anzeigen:
 ```bash
 # App-Logs
-docker-compose logs -f app
+docker compose logs -f app
 
 # PostgreSQL-Logs
-docker-compose logs -f postgres
+docker compose logs -f postgres
 ```
 
 ### Datenbank verwalten:
 ```bash
 # Prisma Studio öffnen
-npm run db:studio
+pnpm db:studio
 
 # Direkter PostgreSQL-Zugang
-docker-compose exec postgres psql -U umzug_user -d umzug_db
+docker compose exec postgres psql -U umzug_user -d umzug_db
 ```
 
 ## Produktion
@@ -205,8 +206,8 @@ ADMIN_PASSWORD="your-secure-password"
 
 ### 2. Build und Deploy:
 ```bash
-npm run build
-docker-compose up -d
+pnpm build
+docker compose up -d
 ```
 
 ### 3. Sicherheit:
@@ -220,10 +221,10 @@ docker-compose up -d
 ### PostgreSQL-Verbindung:
 ```bash
 # Container prüfen
-docker-compose ps
+docker compose ps
 
 # Verbindung testen
-docker-compose exec postgres pg_isready -U umzug_user
+docker compose exec postgres pg_isready -U umzug_user
 ```
 
 ### Prisma-Probleme:
@@ -232,20 +233,20 @@ docker-compose exec postgres pg_isready -U umzug_user
 npx prisma generate
 
 # Schema synchronisieren
-npx prisma db push --force-reset
+pnpm db:migrate
 ```
 
 ### Dependencies-Probleme:
 ```bash
 # Clean install
 rm -rf node_modules package-lock.json
-npm install
+pnpm install --frozen-lockfile
 ```
 
 ## Support
 
 Bei Fragen oder Problemen:
-1. Prüfen Sie die Logs: `docker-compose logs`
+1. Prüfen Sie die Logs: `docker compose logs`
 2. Überprüfen Sie die Umgebungsvariablen in `.env`
 3. Stellen Sie sicher, dass PostgreSQL läuft
 4. Prüfen Sie die Netzwerkverbindung

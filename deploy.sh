@@ -33,17 +33,10 @@ done
 
 echo -e "${GREEN}✅ Environment variables validated${NC}"
 
-# Stop existing containers
-echo "🛑 Stopping existing containers..."
-docker compose down
-
-# Optional: Remove unused images to save space (but preserve database volumes)
-echo "🧹 Cleaning up unused Docker images..."
-docker image prune -f
-
-# Build and start containers
-echo "🏗️  Building and starting containers..."
-docker compose up --build -d
+# Build and replace only changed services. Do not take the database down before
+# a replacement application container exists.
+echo "🏗️  Building and updating containers..."
+docker compose up --build -d --remove-orphans
 
 # Wait for services to be healthy
 echo "⏳ Waiting for services to be healthy..."
@@ -76,16 +69,16 @@ echo "🗃️  Running database migrations..."
 DOCKER_DATABASE_URL="postgresql://${POSTGRES_USER:-umzug_user}:${POSTGRES_PASSWORD:-umzug_password}@postgres:5432/${POSTGRES_DB:-umzug_db}"
 
 # Try running migrations directly in the app container
-if ! docker compose exec -T app sh -c "DATABASE_URL='$DOCKER_DATABASE_URL' npx prisma db push"; then
+if ! docker compose exec -T app sh -c "DATABASE_URL='$DOCKER_DATABASE_URL' npx prisma migrate deploy"; then
     echo -e "${YELLOW}⚠️  Direct migration failed, trying alternative approach...${NC}"
     # Alternative: Run migration in a temporary container with correct network and database URL
     docker run --rm --network asam-abd-umzug_app-network \
         -e DATABASE_URL="$DOCKER_DATABASE_URL" \
         -v $(pwd)/prisma:/app/prisma \
-        node:18-alpine sh -c "
+        node:22-alpine sh -c "
             cd /app && 
-            npm install prisma @prisma/client && 
-            npx prisma db push
+            corepack enable && \
+            corepack pnpm@10.15.0 dlx prisma migrate deploy
         "
 fi
 
