@@ -1,10 +1,12 @@
+name: asam-abd-umzug-dev
+
 services:
   app:
     build:
       context: .
       dockerfile: Dockerfile
       target: runner
-    container_name: umzug_app
+    container_name: umzug_app_dev
     restart: unless-stopped
     environment:
       NODE_ENV: production
@@ -49,7 +51,7 @@ services:
 
   postgres:
     image: postgres:15-alpine
-    container_name: umzug_postgres
+    container_name: umzug_postgres_dev
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-umzug_user}

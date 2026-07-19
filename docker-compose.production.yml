@@ -1,3 +1,5 @@
+name: asam-abd-umzug-prod
+
 services:
   app:
     image: ${APP_IMAGE:?APP_IMAGE muss auf einen unveränderlichen GHCR-SHA-Tag zeigen}
