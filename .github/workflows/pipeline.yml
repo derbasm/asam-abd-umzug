@@ -57,6 +57,7 @@ jobs:
       digest: ${{ steps.build.outputs.digest }}
     steps:
       - uses: actions/checkout@v7
+      - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v4
       - name: Log in to GitHub Container Registry
         if: github.event_name != 'pull_request'
@@ -85,6 +86,9 @@ jobs:
         with:
           context: .
           push: true
+          # The production server runs on arm64; build both so a single tag
+          # works everywhere the image gets pulled.
+          platforms: linux/amd64,linux/arm64
           tags: |
             ${{ steps.image.outputs.image }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
