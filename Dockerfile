@@ -42,6 +42,14 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
+# The runtime only ever runs `node server.js`. npm/npx/corepack (and their
+# own bundled deps, e.g. npm's undici) are build-time tools that Node's
+# Alpine image ships by default; drop them so they can't trip the image
+# vulnerability scan or grow the attack surface for no runtime benefit.
+RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack \
+  /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack \
+  /usr/local/bin/corepack.js
+
 # Create non-root user for security
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
