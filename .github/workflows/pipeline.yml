@@ -29,12 +29,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install pinned pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.0
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
-      - name: Enable pinned pnpm through Corepack
-        run: corepack prepare pnpm@10.15.0 --activate
       - name: Install exact dependencies
         run: pnpm install --frozen-lockfile
       - name: Prisma client
@@ -114,39 +116,21 @@ jobs:
     name: Deploy exact image to production
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: container
-    runs-on: ubuntu-latest
+    # This runner is installed on the production server. Keeping CI on GitHub
+    # runners and deployment here avoids opening SSH access for Actions.
+    runs-on: self-hosted
     environment: production
     steps:
-      - name: Configure SSH host verification
-        env:
-          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
-        run: |
-          install -d -m 700 ~/.ssh
-          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
-      - name: Install deploy key
-        env:
-          DEPLOY_SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
-        run: |
-          printf '%s' "$DEPLOY_SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
       - name: Pull, migrate, start and health-check
         env:
-          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
-          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
-          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
           GHCR_USERNAME: ${{ secrets.GHCR_USERNAME }}
           GHCR_READ_TOKEN: ${{ secrets.GHCR_READ_TOKEN }}
           APP_IMAGE: ${{ needs.container.outputs.image }}
         run: |
-          GHCR_TOKEN_B64="$(printf '%s' "$GHCR_READ_TOKEN" | base64 -w 0)"
-          ssh -i ~/.ssh/id_ed25519 -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" \
-            "DEPLOY_PATH='$DEPLOY_PATH' APP_IMAGE='$APP_IMAGE' GHCR_USERNAME='$GHCR_USERNAME' GHCR_TOKEN_B64='$GHCR_TOKEN_B64' bash -s" <<'REMOTE'
           set -Eeuo pipefail
           cd "$DEPLOY_PATH"
-          export GHCR_TOKEN="$(printf '%s' "$GHCR_TOKEN_B64" | base64 -d)"
-          printf '%s' "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin
+          printf '%s' "$GHCR_READ_TOKEN" | docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin
           export APP_IMAGE
           docker compose -f docker-compose.production.yml pull app
           docker compose -f docker-compose.production.yml run --rm --no-deps app npx prisma migrate deploy
@@ -160,4 +144,3 @@ jobs:
           done
           docker compose -f docker-compose.production.yml logs --tail=200 app
           exit 1
-          REMOTE

@@ -79,7 +79,7 @@ Abnahme: keine Sitemap- oder hreflang-Fehler; mobile Felddaten erfüllen die Bud
 
 1. GitHub Actions in `.github/workflows/pipeline.yml` liefert CI für PRs und einen Produktions-Release bei Push nach `main`.
 2. Das veröffentlichte Image erhält SHA- und `main`-Tags, SBOM/Provenance sowie einen Vulnerability-Scan. Der Server zieht nur den SHA-Tag.
-3. Produktionsdeployment läuft im GitHub-Environment `production`, serialisiert über `concurrency`, führt zuerst `prisma migrate deploy` aus, startet dann den neuen Container und prüft `/api/health`.
+3. Produktionsdeployment läuft im GitHub-Environment `production` auf dem Self-hosted Runner des Produktionsservers, ist über `concurrency` serialisiert, führt zuerst `prisma migrate deploy` aus, startet dann den neuen Container und prüft `/api/health`.
 4. Der Server enthält einmalig `docker-compose.production.yml`, eine nur dort gespeicherte `.env.production` und einen dedizierten Deploy-Nutzer. Ein Rollback ist `APP_IMAGE=ghcr.io/...:<vorheriger-sha> docker compose -f docker-compose.production.yml up -d`.
 5. Monitoring: externer HTTPS-Uptime-Check, Error-Tracking (z. B. Sentry), tägliches DB-Backup mit Alarm, Logrotation, monatlicher Patch- und Restore-Tag.
 
@@ -98,10 +98,10 @@ main (nur grün) ─────────────────────
 ### Einmalige Produktionsvorbereitung
 
 1. Repository-Container-Package auf **privat** oder bewusst öffentlich setzen. Bei privatem Package einen GitHub Classic PAT mit ausschließlich `read:packages` auf dem Server anlegen.
-2. Auf dem Server einen eingeschränkten Benutzer `deploy` anlegen, SSH-Key-only erlauben und das Verzeichnis, z. B. `/srv/asam-abd-umzug`, besitzen lassen.
+2. Den Self-hosted Runner als eingeschränkten Benutzer `deploy` betreiben und ihm ausschließlich Zugriff auf das Verzeichnis, z. B. `/srv/asam-abd-umzug`, sowie die Docker-Gruppe geben.
 3. Dort diese Repository-Datei `docker-compose.production.yml` sowie die nicht versionierte Datei `.env.production` ablegen. In `.env.production`: `DATABASE_URL=postgresql://…@postgres:5432/…`, Datenbank- und SMTP-Werte, lange zufällige Auth-Secrets und `GHCR_USERNAME`/`GHCR_TOKEN`. `APP_IMAGE` wird bewusst nur vom Workflow gesetzt.
-4. In GitHub unter **Settings → Environments → production** Schutzregel (Reviewer) und diese Secrets anlegen: `DEPLOY_HOST`, `DEPLOY_PORT`, `DEPLOY_USER`, `DEPLOY_SSH_PRIVATE_KEY`, `DEPLOY_KNOWN_HOSTS`, `DEPLOY_PATH`, `GHCR_USERNAME`, `GHCR_READ_TOKEN`.
-5. Den SSH-Host-Key fest in `known_hosts` hinterlegen (nicht mit `StrictHostKeyChecking=no` umgehen). Anschließend den Workflow einmal manuell per `workflow_dispatch` testen.
+4. In GitHub unter **Settings → Environments → production** Schutzregel (Reviewer) und diese Secrets anlegen: `DEPLOY_PATH`, `GHCR_USERNAME`, `GHCR_READ_TOKEN`.
+5. Anschließend den Workflow einmal manuell per `workflow_dispatch` testen.
 
 > Die gelieferte Pipeline ist absichtlich nicht „blind“ aktivierbar: Ohne diese Secrets und die einmalige Servervorbereitung kann und soll kein Deployment stattfinden.
 
