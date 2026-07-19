@@ -218,6 +218,7 @@ export function generateMetadata(language: Language = 'de', page: string = 'home
   }
 
   return {
+    metadataBase: new URL(baseUrl),
     title,
     description,
     keywords: seoKeywords,
