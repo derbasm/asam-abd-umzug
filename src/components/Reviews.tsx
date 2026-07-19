@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
 
 export default function Reviews() {
   return (
@@ -22,17 +22,12 @@ export default function Reviews() {
               className="group flex flex-col items-center rounded-xl border-2 border-accent-200 p-6 sm:p-8 hover:border-primary-600 hover:bg-gradient-to-br hover:from-primary-50 hover:to-transparent transition-all duration-300 cursor-pointer"
             >
               <div className="mb-2 w-20 h-20 flex items-center justify-center">
-                <img
+                <Image
                   alt="Google"
-                  loading="lazy"
                   width="130"
                   height="130"
-                  decoding="async"
-                  data-nimg="1"
                   className="object-contain h-full w-full"
-                  style={{ color: 'transparent' }}
-                  srcSet="/_next/image?url=%2Fimages%2Fgooglemaps.webp&w=256&q=75 1x, /_next/image?url=%2Fimages%2Fgooglemaps.webp&w=384&q=75 2x"
-                  src="/_next/image?url=%2Fimages%2Fgooglemaps.webp&w=384&q=75"
+                  src="/images/googlemaps.webp"
                 />
               </div>
               <h3 className="font-semibold text-lg text-accent-900 mb-2 group-hover:text-primary-600 transition-colors">
@@ -57,17 +52,12 @@ export default function Reviews() {
               className="group flex flex-col items-center rounded-xl border-2 border-accent-200 p-6 sm:p-8 hover:border-primary-600 hover:bg-gradient-to-br hover:from-primary-50 hover:to-transparent transition-all duration-300 cursor-pointer"
             >
               <div className="mb-2 w-20 h-20 flex items-center justify-center">
-                <img
+                <Image
                   alt="Kleinanzeigen"
-                  loading="lazy"
                   width="130"
                   height="130"
-                  decoding="async"
-                  data-nimg="1"
                   className="object-contain h-full w-full"
-                  style={{ color: 'transparent' }}
-                  srcSet="/_next/image?url=%2Fimages%2Fkleinanzeigen.webp&w=256&q=75 1x, /_next/image?url=%2Fimages%2Fkleinanzeigen.webp&w=384&q=75 2x"
-                  src="/_next/image?url=%2Fimages%2Fkleinanzeigen.webp&w=384&q=75"
+                  src="/images/kleinanzeigen.webp"
                 />
               </div>
               <h3 className="font-semibold text-lg text-accent-900 mb-2 group-hover:text-primary-600 transition-colors">

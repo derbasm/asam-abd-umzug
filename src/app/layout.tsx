@@ -58,10 +58,16 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-white font-sans antialiased">
+        <a
+          href="#main-content"
+          className="sr-only fixed left-4 top-4 z-[100] rounded bg-primary px-4 py-2 font-semibold text-white focus:not-sr-only focus:outline-none focus:ring-2 focus:ring-white"
+        >
+          Zum Inhalt springen
+        </a>
         <ErrorBoundary>
           <AnalyticsLoader />
           <Providers>
-            <main className="flex min-h-screen flex-col">
+            <main id="main-content" className="flex min-h-screen flex-col" tabIndex={-1}>
               {children}
             </main>
           </Providers>
