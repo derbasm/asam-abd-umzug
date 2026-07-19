@@ -12,20 +12,23 @@ const nextConfig = {
   
   // Image optimization
   images: {
-    domains: ['images.unsplash.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+    ],
     formats: ['image/webp', 'image/avif'],
-    minimumCacheTTL: 60,
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    minimumCacheTTL: 14400,
   },
   
   // Performance optimizations
   experimental: {
     optimizeCss: true,
     scrollRestoration: true,
-    serverComponentsExternalPackages: ['@prisma/client'],
     optimizePackageImports: ['@heroicons/react', '@headlessui/react'],
   },
+  serverExternalPackages: ['@prisma/client'],
   
   // Compression
   compress: true,
@@ -51,6 +54,18 @@ const nextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()',
+          },
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin',
+          },
+          {
+            key: 'Cross-Origin-Resource-Policy',
+            value: 'same-origin',
+          },
+          {
+            key: 'Content-Security-Policy-Report-Only',
+            value: "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https:; connect-src 'self' https:; upgrade-insecure-requests",
           },
         ],
       },
@@ -79,12 +94,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: process.env.NODE_ENV === 'development',
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  
-  // Enable SWC minification
-  swcMinify: true,
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

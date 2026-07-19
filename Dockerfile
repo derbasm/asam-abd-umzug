@@ -56,10 +56,9 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# The Prisma CLI and generated client use pnpm's virtual-store layout. Copy the
-# complete dependency tree so `prisma migrate deploy` also works in production.
-COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
+# `next build` traces the runtime dependencies into `.next/standalone`. Do not
+# copy the full pnpm dependency tree: it contains development tooling and makes
+# the production image both larger and needlessly vulnerable.
 
 USER nextjs
 
