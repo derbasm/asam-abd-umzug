@@ -35,7 +35,9 @@ async function isValidToken(token: string): Promise<boolean> {
 
 export async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
-  const response = NextResponse.next();
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-pathname', path);
+  const response = NextResponse.next({ request: { headers: requestHeaders } });
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'origin-when-cross-origin');

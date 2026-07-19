@@ -1,25 +1,6 @@
 import type { Metadata } from "next";
-import Providers from "@/components/Providers";
-import ErrorBoundary from "@/components/ErrorBoundary";
-import ConsentBanner from "@/components/ConsentBanner";
-import AnalyticsLoader from "@/components/AnalyticsLoader";
 import { generateMetadata } from "@/lib/metadata";
 import { generateLocalBusinessSchema } from "@/lib/schema";
-import { Inter, Poppins } from "next/font/google";
-import "../globals.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-  variable: "--font-poppins",
-});
 
 export const metadata: Metadata = {
   ...generateMetadata('de'),
@@ -43,30 +24,13 @@ export default function DELayout({
 }: {
   children: React.ReactNode;
 }) {
-  const localBusinessSchema = generateLocalBusinessSchema();
-
   return (
-    <html lang="de" className={`${inter.variable} ${poppins.variable}`}>
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
-        />
-      </head>
-      <body className="min-h-screen bg-white font-sans antialiased">
-        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-primary-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-semibold">
-          Zum Inhalt springen
-        </a>
-        <ErrorBoundary>
-          <AnalyticsLoader />
-          <Providers>
-            <main id="main-content" className="flex min-h-screen flex-col">
-              {children}
-            </main>
-          </Providers>
-          <ConsentBanner />
-        </ErrorBoundary>
-      </body>
-    </html>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateLocalBusinessSchema()) }}
+      />
+      {children}
+    </>
   );
 }
