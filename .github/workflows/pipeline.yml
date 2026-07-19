@@ -54,6 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       image: ${{ steps.image.outputs.image }}
+      migrator-image: ${{ steps.image.outputs.migrator-image }}
       digest: ${{ steps.build.outputs.digest }}
     steps:
       - uses: actions/checkout@v7
@@ -68,7 +69,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Define immutable image tag
         id: image
-        run: echo "image=${REGISTRY}/${IMAGE_NAME}:${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "image=${REGISTRY}/${IMAGE_NAME}:${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+          echo "migrator-image=${REGISTRY}/${IMAGE_NAME}:${GITHUB_SHA}-migrator" >> "$GITHUB_OUTPUT"
       - name: Build image for validation
         if: github.event_name == 'pull_request'
         uses: docker/build-push-action@v7
@@ -92,6 +95,23 @@ jobs:
           tags: |
             ${{ steps.image.outputs.image }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      # The runtime image intentionally has no npm/npx/pnpm (see the runner
+      # stage) so `prisma migrate deploy` can't run inside it. Publish the
+      # `builder` stage — which already has pnpm and the Prisma CLI — as a
+      # separate, ephemeral image used only for the one-off migration step.
+      # It never runs long-lived or faces the internet, so it isn't put
+      # through the same vulnerability gate as the app image.
+      - name: Build and publish migration image
+        if: github.event_name != 'pull_request'
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          target: builder
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.image.outputs.migrator-image }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       # trivy-action builds SARIF reports with all severities regardless of the
@@ -144,13 +164,14 @@ jobs:
           GHCR_USERNAME: ${{ secrets.GHCR_USERNAME }}
           GHCR_READ_TOKEN: ${{ secrets.GHCR_READ_TOKEN }}
           APP_IMAGE: ${{ needs.container.outputs.image }}
+          MIGRATOR_IMAGE: ${{ needs.container.outputs.migrator-image }}
         run: |
           set -Eeuo pipefail
           cd "$DEPLOY_PATH"
           printf '%s' "$GHCR_READ_TOKEN" | docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin
-          export APP_IMAGE
-          docker compose -f docker-compose.production.yml pull app
-          docker compose -f docker-compose.production.yml run --rm --no-deps app npx prisma migrate deploy
+          export APP_IMAGE MIGRATOR_IMAGE
+          docker compose -f docker-compose.production.yml --profile tools pull app migrate
+          docker compose -f docker-compose.production.yml --profile tools run --rm migrate
           docker compose -f docker-compose.production.yml up -d --no-build --remove-orphans
           for attempt in $(seq 1 18); do
             if docker compose -f docker-compose.production.yml exec -T app node -e "fetch('http://localhost:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"; then

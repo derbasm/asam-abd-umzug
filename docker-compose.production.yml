@@ -24,6 +24,20 @@ services:
       - /app/.next/cache:rw,nosuid,nodev,uid=1001,gid=1001
     networks: [app-network]
 
+  # The runtime image has no pnpm/npx (see the Dockerfile's runner stage), so
+  # migrations run once via the separate, ephemeral migrator image instead.
+  # `profiles: [tools]` keeps this out of a normal `up -d`; it only runs via
+  # `docker compose --profile tools run --rm migrate`.
+  migrate:
+    image: ${MIGRATOR_IMAGE:?MIGRATOR_IMAGE muss auf einen unveränderlichen GHCR-SHA-Tag zeigen}
+    env_file: .env.production
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [app-network]
+    profiles: ["tools"]
+    command: ["pnpm", "exec", "prisma", "migrate", "deploy"]
+
   postgres:
     image: postgres:15-alpine
     container_name: umzug_postgres
