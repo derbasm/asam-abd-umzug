@@ -33,8 +33,10 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN pnpm build
 
-# Production image, copy all the files and run next
-FROM base AS runner
+# Production image: a plain Node base, not `base`, so pnpm and its
+# transitive dependencies (tar, minimatch, glob, undici, ...) never end up
+# in the runtime image or its vulnerability scan.
+FROM node:24-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
