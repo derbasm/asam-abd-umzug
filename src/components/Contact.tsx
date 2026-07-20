@@ -1,6 +1,7 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
+import Link from 'next/link';
 import {
   PhoneIcon,
   EnvelopeIcon,
@@ -79,9 +80,7 @@ export default function Contact() {
           <h2 className="mt-2 mobile-heading lg:text-4xl xl:text-5xl font-heading gradient-text text-balance">
             {contact.title}
           </h2>
-          <p className="mt-2 text-lg leading-8 text-accent-600">
-            {contact.subtitle}
-          </p>
+          <p className="mt-2 text-lg leading-8 text-accent-600">In wenigen Schritten zu Ihrer kostenlosen, unverbindlichen Umzugsanfrage.</p>
         </div>
 
         <div className="mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-12 lg:grid-cols-5">
@@ -146,6 +145,7 @@ export default function Contact() {
           {/* Contact Form */}
           <div className="lg:col-span-3 bg-white rounded-2xl shadow-xl ring-1 ring-accent-900/5 p-8">
             <form onSubmit={handleSubmit(onSubmit, onInvalidSubmit)} className="space-y-5">
+              <p className="rounded-lg bg-primary-50 px-4 py-3 text-sm text-primary-900">Senden Sie uns Ihre Anfrage – wir melden uns persönlich bei Ihnen.</p>
               <div className="sr-only" aria-hidden="true">
                 <label htmlFor="website">Website</label>
                 <input {...register('website')} id="website" type="text" tabIndex={-1} autoComplete="off" />
@@ -229,7 +229,7 @@ export default function Contact() {
                     id="message"
                     rows={4}
                     className={inputClass}
-                    placeholder="z.B. gewünschter Umzugstermin, Von/Nach, Anzahl Zimmer, besondere Gegenstände (Klavier, Safe), etc."
+                  placeholder="Wie können wir Ihnen helfen?"
                   />
                 </div>
               </div>
@@ -265,7 +265,8 @@ export default function Contact() {
               </ul>
 
               <p className="text-xs text-accent-400 text-center">
-                * Pflichtfelder – Ihre Daten werden vertraulich behandelt.
+                * Pflichtfelder – Ihre Daten werden vertraulich behandelt. Mit dem Absenden stimmen Sie unserer{' '}
+                <Link href="/datenschutz" className="underline hover:text-primary-600">Datenschutzerklärung</Link>{' '}zu.
               </p>
 
               {isSuccess && (

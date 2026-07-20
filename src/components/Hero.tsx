@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { CheckCircleIcon, PhoneIcon } from '@heroicons/react/24/solid';
 import { useTranslations } from '@/hooks/useTranslations';
 import { trackEvent } from '@/lib/analytics';
 
@@ -24,6 +25,9 @@ export default function Hero() {
               <p className="mt-6 text-lg text-accent-600 text-balance leading-8">
                 {hero.subtitle}
               </p>
+              <p className="mt-5 inline-flex items-center rounded-full bg-primary-50 px-3 py-1.5 text-sm font-semibold text-primary-800">
+                Für Umzüge in Hamm, Dortmund, Münster und Umgebung
+              </p>
               
               <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-x-6">
                 <Link
@@ -33,44 +37,22 @@ export default function Hero() {
                 >
                   {hero.cta.primary.text}
                 </Link>
-                <Link
-                  href={hero.cta.secondary.link}
-                  className="group inline-flex items-center gap-x-2 text-base font-medium text-accent-900 hover:text-primary-600 transition-colors duration-200 touch-target"
+                <a
+                  href={`tel:${data.company.phone}`}
+                  onClick={() => trackEvent('phone_click', { location: 'hero_secondary' })}
+                  className="group inline-flex items-center gap-x-2 text-base font-semibold text-accent-900 hover:text-primary-600 transition-colors duration-200 touch-target"
                 >
-                  {hero.cta.secondary.text}
-                </Link>
+                  <PhoneIcon className="h-5 w-5 text-primary-600" aria-hidden="true" />
+                  Jetzt anrufen
+                </a>
               </div>
-              
-              {/* Trust indicators with response time */}
-              <div className="mt-12 flex flex-wrap items-center gap-6 text-sm text-accent-500">
-                <div className="flex items-center gap-2">
-                  <span className="text-primary-600">✓</span>
-                  <span>Über 10 Jahre Erfahrung</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-primary-600">✓</span>
-                  <span>Professioneller Service</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-primary-600">✓</span>
-                  <span>Kostenlose Beratung</span>
-                </div>
-              </div>
-
-              {/* Stats */}
-              <div className="mt-12 grid grid-cols-3 gap-4 border-t border-accent-100 pt-8">
-                <div className="text-center">
-                  <div className="text-2xl sm:text-3xl font-bold gradient-text">500+</div>
-                  <div className="text-xs sm:text-sm text-accent-500 mt-1">Erfolgreiche Umzüge</div>
-                </div>
-                <div className="text-center border-x border-accent-100">
-                  <div className="text-2xl sm:text-3xl font-bold gradient-text">10+</div>
-                  <div className="text-xs sm:text-sm text-accent-500 mt-1">Jahre Erfahrung</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl sm:text-3xl font-bold gradient-text">5★</div>
-                  <div className="text-xs sm:text-sm text-accent-500 mt-1">Kundenbewertung</div>
-                </div>
+              <div className="mt-9 grid gap-3 border-t border-accent-100 pt-6 text-sm text-accent-700 sm:grid-cols-3 sm:gap-4">
+                {['Kostenlos & unverbindlich', 'Persönliche Beratung', 'Transparente Preisabsprache'].map((point) => (
+                  <div key={point} className="flex items-center gap-2">
+                    <CheckCircleIcon className="h-5 w-5 flex-none text-primary-600" aria-hidden="true" />
+                    <span>{point}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -80,24 +62,22 @@ export default function Hero() {
               <div className="absolute inset-0 sm:-inset-4 bg-gradient-to-r from-primary-600/20 to-secondary-600/20 rounded-2xl blur-2xl" />
               
               <div className="relative">
-                {/* Hero Image - Replace with actual moving/team image in production */}
                 <div className="relative w-full bg-gradient-to-br from-primary-100 to-secondary-100 rounded-2xl overflow-hidden aspect-square lg:aspect-auto lg:h-full min-h-[320px] sm:min-h-[400px] flex items-center justify-center">
                   <Image
-                    src="/images/logo.webp"
-                    alt={`${data.company.name} - Professionelle Umzüge`}
-                    width={512}
-                    height={512}
+                    src="/images/about-us.webp"
+                    alt={`${data.company.name} Team bei einem Umzug`}
+                    width={1280}
+                    height={853}
                     className="h-full w-full object-cover"
                     priority
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw"
                   />
                 </div>
 
-                {/* Floating badge: response time */}
-                <div className="absolute bottom-3 right-3 sm:-bottom-4 sm:-right-4 bg-white rounded-full shadow-xl p-3 sm:p-4 border-2 border-primary-600">
+                <div className="absolute bottom-3 right-3 sm:-bottom-4 sm:-right-4 bg-white rounded-2xl shadow-xl px-4 py-3 border-2 border-primary-600">
                   <div className="text-center">
-                    <div className="text-lg font-bold text-accent-900">24/7</div>
-                    <div className="text-xs text-accent-600 mt-0.5">Erreichbar</div>
+                    <div className="text-sm font-bold text-accent-900">Unverbindlich anfragen</div>
+                    <div className="text-xs text-accent-600 mt-0.5">Wir beraten Sie persönlich</div>
                   </div>
                 </div>
 
@@ -110,4 +90,4 @@ export default function Hero() {
       </div>
     </div>
   );
-} 
+}

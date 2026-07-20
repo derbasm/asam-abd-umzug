@@ -16,19 +16,18 @@ export default function Pricing() {
     <div className="bg-gradient-to-b from-white via-accent-50 to-white section-spacing" id="pricing">
       <div className="container-custom">
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-base font-semibold leading-7 text-primary-600">
-            {pricing.subtitle}
-          </h2>
+          <p className="text-base font-semibold leading-7 text-primary-600">{pricing.subtitle}</p>
           <h2 className="mt-2 mobile-heading lg:text-4xl xl:text-5xl font-heading gradient-text text-balance">
             {pricing.title}
           </h2>
           <p className="mt-6 text-lg leading-8 text-accent-600 text-balance">
             {pricing.description}
           </p>
+          <p className="mt-3 text-sm text-accent-500">Die tatsächlichen Kosten richten sich nach Strecke, Umfang und gewünschtem Service. Sie erhalten vorab ein klares, unverbindliches Angebot.</p>
         </div>
 
         <div className="isolate mx-auto mt-12 sm:mt-16 lg:mt-20 grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-3 lg:gap-6 xl:gap-8">
-          {pricing.tiers.map((tier, tierIdx) => (
+          {pricing.tiers.map((tier) => (
             <div
               key={tier.id}
               className={classNames(
@@ -60,7 +59,7 @@ export default function Pricing() {
                 </div>
                 
                 <ul role="list" className="space-y-3 sm:space-y-4 text-sm sm:text-base leading-6 text-accent-600 mb-8">
-                  {tier.features.map((feature, index) => (
+                  {tier.features.map((feature) => (
                     <li key={feature} className="flex gap-3 items-start">
                       <CheckIcon className="h-5 w-5 flex-none text-primary-600 mt-0.5" aria-hidden="true" />
                       <span className="flex-1">{feature}</span>
@@ -87,4 +86,4 @@ export default function Pricing() {
       </div>
     </div>
   );
-} 
+}

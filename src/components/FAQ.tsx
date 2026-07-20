@@ -4,9 +4,16 @@ import { useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from '@/hooks/useTranslations';
 
+interface FAQContent {
+  subtitle: string;
+  title: string;
+  description: string;
+  items: { question: string; answer: string }[];
+}
+
 export default function FAQ() {
   const { data } = useTranslations();
-  const faq = (data as any).faq;
+  const faq = (data as typeof data & { faq?: FAQContent }).faq;
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   if (!faq) return null;
@@ -27,9 +34,10 @@ export default function FAQ() {
         </div>
 
         <div className="mx-auto mt-12 sm:mt-16 max-w-3xl divide-y divide-accent-100">
-          {faq.items.map((item: { question: string; answer: string }, index: number) => (
+          {faq.items.map((item, index) => (
             <div key={index} className="py-5">
               <button
+                id={`faq-button-${index}`}
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
                 className="flex w-full items-start justify-between text-left gap-4 group"
                 aria-expanded={openIndex === index}
