@@ -5,10 +5,6 @@ interface ContactFormData {
   name: string;
   email: string;
   phone: string;
-  service?: string;
-  movingDate?: string;
-  fromCity?: string;
-  toCity?: string;
   message?: string;
   website?: string;
 }
@@ -29,15 +25,6 @@ export const useContactForm = () => {
   const submitForm = async (data: ContactFormData) => {
     setState({ isLoading: true, isSuccess: false, error: null });
 
-    // Build enriched message from moving details
-    const messageParts: string[] = [];
-    if (data.movingDate) messageParts.push(`Umzugsdatum: ${data.movingDate}`);
-    if (data.fromCity) messageParts.push(`Von: ${data.fromCity}`);
-    if (data.toCity) messageParts.push(`Nach: ${data.toCity}`);
-    if (data.message) messageParts.push(`Nachricht: ${data.message}`);
-
-    const enrichedMessage = messageParts.join('\n');
-
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
@@ -48,8 +35,7 @@ export const useContactForm = () => {
           name: data.name,
           email: data.email,
           phone: data.phone,
-          service: data.service || '',
-          message: enrichedMessage,
+          message: data.message || '',
           website: data.website || '',
         }),
       });

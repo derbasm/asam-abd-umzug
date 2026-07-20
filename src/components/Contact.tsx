@@ -1,33 +1,40 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { PhoneIcon, EnvelopeIcon, MapPinIcon, ClockIcon } from '@heroicons/react/24/outline';
+import {
+  PhoneIcon,
+  EnvelopeIcon,
+  MapPinIcon,
+  ClockIcon,
+  UserIcon,
+  ChatBubbleLeftRightIcon,
+  PaperAirplaneIcon,
+  CheckCircleIcon,
+} from '@heroicons/react/24/outline';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useContactForm } from '@/hooks/useContactForm';
 import { trackEvent } from '@/lib/analytics';
-
-const SERVICE_OPTIONS = [
-  { value: '', label: 'Bitte wählen...' },
-  { value: 'Umzug', label: 'Umzug' },
-  { value: 'Möbelmontage', label: 'Möbelmontage' },
-  { value: 'Transport', label: 'Transport (A nach B)' },
-  { value: 'Haushaltsauflösung', label: 'Haushaltsauflösung / Entrümpelung' },
-];
 
 interface FormData {
   name: string;
   email: string;
   phone: string;
-  service: string;
-  movingDate: string;
-  fromCity: string;
-  toCity: string;
   message: string;
   website: string;
 }
 
+const TRUST_POINTS = [
+  'Kostenlose, unverbindliche Besichtigung',
+  'Antwort innerhalb von 24 Stunden',
+  'Faire Festpreise ohne versteckte Kosten',
+];
+
 const inputClass =
-  'block w-full rounded-md border-0 px-3.5 py-2 text-accent-900 shadow-sm ring-1 ring-inset ring-accent-300 placeholder:text-accent-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6 transition-shadow duration-200';
+  'block w-full rounded-md border-0 py-2 pl-10 pr-3.5 text-accent-900 shadow-sm ring-1 ring-inset ring-accent-300 placeholder:text-accent-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6 transition-shadow duration-200';
+
+const inputErrorClass = 'ring-red-300 focus:ring-red-500';
+
+const iconClass = 'pointer-events-none absolute left-3 top-2.5 h-5 w-5 text-accent-400';
 
 export default function Contact() {
   const { data } = useTranslations();
@@ -47,18 +54,11 @@ export default function Contact() {
       name: formData.name,
       email: formData.email,
       phone: formData.phone,
-      service: formData.service,
-      movingDate: formData.movingDate,
-      fromCity: formData.fromCity,
-      toCity: formData.toCity,
       message: formData.message,
     });
 
     if (success) {
-      trackEvent('contact_submit', {
-        location: 'contact_form',
-        service: formData.service || 'unspecified',
-      });
+      trackEvent('contact_submit', { location: 'contact_form' });
       reset();
     }
   };
@@ -156,18 +156,21 @@ export default function Contact() {
                   <label htmlFor="name" className="block text-sm font-medium leading-6 text-accent-900 mb-1.5">
                     Name <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    {...register('name', {
-                      required: 'Name ist erforderlich',
-                      minLength: { value: 2, message: 'Mindestens 2 Zeichen' },
-                    })}
-                    type="text"
-                    id="name"
-                    className={inputClass}
-                    placeholder="Ihr Name"
-                    aria-invalid={Boolean(errors.name)}
-                    aria-describedby={errors.name ? 'name-error' : undefined}
-                  />
+                  <div className="relative">
+                    <UserIcon className={iconClass} aria-hidden="true" />
+                    <input
+                      {...register('name', {
+                        required: 'Name ist erforderlich',
+                        minLength: { value: 2, message: 'Mindestens 2 Zeichen' },
+                      })}
+                      type="text"
+                      id="name"
+                      className={`${inputClass} ${errors.name ? inputErrorClass : ''}`}
+                      placeholder="Ihr Name"
+                      aria-invalid={Boolean(errors.name)}
+                      aria-describedby={errors.name ? 'name-error' : undefined}
+                    />
+                  </div>
                   {errors.name && <p id="name-error" className="mt-1.5 text-xs text-red-600">{errors.name.message}</p>}
                 </div>
 
@@ -175,15 +178,18 @@ export default function Contact() {
                   <label htmlFor="phone" className="block text-sm font-medium leading-6 text-accent-900 mb-1.5">
                     Telefon <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    {...register('phone', { required: 'Telefonnummer ist erforderlich' })}
-                    type="tel"
-                    id="phone"
-                    className={inputClass}
-                    placeholder="+49 176 ..."
-                    aria-invalid={Boolean(errors.phone)}
-                    aria-describedby={errors.phone ? 'phone-error' : undefined}
-                  />
+                  <div className="relative">
+                    <PhoneIcon className={iconClass} aria-hidden="true" />
+                    <input
+                      {...register('phone', { required: 'Telefonnummer ist erforderlich' })}
+                      type="tel"
+                      id="phone"
+                      className={`${inputClass} ${errors.phone ? inputErrorClass : ''}`}
+                      placeholder="+49 176 ..."
+                      aria-invalid={Boolean(errors.phone)}
+                      aria-describedby={errors.phone ? 'phone-error' : undefined}
+                    />
+                  </div>
                   {errors.phone && <p id="phone-error" className="mt-1.5 text-xs text-red-600">{errors.phone.message}</p>}
                 </div>
               </div>
@@ -193,100 +199,70 @@ export default function Contact() {
                 <label htmlFor="email" className="block text-sm font-medium leading-6 text-accent-900 mb-1.5">
                   E-Mail <span className="text-red-500">*</span>
                 </label>
-                <input
-                  {...register('email', {
-                    required: 'E-Mail ist erforderlich',
-                    pattern: { value: /^\S+@\S+$/i, message: 'Gültige E-Mail-Adresse eingeben' },
-                  })}
-                  type="email"
-                  id="email"
-                  className={inputClass}
-                  placeholder="ihre.email@beispiel.de"
-                  aria-invalid={Boolean(errors.email)}
-                  aria-describedby={errors.email ? 'email-error' : undefined}
-                />
+                <div className="relative">
+                  <EnvelopeIcon className={iconClass} aria-hidden="true" />
+                  <input
+                    {...register('email', {
+                      required: 'E-Mail ist erforderlich',
+                      pattern: { value: /^\S+@\S+$/i, message: 'Gültige E-Mail-Adresse eingeben' },
+                    })}
+                    type="email"
+                    id="email"
+                    className={`${inputClass} ${errors.email ? inputErrorClass : ''}`}
+                    placeholder="ihre.email@beispiel.de"
+                    aria-invalid={Boolean(errors.email)}
+                    aria-describedby={errors.email ? 'email-error' : undefined}
+                  />
+                </div>
                 {errors.email && <p id="email-error" className="mt-1.5 text-xs text-red-600">{errors.email.message}</p>}
-              </div>
-
-              {/* Service */}
-              <div>
-                <label htmlFor="service" className="block text-sm font-medium leading-6 text-accent-900 mb-1.5">
-                  Gewünschte Leistung
-                </label>
-                <select
-                  {...register('service')}
-                  id="service"
-                  className={inputClass}
-                >
-                  {SERVICE_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>{opt.label}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Moving date */}
-              <div>
-                <label htmlFor="movingDate" className="block text-sm font-medium leading-6 text-accent-900 mb-1.5">
-                  Geplantes Umzugsdatum
-                </label>
-                <input
-                  {...register('movingDate')}
-                  type="date"
-                  id="movingDate"
-                  className={inputClass}
-                  min={new Date().toISOString().split('T')[0]}
-                />
-              </div>
-
-              {/* From / To */}
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                <div>
-                  <label htmlFor="fromCity" className="block text-sm font-medium leading-6 text-accent-900 mb-1.5">
-                    Von (Ort / PLZ)
-                  </label>
-                  <input
-                    {...register('fromCity')}
-                    type="text"
-                    id="fromCity"
-                    className={inputClass}
-                    placeholder="z.B. 59077 Hamm"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="toCity" className="block text-sm font-medium leading-6 text-accent-900 mb-1.5">
-                    Nach (Ort / PLZ)
-                  </label>
-                  <input
-                    {...register('toCity')}
-                    type="text"
-                    id="toCity"
-                    className={inputClass}
-                    placeholder="z.B. 44137 Dortmund"
-                  />
-                </div>
               </div>
 
               {/* Message */}
               <div>
                 <label htmlFor="message" className="block text-sm font-medium leading-6 text-accent-900 mb-1.5">
-                  Weitere Informationen
+                  Ihre Nachricht
                 </label>
-                <textarea
-                  {...register('message')}
-                  id="message"
-                  rows={3}
-                  className={inputClass}
-                  placeholder="z.B. Anzahl Zimmer, Etage, besondere Gegenstände (Klavier, Safe), etc."
-                />
+                <div className="relative">
+                  <ChatBubbleLeftRightIcon className={`${iconClass} top-3`} aria-hidden="true" />
+                  <textarea
+                    {...register('message')}
+                    id="message"
+                    rows={4}
+                    className={inputClass}
+                    placeholder="z.B. gewünschter Umzugstermin, Von/Nach, Anzahl Zimmer, besondere Gegenstände (Klavier, Safe), etc."
+                  />
+                </div>
               </div>
 
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full btn-primary py-3 text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full btn-primary py-3 text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {isLoading ? 'Wird gesendet...' : 'Kostenlose Anfrage senden'}
+                {isLoading ? (
+                  <>
+                    <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    Wird gesendet...
+                  </>
+                ) : (
+                  <>
+                    Kostenlose Anfrage senden
+                    <PaperAirplaneIcon className="h-5 w-5" aria-hidden="true" />
+                  </>
+                )}
               </button>
+
+              <ul className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+                {TRUST_POINTS.map((point) => (
+                  <li key={point} className="flex items-start gap-1.5 text-xs text-accent-500">
+                    <CheckCircleIcon className="h-4 w-4 flex-shrink-0 text-primary-600" aria-hidden="true" />
+                    {point}
+                  </li>
+                ))}
+              </ul>
 
               <p className="text-xs text-accent-400 text-center">
                 * Pflichtfelder – Ihre Daten werden vertraulich behandelt.
