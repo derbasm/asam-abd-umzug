@@ -1,5 +1,5 @@
 # Multi-stage build for production optimization
-FROM node:24-alpine AS base
+FROM node:25-alpine AS base
 
 ENV PNPM_HOME=/pnpm
 ENV PATH=$PNPM_HOME:$PATH
@@ -36,7 +36,7 @@ RUN pnpm build
 # Production image: a plain Node base, not `base`, so pnpm and its
 # transitive dependencies (tar, minimatch, glob, undici, ...) never end up
 # in the runtime image or its vulnerability scan.
-FROM node:24-alpine AS runner
+FROM node:25-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
